@@ -7,4 +7,17 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="almost_black">#4B3F3F</color>
+    <color name="translucent_black_grey_diary">#2A075E16</color>
+    <color name="orange_300">#EAC300</color>
+    <color name="translucent_black_grey">#2A2BBC43</color>
+    <color name="orange_500">#A08500</color>
+    <color name="bnv_default">#059EE4</color>
+    <color name="bnv_default_diary">#055478</color>
+    <color name="item_icon">#7E4D11</color>
+    <color name="item_text">#670A20</color>
+
+
+
 </resources>

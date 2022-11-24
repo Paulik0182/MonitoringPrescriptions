@@ -1,4 +1,4 @@
-package com.example.monitoringprescriptions.ui.statistics
+package com.example.monitoringprescriptions.ui.settings
 
 import android.content.Context
 import android.os.Bundle
@@ -6,19 +6,21 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import com.example.monitoringprescriptions.App
 import com.example.monitoringprescriptions.R
-import com.example.monitoringprescriptions.databinding.FragmentStatisticsBinding
+import com.example.monitoringprescriptions.databinding.FragmentSettingsBinding
 
-class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
+class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private val app: App get() = requireActivity().application as App
 
-    private var _binding: FragmentStatisticsBinding? = null
+    private var _binding: FragmentSettingsBinding? = null
     private var binding = _binding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentStatisticsBinding.bind(view)
+        _binding = FragmentSettingsBinding.bind(view)
+
+        binding
     }
 
     interface Controller {
@@ -36,7 +38,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
         @JvmStatic
         fun newInstance() =
-            StatisticsFragment().apply {
+            SettingsFragment().apply {
                 arguments = Bundle().apply {
 
                 }

@@ -12,5 +12,17 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+
+        <!-- значения по умолчанию -->
+        <item name="default_text">@color/white</item>
+        <item name="second_plan_background">@color/almost_black</item>
+        <item name="button_background">@color/translucent_black_grey_diary</item>
+        <item name="ic_background">@color/orange_300</item>
+
+        <!-- RootActivity -->
+        <item name="bottom_navigation_view">@color/bnv_default_diary</item>
+        <item name="item_icon_tint">@color/white</item>
+        <item name="item_text">@color/white</item>
     </style>
 </resources>
