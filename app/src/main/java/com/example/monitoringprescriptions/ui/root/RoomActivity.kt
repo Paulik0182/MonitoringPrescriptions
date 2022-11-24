@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ActivityRootBinding
+import com.example.monitoringprescriptions.domain.entities.ReceptionEntity
 import com.example.monitoringprescriptions.ui.reception.ReceptionFragment
 import com.example.monitoringprescriptions.ui.settings.SettingsFragment
 
@@ -51,5 +52,9 @@ class RoomActivity : AppCompatActivity(),
                 fragment,
                 TAG_MAIN_CONTAINER_LAYOUT_KEY
             ).commit()
+    }
+
+    override fun openDetailsReception(receptionEntity: ReceptionEntity) {
+        TODO("Not yet implemented")
     }
 }

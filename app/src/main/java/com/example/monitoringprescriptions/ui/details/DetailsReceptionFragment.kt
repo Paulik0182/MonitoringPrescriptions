@@ -8,7 +8,7 @@ import com.example.monitoringprescriptions.App
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentDerailsReceptionBinding
 
-class DerailsReceptionFragment : Fragment(R.layout.fragment_derails_reception) {
+class DetailsReceptionFragment : Fragment(R.layout.fragment_derails_reception) {
 
     private val app: App get() = requireActivity().application as App
 
@@ -34,7 +34,7 @@ class DerailsReceptionFragment : Fragment(R.layout.fragment_derails_reception) {
     companion object {
         @JvmStatic
         fun newInstance() =
-            DerailsReceptionFragment().apply {
+            DetailsReceptionFragment().apply {
                 arguments = Bundle().apply {
 //                    putString(KEY, "key")
                 }

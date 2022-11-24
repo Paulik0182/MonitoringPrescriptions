@@ -10,6 +10,7 @@
     <!-- emoji -->
     <string name="emoji_yes">&#9989;</string>
     <string name="emoji_no">&#10060;</string>
+    <string name="emoji_unknown">&#10062;</string>
 
     <!-- emoji product-->
     <string name="emoji_pill">&#128138;</string>
