@@ -7,13 +7,15 @@ import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ActivityRootBinding
 import com.example.monitoringprescriptions.domain.entities.ReceptionEntity
 import com.example.monitoringprescriptions.ui.reception.ReceptionFragment
+import com.example.monitoringprescriptions.ui.schedule.ScheduleFragment
 import com.example.monitoringprescriptions.ui.settings.SettingsFragment
 
 private const val TAG_MAIN_CONTAINER_LAYOUT_KEY = "TAG_MAIN_CONTAINER_LAYOUT_KEY"
 
 class RootActivity : AppCompatActivity(),
     ReceptionFragment.Controller,
-    SettingsFragment.Controller {
+    SettingsFragment.Controller,
+    ScheduleFragment.Controller {
 
     private lateinit var binding: ActivityRootBinding
 
@@ -35,7 +37,7 @@ class RootActivity : AppCompatActivity(),
         binding.bottomNavBar.setOnItemSelectedListener {
             title = it.title
             val fragment = when (it.itemId) {
-                R.id.reception_list_item -> ReceptionFragment()
+                R.id.reception_list_item -> ScheduleFragment()
                 R.id.settings_item -> SettingsFragment()
                 else -> throw IllegalStateException("Такого фрагмента нет")
             }

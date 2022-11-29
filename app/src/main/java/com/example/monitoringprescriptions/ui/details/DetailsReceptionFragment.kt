@@ -2,8 +2,8 @@ package com.example.monitoringprescriptions.ui.details
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.App
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentDerailsReceptionBinding
@@ -13,7 +13,7 @@ class DetailsReceptionFragment : Fragment(R.layout.fragment_derails_reception) {
     private val app: App get() = requireActivity().application as App
 
     private var _binding: FragmentDerailsReceptionBinding? = null
-    private var binding = _binding
+    private val binding get() = _binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
