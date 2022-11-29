@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?attr/second_plan_background"
-    tools:context=".ui.root.RoomActivity">
+    tools:context=".ui.root.RootActivity">
 
     <FrameLayout
         android:id="@+id/fragment_container_frame_layout"

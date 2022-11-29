@@ -1,6 +1,7 @@
 package com.example.monitoringprescriptions.domain.entities
 
 import android.os.Parcelable
+import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import java.util.*
@@ -11,10 +12,11 @@ data class RecordEntity(
     @SerializedName("id")
     var id: String = UUID.randomUUID().toString(),
 
-    @SerializedName("reception")
-    var reception: MutableList<ReceptionEntity> = mutableListOf(),
+    @SerializedName("time")
+    var time: Long,
 
-    @SerializedName("aid_note")
-    var aidNote: MutableList<AidNoteEntity> = mutableListOf()
+    @SerializedName("status")
+    val status: AppointmentStatus = AppointmentStatus.UNKNOWN
+
 
 ) : Parcelable

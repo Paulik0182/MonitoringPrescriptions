@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.monitoringprescriptions">
 
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_monitoring"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_monitoring"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MonitoringPrescriptions"
-        tools:targetApi="31">
+        android:theme="@style/Theme.MonitoringPrescriptions">
         <activity
-            android:name=".ui.root.RoomActivity"
+            android:name=".ui.root.RootActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

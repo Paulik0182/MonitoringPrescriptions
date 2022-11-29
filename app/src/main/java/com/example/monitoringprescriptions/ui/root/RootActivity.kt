@@ -1,7 +1,7 @@
 package com.example.monitoringprescriptions.ui.root
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ActivityRootBinding
@@ -11,7 +11,7 @@ import com.example.monitoringprescriptions.ui.settings.SettingsFragment
 
 private const val TAG_MAIN_CONTAINER_LAYOUT_KEY = "TAG_MAIN_CONTAINER_LAYOUT_KEY"
 
-class RoomActivity : AppCompatActivity(),
+class RootActivity : AppCompatActivity(),
     ReceptionFragment.Controller,
     SettingsFragment.Controller {
 
@@ -22,7 +22,7 @@ class RoomActivity : AppCompatActivity(),
         binding = ActivityRootBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        onBottomNavBar()
+        setupBottomNavBar()
 
         if (savedInstanceState == null) {
             binding.bottomNavBar.selectedItemId = R.id.reception_list_item
@@ -31,7 +31,7 @@ class RoomActivity : AppCompatActivity(),
         }
     }
 
-    private fun onBottomNavBar() {
+    private fun setupBottomNavBar() {
         binding.bottomNavBar.setOnItemSelectedListener {
             title = it.title
             val fragment = when (it.itemId) {

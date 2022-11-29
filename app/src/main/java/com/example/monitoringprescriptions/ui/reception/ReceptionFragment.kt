@@ -2,8 +2,8 @@ package com.example.monitoringprescriptions.ui.reception
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentReceptionBinding
@@ -32,14 +32,14 @@ class ReceptionFragment : Fragment(R.layout.fragment_reception) {
     }
 
     private fun initView() {
-        binding.cardioRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recordsRecyclerView.layoutManager = LinearLayoutManager(context)
         adapter = ReceptionAdapter(
             data = emptyList(),
             onDetailsReceptionListener = {
                 //todo
             }
         )
-        binding.cardioRecyclerView.adapter = adapter
+        binding.recordsRecyclerView.adapter = adapter
     }
 
     interface Controller {

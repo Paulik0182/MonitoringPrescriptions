@@ -1,6 +1,5 @@
 package com.example.monitoringprescriptions.domain
 
-enum class EmojiIconMedicine {
-
-    PILL, SYRINGE
+enum class AppointmentStatus {
+    UNKNOWN, YES, NO
 }
