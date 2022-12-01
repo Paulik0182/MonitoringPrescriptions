@@ -6,16 +6,19 @@ import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ActivityRootBinding
 import com.example.monitoringprescriptions.domain.entities.ReceptionEntity
+import com.example.monitoringprescriptions.ui.reception.DayChangedFragment
 import com.example.monitoringprescriptions.ui.reception.ReceptionFragment
 import com.example.monitoringprescriptions.ui.schedule.ScheduleFragment
 import com.example.monitoringprescriptions.ui.settings.SettingsFragment
 
 private const val TAG_MAIN_CONTAINER_LAYOUT_KEY = "TAG_MAIN_CONTAINER_LAYOUT_KEY"
+private const val TEG_DAY_CHANGED_KEY = "TEG_DAY_CHANGED_KEY"
 
 class RootActivity : AppCompatActivity(),
     ReceptionFragment.Controller,
     SettingsFragment.Controller,
-    ScheduleFragment.Controller {
+    ScheduleFragment.Controller,
+    DayChangedFragment.Controller {
 
     private lateinit var binding: ActivityRootBinding
 
@@ -56,7 +59,16 @@ class RootActivity : AppCompatActivity(),
             ).commit()
     }
 
+    private fun openDayChanged(calendar: String) {
+        val fragment: Fragment = DayChangedFragment.newInstance(calendar)
+//        childFragmentManager
+//            .beginTransaction()
+//            .replace(binding.fragmentContainerFrameLayout.id, fragment, TEG_DAY_CHANGED_KEY)
+//            .commit()
+    }
+
     override fun openDetailsReception(receptionEntity: ReceptionEntity) {
         TODO("Not yet implemented")
     }
+
 }

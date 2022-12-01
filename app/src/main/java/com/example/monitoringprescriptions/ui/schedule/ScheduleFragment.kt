@@ -11,10 +11,11 @@ import androidx.recyclerview.widget.SnapHelper
 import com.example.monitoringprescriptions.App
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentScheduleBinding
-import com.example.monitoringprescriptions.ui.reception.ReceptionFragment
+import com.example.monitoringprescriptions.ui.reception.DayChangedFragment
 import java.util.*
 
 private const val TAG_FRAGMENT_CONTAINER_KEY = "TAG_FRAGMENT_CONTAINER_KEY"
+private const val TEG_DAY_CHANGED_KEY = "TEG_DAY_CHANGED_KEY"
 
 class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
 
@@ -25,6 +26,7 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         _binding = FragmentScheduleBinding.bind(view)
 
         initTabRecycler()
@@ -39,7 +41,7 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
             Toast.makeText(requireContext(), calendarToString(it), Toast.LENGTH_SHORT).show()
 
             // todo Вызываем обновление вложенного фрагмента
-            onDayChanged(it)
+            onDayChanged(calendarToString(it))
         }
 
         // Для красивого скроллинга (элемент останавливается по центру)
@@ -47,11 +49,12 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
         snapHelper.attachToRecyclerView(binding.tabRecyclerView)
     }
 
-    private fun onDayChanged(calendar: Calendar) {
+    private fun onDayChanged(calendar: String) {
         // todo swapFragment(calendar)
+        val fragment: Fragment = DayChangedFragment.newInstance(calendar)
         childFragmentManager
             .beginTransaction()
-            .replace(binding.fragmentContainer.id, ReceptionFragment())
+            .replace(binding.fragmentContainer.id, fragment, TEG_DAY_CHANGED_KEY)
             .commit()
     }
 
@@ -72,7 +75,7 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
     }
 
     interface Controller {
-        //TODO
+//        fun onClickDayChanged(calendar: Calendar)
     }
 
     private fun getController(): Controller = activity as Controller
