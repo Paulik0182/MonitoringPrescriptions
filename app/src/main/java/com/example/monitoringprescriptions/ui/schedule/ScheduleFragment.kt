@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.SnapHelper
 import com.example.monitoringprescriptions.App
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentScheduleBinding
-import com.example.monitoringprescriptions.ui.reception.DayChangedFragment
+import com.example.monitoringprescriptions.ui.reception.OneDeyRecordsFragment
+import com.example.monitoringprescriptions.utils.toUserString
 import java.util.*
 
-private const val TAG_FRAGMENT_CONTAINER_KEY = "TAG_FRAGMENT_CONTAINER_KEY"
-private const val TEG_DAY_CHANGED_KEY = "TEG_DAY_CHANGED_KEY"
+private const val TAG_ONE_DAY_CHANGED_KEY = "TAG_DAY_CHANGED_KEY"
 
 class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
 
@@ -38,10 +38,10 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
         }
         binding.tabRecyclerView.adapter = TabDateAdapter {
             // пробросили данные наружу
-            Toast.makeText(requireContext(), calendarToString(it), Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), it.toUserString(), Toast.LENGTH_SHORT).show()
 
             // todo Вызываем обновление вложенного фрагмента
-            onDayChanged(calendarToString(it))
+            onDayChanged(it)
         }
 
         // Для красивого скроллинга (элемент останавливается по центру)
@@ -49,29 +49,12 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
         snapHelper.attachToRecyclerView(binding.tabRecyclerView)
     }
 
-    private fun onDayChanged(calendar: String) {
-        // todo swapFragment(calendar)
-        val fragment: Fragment = DayChangedFragment.newInstance(calendar)
+    private fun onDayChanged(calendar: Calendar) {
+        val fragment: Fragment = OneDeyRecordsFragment.newInstance(calendar)
         childFragmentManager
             .beginTransaction()
-            .replace(binding.fragmentContainer.id, fragment, TEG_DAY_CHANGED_KEY)
+            .replace(binding.fragmentContainer.id, fragment, TAG_ONE_DAY_CHANGED_KEY)
             .commit()
-    }
-
-    private fun calendarToString(calendar: Calendar): String {
-        return "${
-            calendar.get(
-                Calendar.DAY_OF_MONTH
-            )
-        } ${
-            calendar.get(
-                Calendar.MONDAY
-            )
-        } ${
-            calendar.get(
-                Calendar.YEAR
-            )
-        }"
     }
 
     interface Controller {
