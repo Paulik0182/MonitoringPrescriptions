@@ -17,17 +17,18 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_day_changed) {
     private var _binding: FragmentDayChangedBinding? = null
     private val binding get() = _binding!!
 
+    // достаем пришедший календарь и преобразуем его (делаем один раз и пользуемся в файле)
+    private val currentCalendar: Calendar by lazy {
+        extractTimeFromBundle(requireArguments())
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentDayChangedBinding.bind(view)
 
-        // достаем пришедшие данные и преобразуем их
-        arguments?.let {
-            val calendar = extractTimeFromBundle(it)
-            val dateStr = calendar.toUserString()
-            binding.deyTimeTextView.text = dateStr
-        }
+
+        binding.deyTimeTextView.text = currentCalendar.toUserString()
     }
 
     // достаем календарь и модифицируем его
