@@ -6,13 +6,12 @@ import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ActivityRootBinding
 import com.example.monitoringprescriptions.domain.entities.ReceptionEntity
-import com.example.monitoringprescriptions.ui.reception.OneDeyRecordsFragment
 import com.example.monitoringprescriptions.ui.reception.ReceptionFragment
+import com.example.monitoringprescriptions.ui.records.OneDeyRecordsFragment
 import com.example.monitoringprescriptions.ui.schedule.ScheduleFragment
 import com.example.monitoringprescriptions.ui.settings.SettingsFragment
 
 private const val TAG_MAIN_CONTAINER_LAYOUT_KEY = "TAG_MAIN_CONTAINER_LAYOUT_KEY"
-private const val TEG_DAY_CHANGED_KEY = "TEG_DAY_CHANGED_KEY"
 
 class RootActivity : AppCompatActivity(),
     ReceptionFragment.Controller,

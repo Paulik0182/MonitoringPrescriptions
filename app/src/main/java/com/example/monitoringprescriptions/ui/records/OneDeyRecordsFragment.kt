@@ -1,34 +1,65 @@
-package com.example.monitoringprescriptions.ui.reception
+package com.example.monitoringprescriptions.ui.records
 
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.monitoringprescriptions.R
-import com.example.monitoringprescriptions.databinding.FragmentDayChangedBinding
-import com.example.monitoringprescriptions.utils.toUserString
+import com.example.monitoringprescriptions.databinding.FragmentOneDeyRecordsBinding
+import com.example.monitoringprescriptions.domain.repos.RecordsInteractor
+import org.koin.android.ext.android.inject
+
 import java.util.*
 
-internal const val DEFAULT_DAY_KEY = -1
 private const val DATE_KEY = "DAY_KEY"
 
-class OneDeyRecordsFragment : Fragment(R.layout.fragment_day_changed) {
+class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
 
-    private var _binding: FragmentDayChangedBinding? = null
+    private var _binding: FragmentOneDeyRecordsBinding? = null
     private val binding get() = _binding!!
+
+    private val recordsInteractor: RecordsInteractor by inject()
 
     // достаем пришедший календарь и преобразуем его (делаем один раз и пользуемся в файле)
     private val currentCalendar: Calendar by lazy {
         extractTimeFromBundle(requireArguments())
     }
 
+    private lateinit var adapter: RecordsAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentDayChangedBinding.bind(view)
+        _binding = FragmentOneDeyRecordsBinding.bind(view)
 
+        initViews()
+        loadData()
 
-        binding.deyTimeTextView.text = currentCalendar.toUserString()
+    }
+
+    private fun loadData() {
+        showLoader()
+        recordsInteractor.getRecordsForDay(currentCalendar) {
+            hideLoader()
+            adapter.setData(it)
+        }
+    }
+
+    private fun hideLoader() {
+        // todo
+    }
+
+    private fun showLoader() {
+        // todo
+    }
+
+    private fun initViews() {
+        binding.recordsRecyclerView.layoutManager = LinearLayoutManager(context)
+        adapter = RecordsAdapter(
+            data = emptyList()
+        )
+        binding.recordsRecyclerView.adapter = adapter
     }
 
     // достаем календарь и модифицируем его

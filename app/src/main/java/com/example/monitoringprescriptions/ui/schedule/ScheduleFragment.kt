@@ -8,18 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
-import com.example.monitoringprescriptions.App
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentScheduleBinding
-import com.example.monitoringprescriptions.ui.reception.OneDeyRecordsFragment
+import com.example.monitoringprescriptions.ui.records.OneDeyRecordsFragment
 import com.example.monitoringprescriptions.utils.toUserString
 import java.util.*
 
 private const val TAG_ONE_DAY_CHANGED_KEY = "TAG_DAY_CHANGED_KEY"
 
 class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
-
-    private val app: App get() = requireActivity().application as App
 
     private var _binding: FragmentScheduleBinding? = null
     private val binding get() = _binding!!

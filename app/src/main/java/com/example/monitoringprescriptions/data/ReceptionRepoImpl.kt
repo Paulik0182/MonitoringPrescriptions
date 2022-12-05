@@ -1,11 +1,13 @@
 package com.example.monitoringprescriptions.data
 
+import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.TypeMedicine
 import com.example.monitoringprescriptions.domain.entities.ReceptionEntity
+import com.example.monitoringprescriptions.domain.entities.RecordEntity
 import com.example.monitoringprescriptions.domain.repos.ReceptionRepo
 import java.util.*
 
-class ReceptionRepoImpl: ReceptionRepo {
+class ReceptionRepoImpl : ReceptionRepo {
 
     var dataReception: MutableList<ReceptionEntity> = mutableListOf()
 
@@ -14,7 +16,7 @@ class ReceptionRepoImpl: ReceptionRepo {
     }
 
     override fun getReceptionList(): List<ReceptionEntity> {
-        return  ArrayList(dataReception)
+        return ArrayList(dataReception)
     }
 
     override fun removeReception(recordEntity: ReceptionEntity) {
@@ -42,7 +44,13 @@ class ReceptionRepoImpl: ReceptionRepo {
                 dosage = 1.0f,
                 unitMeasurement = "шт.",
                 typeMedicine = TypeMedicine.PILL,
-                comment = "Прием после еды"
+                comment = "Прием после еды",
+                records = listOf(
+                    RecordEntity(
+                        time = Calendar.getInstance().timeInMillis,
+                        status = AppointmentStatus.YES
+                    )
+                )
             )
         )
 

@@ -12,9 +12,11 @@ class TabDateAdapter(
     private var selectionPosition = todayPosition // поумолчанию позиция на старте
 
     // Для подчеркивания дня недели (получаем RecyclerView)
+    // метод вызывается при старте
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         recyclerView.scrollToPosition(todayPosition)
+        onItemClick(Calendar.getInstance(), todayPosition)
     }
 
 
