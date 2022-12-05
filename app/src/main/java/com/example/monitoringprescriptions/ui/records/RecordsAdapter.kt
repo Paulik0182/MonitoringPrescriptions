@@ -3,14 +3,14 @@ package com.example.monitoringprescriptions.ui.records
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.monitoringprescriptions.domain.entities.RecordEntity
+import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
 
 class RecordsAdapter(
-    private var data: List<RecordEntity> = mutableListOf(),
+    private var data: List<ReceptionRecordPair> = mutableListOf(),
 ) : RecyclerView.Adapter<RecordsViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(records: List<RecordEntity>) {
+    fun setData(records: List<ReceptionRecordPair>) {
         data = records
         notifyDataSetChanged()
     }
@@ -23,7 +23,7 @@ class RecordsAdapter(
         holder.bind(getItem(position))
     }
 
-    private fun getItem(position: Int): RecordEntity = data[position]
+    private fun getItem(position: Int): ReceptionRecordPair = data[position]
 
     override fun getItemCount(): Int = data.size
 

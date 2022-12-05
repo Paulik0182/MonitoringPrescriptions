@@ -1,6 +1,5 @@
 package com.example.monitoringprescriptions.ui.schedule
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -21,6 +20,8 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
     private var _binding: FragmentScheduleBinding? = null
     private val binding get() = _binding!!
 
+    private var currentCalendar: Calendar = Calendar.getInstance()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -33,7 +34,9 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
         binding.tabRecyclerView.layoutManager = LinearLayoutManager(requireContext()).apply {
             orientation = LinearLayoutManager.HORIZONTAL
         }
-        binding.tabRecyclerView.adapter = TabDateAdapter {
+
+        binding.tabRecyclerView.adapter = TabDateAdapter(currentCalendar) {
+            currentCalendar = it
             // пробросили данные наружу
             Toast.makeText(requireContext(), it.toUserString(), Toast.LENGTH_SHORT).show()
 
@@ -52,29 +55,6 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
             .beginTransaction()
             .replace(binding.fragmentContainer.id, fragment, TAG_ONE_DAY_CHANGED_KEY)
             .commit()
-    }
-
-    interface Controller {
-//        fun onClickDayChanged(calendar: Calendar)
-    }
-
-    private fun getController(): Controller = activity as Controller
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        getController()
-    }
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            ScheduleFragment().apply {
-                arguments = Bundle().apply {
-//                    putString(KEY, "key")
-
-                }
-            }
     }
 
     override fun onDestroyView() {

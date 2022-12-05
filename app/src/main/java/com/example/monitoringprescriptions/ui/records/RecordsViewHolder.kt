@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ItemRecordReceptionBinding
-import com.example.monitoringprescriptions.domain.entities.RecordEntity
+import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
 
 class RecordsViewHolder(
     parent: ViewGroup
@@ -16,15 +16,16 @@ class RecordsViewHolder(
 ) {
 
     private val binding: ItemRecordReceptionBinding = ItemRecordReceptionBinding.bind(itemView)
-    private lateinit var recordEntity: RecordEntity
+    private lateinit var receptionRecordPair: ReceptionRecordPair
 
-    fun bind(recordEntity: RecordEntity) {
-        this.recordEntity = recordEntity
+    fun bind(receptionRecordPair: ReceptionRecordPair) {
+        this.receptionRecordPair = receptionRecordPair
 
-        binding.nameMedicineTextView.text = recordEntity.id
-        binding.typeMedicineTextView.text = recordEntity.status.toString()
+        binding.nameMedicineTextView.text = receptionRecordPair.receptionEntity.nameMedicine
+        binding.typeMedicineTextView.text =
+            receptionRecordPair.receptionEntity.typeMedicine.toString()
 //        binding.timeTextView.text = recordReceptionEntity.time
-        binding.dosageTextView.text = recordEntity.time.toString()
+        binding.dosageTextView.text = receptionRecordPair.receptionEntity.dosage.toString()
     }
 
 }

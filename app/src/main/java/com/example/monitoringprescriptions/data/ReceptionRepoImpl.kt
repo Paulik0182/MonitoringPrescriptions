@@ -65,7 +65,13 @@ class ReceptionRepoImpl : ReceptionRepo {
                 dosage = 1f,
                 unitMeasurement = "шт.",
                 typeMedicine = TypeMedicine.PILL,
-                comment = "Прием до еды"
+                comment = "Прием до еды",
+                records = listOf(
+                    RecordEntity(
+                        time = Calendar.getInstance().timeInMillis,
+                        status = AppointmentStatus.YES
+                    )
+                )
             )
         )
     }

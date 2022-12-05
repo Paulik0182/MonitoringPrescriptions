@@ -16,10 +16,13 @@ private const val TAG_MAIN_CONTAINER_LAYOUT_KEY = "TAG_MAIN_CONTAINER_LAYOUT_KEY
 class RootActivity : AppCompatActivity(),
     ReceptionFragment.Controller,
     SettingsFragment.Controller,
-    ScheduleFragment.Controller,
     OneDeyRecordsFragment.Controller {
 
     private lateinit var binding: ActivityRootBinding
+
+    // попытка сохранить состаяния фрагмента
+    private val scheduleFragment: ScheduleFragment by lazy { ScheduleFragment() }
+    private val settingsFragment: SettingsFragment by lazy { SettingsFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +42,8 @@ class RootActivity : AppCompatActivity(),
         binding.bottomNavBar.setOnItemSelectedListener {
             title = it.title
             val fragment = when (it.itemId) {
-                R.id.reception_list_item -> ScheduleFragment()
-                R.id.settings_item -> SettingsFragment()
+                R.id.reception_list_item -> scheduleFragment
+                R.id.settings_item -> settingsFragment
                 else -> throw IllegalStateException("Такого фрагмента нет")
             }
             swapFragment(fragment)

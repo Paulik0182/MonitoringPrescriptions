@@ -1,6 +1,6 @@
 package com.example.monitoringprescriptions.data
 
-import com.example.monitoringprescriptions.domain.entities.RecordEntity
+import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
 import com.example.monitoringprescriptions.domain.repos.ReceptionRepo
 import com.example.monitoringprescriptions.domain.repos.RecordsInteractor
 import java.util.*
@@ -11,9 +11,9 @@ class RecordsInteractorImpl(
 
     override fun getRecordsForDay(
         currentCalendar: Calendar,
-        callback: (List<RecordEntity>) -> Unit
+        callback: (List<ReceptionRecordPair>) -> Unit
     ) {
-        val records: MutableList<RecordEntity> = mutableListOf()
+        val receptionRecordPairs: MutableList<ReceptionRecordPair> = mutableListOf()
         receptionRepo.getReceptionList().forEach { reception ->
             reception.records.forEach { record ->
                 // необходимо сраснить совпадения дня
@@ -21,11 +21,11 @@ class RecordsInteractorImpl(
                 recordCalendar.timeInMillis = record.time
 
                 if (dayIsEqual(currentCalendar, recordCalendar)) {
-                    records.add(record)
+                    receptionRecordPairs.add(ReceptionRecordPair(reception, record))
                 }
             }
         }
-        callback.invoke(records)
+        callback.invoke(receptionRecordPairs)
     }
 
     private fun dayIsEqual(firstCalendar: Calendar, secondCalendar: Calendar): Boolean {
