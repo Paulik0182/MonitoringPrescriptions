@@ -2,14 +2,18 @@ package com.example.monitoringprescriptions.ui.records
 
 import android.content.Context
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentOneDeyRecordsBinding
-import com.example.monitoringprescriptions.domain.repos.RecordsInteractor
+import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
+import com.example.monitoringprescriptions.domain.interactors.RecordsInteractor
 import org.koin.android.ext.android.inject
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 private const val DATE_KEY = "DAY_KEY"
@@ -20,6 +24,7 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
     private val binding get() = _binding!!
 
     private val recordsInteractor: RecordsInteractor by inject()
+    private val viewModel: RecordsViewModel by viewModel()
 
     // достаем пришедший календарь и преобразуем его (делаем один раз и пользуемся в файле)
     private val currentCalendar: Calendar by lazy {
@@ -33,9 +38,12 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
 
         _binding = FragmentOneDeyRecordsBinding.bind(view)
 
-        initViews()
+        initViews(view)
         loadData()
 
+        viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
+            getController().openDetailsReception(it)
+        }
     }
 
     private fun loadData() {
@@ -54,11 +62,17 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
         // todo
     }
 
-    private fun initViews() {
+    private fun initViews(view: View) {
         binding.recordsRecyclerView.layoutManager = LinearLayoutManager(context)
         adapter = RecordsAdapter(
-            data = emptyList()
-        )
+            data = emptyList(),
+            showPopupMenu = {
+//                showPopupMenu(view)
+            },
+            context = requireContext()
+        ) { reception ->
+            viewModel.onReceptionClick(reception)
+        }
         binding.recordsRecyclerView.adapter = adapter
     }
 
@@ -71,8 +85,42 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
         return calendar
     }
 
+    private fun showPopupMenu(view: View) {
+        val popupMenu = PopupMenu(requireContext(), view)
+        popupMenu.inflate(R.menu.result_popup_menu)
+        popupMenu
+            .setOnMenuItemClickListener { item: MenuItem? ->
+                when (item!!.itemId) {
+                    R.id.accepted_item -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "Принято",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        true
+                    }
+                    R.id.skipped_item -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "Пропущено",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        popupMenu.setOnDismissListener {
+            Toast.makeText(
+                requireContext(), "onDismiss",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        popupMenu.show()
+    }
+
     interface Controller {
-        //todo
+        fun openDetailsReception(receptionRecordPair: ReceptionRecordPair)
     }
 
     private fun getController(): Controller = activity as Controller

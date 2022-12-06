@@ -1,6 +1,7 @@
 package com.example.monitoringprescriptions.domain.entities
 
 import android.os.Parcelable
+import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.TypeMedicine
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
@@ -29,14 +30,14 @@ data class ReceptionEntity(
     @SerializedName("date_end")
     val dateEnd: Long = Calendar.getInstance().timeInMillis,
 
-//    @SerializedName("time")
-//    var time: String = "no name",
+    @SerializedName("time")
+    val time: Long,
 
     @SerializedName("reception_frequency")
     val receptionFrequency: Int = 1, // todo как описать
 
-//    @SerializedName("result_reception")
-//    var resultReception: AppointmentStatus = AppointmentStatus.UNKNOWN,
+    @SerializedName("result_reception")
+    var resultReception: AppointmentStatus = AppointmentStatus.UNKNOWN,
 
     @SerializedName("dosage")
     val dosage: Float = 1.5f,

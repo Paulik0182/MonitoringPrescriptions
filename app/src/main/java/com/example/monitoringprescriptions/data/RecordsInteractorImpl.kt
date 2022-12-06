@@ -1,8 +1,8 @@
 package com.example.monitoringprescriptions.data
 
 import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
+import com.example.monitoringprescriptions.domain.interactors.RecordsInteractor
 import com.example.monitoringprescriptions.domain.repos.ReceptionRepo
-import com.example.monitoringprescriptions.domain.repos.RecordsInteractor
 import java.util.*
 
 class RecordsInteractorImpl(

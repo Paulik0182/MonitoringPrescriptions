@@ -40,9 +40,11 @@ class ReceptionRepoImpl : ReceptionRepo {
                 prescribedMedicine = "Таблетка",
                 dateStart = Calendar.getInstance().timeInMillis,
                 dateEnd = Calendar.getInstance().timeInMillis + 1_000_000,
+                time = Calendar.getInstance().timeInMillis + 1_000,
                 receptionFrequency = 2,
                 dosage = 1.0f,
                 unitMeasurement = "шт.",
+                resultReception = AppointmentStatus.UNKNOWN,
                 typeMedicine = TypeMedicine.PILL,
                 comment = "Прием после еды",
                 records = listOf(
@@ -61,9 +63,11 @@ class ReceptionRepoImpl : ReceptionRepo {
                 prescribedMedicine = "Таблетка",
                 dateStart = Calendar.getInstance().timeInMillis + 2_000,
                 dateEnd = Calendar.getInstance().timeInMillis + 2_000_000,
+                time = Calendar.getInstance().timeInMillis - 1_000,
                 receptionFrequency = 1,
                 dosage = 1f,
                 unitMeasurement = "шт.",
+                resultReception = AppointmentStatus.UNKNOWN,
                 typeMedicine = TypeMedicine.PILL,
                 comment = "Прием до еды",
                 records = listOf(

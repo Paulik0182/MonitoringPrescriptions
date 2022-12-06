@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/result_menu_group">
+        <item
+            android:id="@+id/accepted_item"
+            android:icon="@drawable/ic_arrow_right_green_24"
+            android:title="Принято" />
+        <item
+            android:id="@+id/skipped_item"
+            android:icon="@drawable/ic_arrow_right_red_24"
+            android:title="Пропущено"></item>
+    </group>
+</menu>

@@ -1,22 +1,27 @@
 package com.example.monitoringprescriptions.ui.root
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ActivityRootBinding
 import com.example.monitoringprescriptions.domain.entities.ReceptionEntity
+import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
+import com.example.monitoringprescriptions.ui.details.DetailsReceptionFragment
 import com.example.monitoringprescriptions.ui.reception.ReceptionFragment
 import com.example.monitoringprescriptions.ui.records.OneDeyRecordsFragment
 import com.example.monitoringprescriptions.ui.schedule.ScheduleFragment
 import com.example.monitoringprescriptions.ui.settings.SettingsFragment
 
 private const val TAG_MAIN_CONTAINER_LAYOUT_KEY = "TAG_MAIN_CONTAINER_LAYOUT_KEY"
+private const val TAG_DETAILS_RECEPTION_KEY = "TAG_DETAILS_RECEPTION_KEY"
 
 class RootActivity : AppCompatActivity(),
     ReceptionFragment.Controller,
     SettingsFragment.Controller,
-    OneDeyRecordsFragment.Controller {
+    OneDeyRecordsFragment.Controller,
+    DetailsReceptionFragment.Controller {
 
     private lateinit var binding: ActivityRootBinding
 
@@ -61,8 +66,31 @@ class RootActivity : AppCompatActivity(),
             ).commit()
     }
 
+    private fun detailsReception(receptionRecordPair: ReceptionRecordPair) {
+        val fragment: Fragment = DetailsReceptionFragment.newInstance(receptionRecordPair)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(
+                binding.fragmentContainerFrameLayout.id,
+                fragment,
+                TAG_DETAILS_RECEPTION_KEY
+            )
+            .addToBackStack(null)
+            .commit()
+
+        binding.bottomNavBar.visibility = View.GONE
+    }
+
     override fun openDetailsReception(receptionEntity: ReceptionEntity) {
         TODO("Not yet implemented")
     }
 
+    override fun openDetailsReception(receptionRecordPair: ReceptionRecordPair) {
+        detailsReception(receptionRecordPair)
+    }
+
+    override fun onBackPressed() {
+        binding.bottomNavBar.visibility = View.VISIBLE
+        super.onBackPressed()
+    }
 }
