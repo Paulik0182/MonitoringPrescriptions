@@ -15,7 +15,11 @@ class RecordsAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(records: List<ReceptionRecordPair>) {
-        data = records
+        data =
+            records
+                .sortedBy {
+                    it.recordEntity.id
+                }// сортируем по id чтобы не менялись позиции записей при сохранении (изменении)
         notifyDataSetChanged()
     }
 
