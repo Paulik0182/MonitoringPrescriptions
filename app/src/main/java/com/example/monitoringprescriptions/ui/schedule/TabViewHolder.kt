@@ -3,7 +3,7 @@ package com.example.monitoringprescriptions.ui.schedule
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ItemDayTabBinding
@@ -35,7 +35,7 @@ class TabViewHolder(
         // Дни (дни недели с конкретными днями)
         binding.dateTextView.text = calendar.get(Calendar.DAY_OF_MONTH).toString()
 
-        binding.selectionTextView.isVisible = isSelected
+        binding.selectionView.isInvisible = !isSelected
 
         // При нажатии на день недели - выделяем конкретный день
         val textStyle = if (isSelected) Typeface.BOLD else Typeface.NORMAL

@@ -30,7 +30,7 @@
         android:textSize="16sp" />
 
     <View
-        android:id="@+id/selection_text_view"
+        android:id="@+id/selection_view"
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:background="@color/black" />
