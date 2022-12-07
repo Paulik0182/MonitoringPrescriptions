@@ -2,7 +2,6 @@ package com.example.monitoringprescriptions.domain.interactors
 
 import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.entities.ReceptionEntity
-import com.example.monitoringprescriptions.domain.entities.RecordEntity
 
 interface RecordAppointmentInteractor {
 
@@ -14,7 +13,7 @@ interface RecordAppointmentInteractor {
     )
 
     // подписываемся на изменения (приходит изменившаяся запись)
-    fun subscribe(callback: (RecordEntity) -> Unit)
+    fun subscribe(callback: () -> Unit)
 
-    fun unsubscribe(callback: (RecordEntity) -> Unit)
+    fun unsubscribe(callback: () -> Unit)
 }

@@ -7,6 +7,8 @@ import com.example.monitoringprescriptions.domain.entities.RecordEntity
 import com.example.monitoringprescriptions.domain.repos.ReceptionRepo
 import java.util.*
 
+// сортировка по времени
+private const val minInMs = 1000 * 60
 class ReceptionRepoImpl : ReceptionRepo {
 
     var dataReception: MutableList<ReceptionEntity> = mutableListOf()
@@ -29,6 +31,43 @@ class ReceptionRepoImpl : ReceptionRepo {
 
     override fun updateReception(changedRecord: ReceptionEntity) {
         TODO("Not yet implemented")
+    }
+
+    // чтобы поменять одну запись -
+    override fun changeRecord(
+        receptionEntity: ReceptionEntity,
+        recordId: String,
+        appointmentStatus: AppointmentStatus
+    ) {
+        // достаем рецепт
+        val reception = dataReception.find {
+            it.id == receptionEntity.id
+        } ?: return
+
+        // Удаляем из БД взятый рецепт чтобы создать его заново
+        dataReception.remove(reception)
+
+        // После чего из рецепта берем запись
+        // records - представляет из себя копию, но изменяемую копию
+        val records = mutableListOf<RecordEntity>()
+        records.addAll(reception.records)
+
+        // нашли record
+        val record = records.find {
+            it.id == recordId
+        } ?: return
+        // удаляем record (конкретная запись)
+        records.remove(record)
+        // возвращаем (добавляем) record обратно, но с другим статусом
+        records.add(record.copy(status = appointmentStatus))
+
+        // добавляем весь новый список в новый рецепт
+        val newReception = reception.copy(
+            records = records
+        )
+
+        // полученное отправляем в БД
+        dataReception.add(newReception)
     }
 
 

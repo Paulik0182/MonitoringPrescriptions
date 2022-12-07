@@ -12,6 +12,7 @@ import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ItemRecordReceptionBinding
 import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.TypeMedicine
+import com.example.monitoringprescriptions.domain.entities.ReceptionEntity
 import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
 import com.example.monitoringprescriptions.utils.bpTimeFormatter
 
@@ -19,7 +20,12 @@ class RecordsViewHolder(
     parent: ViewGroup,
     showPopupMenu: () -> Unit,
     val context: Context,
-    listener: (ReceptionRecordPair) -> Unit
+    private val listener: (
+        receptionEntity: ReceptionEntity,
+        recordId: String,
+        appointmentStatus: AppointmentStatus
+    ) -> Unit,
+//    recordListener: (ReceptionRecordPair) -> Unit
 ) : RecyclerView.ViewHolder(
 
     LayoutInflater.from(parent.context)
@@ -55,7 +61,7 @@ class RecordsViewHolder(
 
     init {
         itemView.setOnClickListener {
-            listener.invoke(receptionRecordPair)
+//            recordListener.invoke(receptionRecordPair)
         }
 
         binding.resultReceptionTextView.setOnClickListener {
@@ -72,7 +78,12 @@ class RecordsViewHolder(
             .setOnMenuItemClickListener { item: MenuItem? ->
                 when (item!!.itemId) {
                     R.id.accepted_item -> {
-                        binding.resultReceptionTextView.setText(R.string.emoji_yes)
+                        listener.invoke(
+                            receptionRecordPair.receptionEntity,
+                            receptionRecordPair.recordEntity.id,
+                            AppointmentStatus.YES
+                        )
+//                        binding.resultReceptionTextView.setText(R.string.emoji_yes)
                         Toast.makeText(
                             context,
                             "Принято",
@@ -81,7 +92,12 @@ class RecordsViewHolder(
                         true
                     }
                     R.id.skipped_item -> {
-                        binding.resultReceptionTextView.setText(R.string.emoji_no)
+                        listener.invoke(
+                            receptionRecordPair.receptionEntity,
+                            receptionRecordPair.recordEntity.id,
+                            AppointmentStatus.NO
+                        )
+//                        binding.resultReceptionTextView.setText(R.string.emoji_no)
                         Toast.makeText(
                             context,
                             "Пропущено",

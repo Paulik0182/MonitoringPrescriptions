@@ -53,9 +53,16 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
             showPopupMenu = {
             },
             context = requireContext()
-        ) { reception ->
-            viewModel.onReceptionClick(reception)
+        ) { receptionEntity, recordId, appointmentStatus ->
+            viewModel.onAppointmentSelected(
+                receptionEntity,
+                recordId,
+                appointmentStatus
+            )
         }
+//        { reception ->
+//            viewModel.onReceptionClick(reception)
+//        }
         binding.recordsRecyclerView.adapter = adapter
     }
 
