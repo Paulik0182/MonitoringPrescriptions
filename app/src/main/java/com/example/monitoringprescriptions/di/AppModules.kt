@@ -13,5 +13,5 @@ val appModules = module {
     single<ReceptionRepo> { ReceptionRepoImpl() }
     single<RecordsInteractor> { RecordsInteractorImpl(get()) }
 
-    viewModel { RecordsViewModel() }
+    viewModel { parameters -> RecordsViewModel(get(), parameters.get()) }
 }

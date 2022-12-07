@@ -36,12 +36,12 @@ class RecordsViewHolder(
         binding.nameMedicineTextView.text = entity.nameMedicine
         binding.typeMedicineTextView.text = entity.prescribedMedicine
 
-        binding.timeTextView.text = bpTimeFormatter.format(entity.time)
+        binding.timeTextView.text = bpTimeFormatter.format(receptionRecordPair.recordEntity.time)
 
         binding.dosageTextView.text = entity.dosage.toString()
 
-        binding.resultReceptionTextView.text = entity.resultReception.toString()
-        when (entity.resultReception) {
+        binding.resultReceptionTextView.text = receptionRecordPair.recordEntity.status.toString()
+        when (receptionRecordPair.recordEntity.status) {
             AppointmentStatus.UNKNOWN -> binding.resultReceptionTextView.setText(R.string.emoji_unknown)
             AppointmentStatus.YES -> binding.resultReceptionTextView.setText(R.string.emoji_yes)
             AppointmentStatus.NO -> binding.resultReceptionTextView.setText(R.string.emoji_no)

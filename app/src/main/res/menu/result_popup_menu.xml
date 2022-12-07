@@ -5,9 +5,10 @@
             android:id="@+id/accepted_item"
             android:icon="@drawable/ic_arrow_right_green_24"
             android:title="Принято" />
+
         <item
             android:id="@+id/skipped_item"
             android:icon="@drawable/ic_arrow_right_red_24"
-            android:title="Пропущено"></item>
+            android:title="Пропущено" />
     </group>
 </menu>
