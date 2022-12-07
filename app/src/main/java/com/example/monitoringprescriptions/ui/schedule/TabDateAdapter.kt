@@ -13,7 +13,7 @@ class TabDateAdapter(
     private var selectionPosition = todayPosition // поумолчанию позиция на старте
 
     init {
-// позиция по календарю
+// позиция по календарю (выбронная позиция)
         selectionPosition = getPosition(calendar)
 
     }
@@ -22,7 +22,7 @@ class TabDateAdapter(
     // метод вызывается при старте
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        recyclerView.scrollToPosition(todayPosition)
+        recyclerView.scrollToPosition(selectionPosition)
 
         //когда view пересоздается, отправляется эти данные (календарь и позиция)
         onItemClick(calendar, selectionPosition)
