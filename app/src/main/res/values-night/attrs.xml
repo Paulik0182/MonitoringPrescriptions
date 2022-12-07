@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ds">
+        <!-- Область данных измерений главный экран -->
+        <attr name="measurement_value" format="color"/>
+        <attr name="measurement_frame" format="color"/>
+        <attr name="measurement_second_plan" format="color"/>
+
+        <!-- RootActivity -->
+        <attr name="bottom_navigation_view" format="color"/>
+        <attr name="item_icon_tint" format="color"/>
+        <attr name="item_text" format="color"/>
+
+        <!-- Заголовок времени главный экран -->
+        <attr name="time_background" format="color"/>
+
+        <!-- fragment bp list -->
+        <attr name="bp_list_background" format="color"/>
+        <attr name="band_with_counting_background" format="color"/>
+
+        <!-- fragment details bp -->
+        <attr name="bp_details_background" format="color"/>
+
+        <!-- item reference -->
+        <attr name="link_text" format="color"/>
+
+        <!-- значения по умолчанию -->
+        <attr name="default_text" format="color"/>
+        <attr name="second_plan_background" format="color"/>
+        <attr name="button_background" format="color"/>
+        <attr name="ic_background" format="color"/>
+
+    </declare-styleable>
+</resources>

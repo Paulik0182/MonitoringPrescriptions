@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/reception_list_item"
+        android:icon="@drawable/ic_reception_24"
+        android:title="@string/reception"/>
+
+    <item
+        android:id="@+id/settings_item"
+        android:icon="@drawable/ic_settings_24"
+        android:title="@string/settings"/>
+</menu>

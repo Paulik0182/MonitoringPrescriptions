@@ -1,3 +1,18 @@
 <resources>
-    <string name="app_name">MonitoringPrescriptions</string>
+    <string name="app_name">Таблетница</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="submit">Добавить измерение</string>
+
+    <!-- bottom nav menu -->
+    <string name="reception">Расписание</string>
+    <string name="settings">Настройки</string>
+
+    <!-- emoji -->
+    <string name="emoji_yes">&#9989;</string>
+    <string name="emoji_no">&#10060;</string>
+    <string name="emoji_unknown">&#10062;</string>
+
+    <!-- emoji product-->
+    <string name="emoji_pill">&#128138;</string>
+    <string name="emoji_syringe">&#128137;</string>
 </resources>
