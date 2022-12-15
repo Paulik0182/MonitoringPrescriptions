@@ -41,7 +41,7 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
             getController().openDetailsReception(it)
         }
 
-        viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
+        viewModel.loaderVisibilityLiveData.observe(viewLifecycleOwner) {
             // todo показать - скрыть лоадер
         }
     }
