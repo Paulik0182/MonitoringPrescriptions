@@ -18,9 +18,7 @@ class RecordsViewModel(
 ) : ViewModel() {
 
     // подписались на listener
-    private val onAppointmentListener = {
-        loadData()
-    }
+    private val onAppointmentListener = { loadData() }
 
     val selectedReceptionLiveData: LiveData<ReceptionRecordPair> = MutableLiveData()
     val loaderVisibilityLiveData: LiveData<Boolean> = MutableLiveData()
@@ -56,16 +54,13 @@ class RecordsViewModel(
     init {
         loadData()
         // подписываемся на статус приема лекарств
-        recordAppointmentInteractor.subscribe(
-            onAppointmentListener
-        )
+        recordAppointmentInteractor.subscribe(onAppointmentListener)
     }
 
     override fun onCleared() {
         super.onCleared()
-        recordAppointmentInteractor.subscribe(
-            onAppointmentListener
-        )
+        // отписываемся от приема лекарств
+        recordAppointmentInteractor.unsubscribe(onAppointmentListener)
     }
 
 }
