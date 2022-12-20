@@ -12,26 +12,28 @@ class AppointmentsInteractorImpl(
     private val prescriptionRepo: PrescriptionRepo
 ) : AppointmentsInteractor {
 
-    private val listeners: MutableSet<(AppointmentFullEntity) -> Unit> = HashSet()
+    private val listeners: MutableSet<() -> Unit> = HashSet()
 
 
     override fun changeStatus(appointmentId: String, status: AppointmentStatus) {
         appointmentsRepo.getById(appointmentId)?.let {
             appointmentsRepo.updateAppointments(it.copy(status = status))
         }
+        // Для подписки (статус)
+        notifyListener()
     }
 
-    private fun notifyListener(appointmentFullEntity: AppointmentFullEntity) {
+    private fun notifyListener() {
         listeners.forEach {
-            it.invoke(appointmentFullEntity)
+            it.invoke()
         }
     }
 
-    override fun subscribe(callback: (AppointmentFullEntity) -> Unit) {
+    override fun subscribe(callback: () -> Unit) {
         listeners.add(callback)
     }
 
-    override fun unsubscribe(callback: (AppointmentFullEntity) -> Unit) {
+    override fun unsubscribe(callback: () -> Unit) {
         listeners.remove(callback)
     }
 

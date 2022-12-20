@@ -10,8 +10,8 @@ interface AppointmentsInteractor {
     fun changeStatus(appointmentId: String, status: AppointmentStatus)
 
     // подписка изменения статуса - принято, пропущено
-    fun subscribe(callback: (AppointmentFullEntity) -> Unit)
-    fun unsubscribe(callback: (AppointmentFullEntity) -> Unit)
+    fun subscribe(callback: () -> Unit)
+    fun unsubscribe(callback: () -> Unit)
 
     fun getByDate(calendar: Calendar, callback: (List<AppointmentFullEntity>) -> Unit)
 }
