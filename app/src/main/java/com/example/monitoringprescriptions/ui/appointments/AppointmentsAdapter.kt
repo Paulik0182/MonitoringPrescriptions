@@ -1,10 +1,11 @@
-package com.example.monitoringprescriptions.ui.records
+package com.example.monitoringprescriptions.ui.appointments
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.monitoringprescriptions.domain.AppointmentStatus
+import com.example.monitoringprescriptions.domain.v2.entities.AppointmentFullEntity
 
 class AppointmentsAdapter(
     private var data: List<AppointmentFullEntity> = mutableListOf(),
@@ -15,7 +16,7 @@ class AppointmentsAdapter(
         appointmentStatus: AppointmentStatus
     ) -> Unit = { _, _ -> },
 //    private var recordListener: (ReceptionRecordPair) -> Unit = { _ -> }
-) : RecyclerView.Adapter<RecordsViewHolder>() {
+) : RecyclerView.Adapter<AppointmentsViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(records: List<AppointmentFullEntity>) {
@@ -23,8 +24,8 @@ class AppointmentsAdapter(
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordsViewHolder {
-        return RecordsViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppointmentsViewHolder {
+        return AppointmentsViewHolder(
             parent,
             showPopupMenu,
             context,
@@ -33,7 +34,7 @@ class AppointmentsAdapter(
         )
     }
 
-    override fun onBindViewHolder(holder: RecordsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AppointmentsViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 

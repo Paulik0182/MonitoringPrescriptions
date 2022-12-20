@@ -12,7 +12,7 @@ import com.example.monitoringprescriptions.domain.repos.ReceptionRepo
 import com.example.monitoringprescriptions.domain.v2.interactors.AppointmentsInteractor
 import com.example.monitoringprescriptions.domain.v2.repos.AppointmentsRepo
 import com.example.monitoringprescriptions.domain.v2.repos.PrescriptionRepo
-import com.example.monitoringprescriptions.ui.records.RecordsViewModel
+import com.example.monitoringprescriptions.ui.appointments.AppointmentsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -26,5 +26,5 @@ val appModules = module {
     single<AppointmentsRepo> { AppointmentsRepoImpl() }
     single<AppointmentsInteractor> { AppointmentsInteractorImpl(get(), get()) }
 
-    viewModel { parameters -> RecordsViewModel(get(), get(), parameters.get()) }
+    viewModel { parameters -> AppointmentsViewModel(get(), parameters.get()) }
 }

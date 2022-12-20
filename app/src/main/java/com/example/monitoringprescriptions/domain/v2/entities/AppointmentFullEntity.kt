@@ -1,4 +1,4 @@
-package com.example.monitoringprescriptions.ui.records
+package com.example.monitoringprescriptions.domain.v2.entities
 
 import android.os.Parcelable
 import com.example.monitoringprescriptions.domain.AppointmentStatus

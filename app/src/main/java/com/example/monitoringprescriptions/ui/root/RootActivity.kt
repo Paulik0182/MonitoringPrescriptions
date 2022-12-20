@@ -8,9 +8,9 @@ import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ActivityRootBinding
 import com.example.monitoringprescriptions.domain.entities.ReceptionEntity
 import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
+import com.example.monitoringprescriptions.ui.appointments.AppointmentsFragment
 import com.example.monitoringprescriptions.ui.details.DetailsReceptionFragment
 import com.example.monitoringprescriptions.ui.reception.ReceptionFragment
-import com.example.monitoringprescriptions.ui.records.OneDeyRecordsFragment
 import com.example.monitoringprescriptions.ui.schedule.ScheduleFragment
 import com.example.monitoringprescriptions.ui.settings.SettingsFragment
 
@@ -20,7 +20,7 @@ private const val TAG_DETAILS_RECEPTION_KEY = "TAG_DETAILS_RECEPTION_KEY"
 class RootActivity : AppCompatActivity(),
     ReceptionFragment.Controller,
     SettingsFragment.Controller,
-    OneDeyRecordsFragment.Controller,
+    AppointmentsFragment.Controller,
     DetailsReceptionFragment.Controller {
 
     private lateinit var binding: ActivityRootBinding

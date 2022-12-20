@@ -1,4 +1,4 @@
-package com.example.monitoringprescriptions.ui.records
+package com.example.monitoringprescriptions.ui.appointments
 
 import android.content.Context
 import android.os.Bundle
@@ -15,12 +15,12 @@ import java.util.*
 
 private const val DATE_KEY = "DAY_KEY"
 
-class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
+class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_records) {
 
     private var _binding: FragmentOneDeyRecordsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: RecordsViewModel by viewModel {
+    private val viewModel: AppointmentsViewModel by viewModel {
         parametersOf(extractTimeFromBundle(requireArguments()))
     }
 
@@ -93,7 +93,7 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
     companion object {
         @JvmStatic
         fun newInstance(calendar: Calendar) =
-            OneDeyRecordsFragment().apply {
+            AppointmentsFragment().apply {
                 arguments = bundleOf(DATE_KEY to calendar.timeInMillis)
             }
     }
