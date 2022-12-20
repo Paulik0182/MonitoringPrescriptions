@@ -5,10 +5,9 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.monitoringprescriptions.domain.AppointmentStatus
-import com.example.monitoringprescriptions.domain.v2.entities.AppointmentEntity
 
 class AppointmentsAdapter(
-    private var data: List<AppointmentEntity> = mutableListOf(),
+    private var data: List<AppointmentFullEntity> = mutableListOf(),
     private var showPopupMenu: () -> Unit,
     val context: Context,
     private var listener: (
@@ -19,7 +18,7 @@ class AppointmentsAdapter(
 ) : RecyclerView.Adapter<RecordsViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(records: List<AppointmentEntity>) {
+    fun setData(records: List<AppointmentFullEntity>) {
         data = records.sortedBy { it.time }// сортируем по времени
         notifyDataSetChanged()
     }
@@ -38,7 +37,7 @@ class AppointmentsAdapter(
         holder.bind(getItem(position))
     }
 
-    private fun getItem(position: Int): AppointmentEntity = data[position]
+    private fun getItem(position: Int): AppointmentFullEntity = data[position]
 
     override fun getItemCount(): Int = data.size
 

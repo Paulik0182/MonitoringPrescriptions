@@ -2,10 +2,10 @@ package com.example.monitoringprescriptions.data2
 
 import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.v2.entities.AppointmentEntity
-import com.example.monitoringprescriptions.domain.v2.entities.AppointmentsFullEntity
 import com.example.monitoringprescriptions.domain.v2.interactors.AppointmentsInteractor
 import com.example.monitoringprescriptions.domain.v2.repos.AppointmentsRepo
 import com.example.monitoringprescriptions.domain.v2.repos.PrescriptionRepo
+import com.example.monitoringprescriptions.ui.records.AppointmentFullEntity
 
 class AppointmentsInteractorImpl(
     private val appointmentsRepo: AppointmentsRepo,
@@ -14,7 +14,7 @@ class AppointmentsInteractorImpl(
 
     private val listeners: MutableSet<(AppointmentEntity) -> Unit> = HashSet()
 
-    override fun getByDate(year: Int, month: Int, dey: Int): List<AppointmentsFullEntity> {
+    override fun getByDate(year: Int, month: Int, dey: Int): List<AppointmentFullEntity> {
         TODO("Not yet implemented")
     }
 

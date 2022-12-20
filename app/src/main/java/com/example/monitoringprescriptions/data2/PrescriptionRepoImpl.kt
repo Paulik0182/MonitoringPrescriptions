@@ -28,6 +28,8 @@ class PrescriptionRepoImpl : PrescriptionRepo {
             PrescriptionEntity(
                 id = "123",
 
+                nameMedicine = "Люфастон",
+
                 prescribedMedicine = "Таблетка",
 
                 typeMedicine = TypeMedicine.PILL,

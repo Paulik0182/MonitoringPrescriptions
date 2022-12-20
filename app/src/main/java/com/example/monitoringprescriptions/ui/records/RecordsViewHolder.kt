@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ItemRecordReceptionBinding
 import com.example.monitoringprescriptions.domain.AppointmentStatus
-import com.example.monitoringprescriptions.domain.v2.entities.AppointmentEntity
+import com.example.monitoringprescriptions.domain.TypeMedicine
 import com.example.monitoringprescriptions.utils.bpTimeFormatter
 
 class RecordsViewHolder(
@@ -30,29 +30,29 @@ class RecordsViewHolder(
 ) {
 
     private val binding: ItemRecordReceptionBinding = ItemRecordReceptionBinding.bind(itemView)
-    private lateinit var appointmentEntity: AppointmentEntity
+    private lateinit var appointmentFullEntity: AppointmentFullEntity
 
-    fun bind(appointmentEntity: AppointmentEntity) {
-        this.appointmentEntity = appointmentEntity
+    fun bind(appointmentFullEntity: AppointmentFullEntity) {
+        this.appointmentFullEntity = appointmentFullEntity
 
-//        binding.nameMedicineTextView.text = appointmentEntity.nameMedicine
-//        binding.typeMedicineTextView.text = appointmentEntity.prescribedMedicine
+        binding.nameMedicineTextView.text = appointmentFullEntity.nameMedicine
+        binding.typeMedicineTextView.text = appointmentFullEntity.prescribedMedicine
 
-        binding.timeTextView.text = bpTimeFormatter.format(appointmentEntity.time)
+        binding.timeTextView.text = bpTimeFormatter.format(appointmentFullEntity.time)
 
-//        binding.dosageTextView.text = appointmentEntity.dosage.toString()
+        binding.dosageTextView.text = appointmentFullEntity.dosage.toString()
 
-        binding.resultReceptionTextView.text = appointmentEntity.status.toString()
-        when (appointmentEntity.status) {
+        binding.resultReceptionTextView.text = appointmentFullEntity.status.toString()
+        when (appointmentFullEntity.status) {
             AppointmentStatus.UNKNOWN -> binding.resultReceptionTextView.setText(R.string.emoji_unknown)
             AppointmentStatus.YES -> binding.resultReceptionTextView.setText(R.string.emoji_yes)
             AppointmentStatus.NO -> binding.resultReceptionTextView.setText(R.string.emoji_no)
         }
-//        binding.iconMedicineTextView.text = appointmentEntity.typeMedicine.toString()
-//        when (appointmentEntity.typeMedicine) {
-//            TypeMedicine.PILL -> binding.iconMedicineTextView.setText(R.string.emoji_pill)
-//            TypeMedicine.SYRINGE -> binding.iconMedicineTextView.setText(R.string.emoji_syringe)
-//        }
+        binding.iconMedicineTextView.text = appointmentFullEntity.typeMedicine.toString()
+        when (appointmentFullEntity.typeMedicine) {
+            TypeMedicine.PILL -> binding.iconMedicineTextView.setText(R.string.emoji_pill)
+            TypeMedicine.SYRINGE -> binding.iconMedicineTextView.setText(R.string.emoji_syringe)
+        }
     }
 
     init {
@@ -75,7 +75,7 @@ class RecordsViewHolder(
                 when (item!!.itemId) {
                     R.id.accepted_item -> {
                         listener.invoke(
-                            appointmentEntity.id,
+                            appointmentFullEntity.appointmentId,
                             AppointmentStatus.YES
                         )
 //                        binding.resultReceptionTextView.setText(R.string.emoji_yes)
@@ -88,7 +88,7 @@ class RecordsViewHolder(
                     }
                     R.id.skipped_item -> {
                         listener.invoke(
-                            appointmentEntity.id,
+                            appointmentFullEntity.appointmentId,
                             AppointmentStatus.NO
                         )
 //                        binding.resultReceptionTextView.setText(R.string.emoji_no)

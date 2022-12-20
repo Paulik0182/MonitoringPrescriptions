@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
-import com.example.monitoringprescriptions.domain.v2.entities.AppointmentEntity
 import com.example.monitoringprescriptions.domain.v2.repos.AppointmentsRepo
 import com.example.monitoringprescriptions.domain.v2.repos.PrescriptionRepo
 import com.example.monitoringprescriptions.utils.mutable
@@ -24,7 +23,7 @@ class RecordsViewModel(
     val loaderVisibilityLiveData: LiveData<Boolean> = MutableLiveData()
 
     // сообщаем что данные изменились
-    val appointmentsLiveData: LiveData<List<AppointmentEntity>> = MutableLiveData()
+    val appointmentsLiveData: LiveData<List<AppointmentFullEntity>> = MutableLiveData()
 
     fun onReceptionClick(receptionRecordPair: ReceptionRecordPair) {
         (selectedReceptionLiveData as MutableLiveData).value = receptionRecordPair
@@ -51,8 +50,30 @@ class RecordsViewModel(
         val day = currentCalendar.get(Calendar.DAY_OF_MONTH)
 
         val appointments = appointmentsRepo.getByDate(year, month, day)
+
+        // фильтруем две сущьности и делаем одну сущьность которая нужна для экрана
+        // обычный список appointments превращаем в список fullAppointments
+        val fullAppointments = appointments.map {
+            // конкретный рецепт вытащили из репозитория
+            val prescription = prescriptionRepo.getId(it.prescriptionId)
+            val appointment = it
+            // проверка на null
+            requireNotNull(prescription)
+            // объединяем prescription и appointment
+            return@map AppointmentFullEntity(
+                appointmentId = appointment.id,
+                time = appointment.time,
+                status = appointment.status,
+                prescriptionId = prescription.id,
+                nameMedicine = prescription.nameMedicine,
+                prescribedMedicine = prescription.prescribedMedicine,
+                typeMedicine = prescription.typeMedicine,
+                dosage = prescription.dosage,
+                unitMeasurement = prescription.unitMeasurement
+            )
+        }
         loaderVisibilityLiveData.mutable().postValue(false)
-        appointmentsLiveData.mutable().postValue(appointments)
+        appointmentsLiveData.mutable().postValue(fullAppointments)
 
     }
 
