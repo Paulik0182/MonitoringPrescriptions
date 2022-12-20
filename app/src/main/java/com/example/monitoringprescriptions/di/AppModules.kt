@@ -23,7 +23,7 @@ val appModules = module {
     single<RecordAppointmentInteractor> { RecordAppointmentInteractorIpl(get()) }
 
     single<PrescriptionRepo> { PrescriptionRepoImpl() }
-    single<AppointmentsRepo> { AppointmentsRepoImpl(get(), get()) }
+    single<AppointmentsRepo> { AppointmentsRepoImpl() }
     single<AppointmentsInteractor> { AppointmentsInteractorImpl(get(), get()) }
 
     viewModel { parameters -> RecordsViewModel(get(), get(), parameters.get()) }

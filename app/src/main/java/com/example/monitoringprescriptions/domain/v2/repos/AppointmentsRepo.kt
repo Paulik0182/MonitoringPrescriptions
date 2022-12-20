@@ -6,6 +6,6 @@ interface AppointmentsRepo {
 
     fun addAppointments(appointmentsEntity: AppointmentsEntity)
     fun getListAppointments(): List<AppointmentsEntity>
-    fun getPrescriptionId(prescriptionId: String): List<AppointmentsEntity?>
+    fun getPrescriptionAppointments(prescriptionId: String): List<AppointmentsEntity?>
     fun getByDate(year: Int, month: Int, day: Int): List<AppointmentsEntity>
 }

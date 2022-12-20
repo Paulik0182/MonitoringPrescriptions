@@ -45,9 +45,6 @@ data class PrescriptionEntity(
     val photo: String = "path/to/photo", // todo пока не используется
 
     @SerializedName("comment")
-    val comment: String = "нет комментария",
-
-    @SerializedName("appointments_ids")
-    val appointmentsIds: List<String> = emptyList()
+    val comment: String = "нет комментария"
 
 ) : Parcelable

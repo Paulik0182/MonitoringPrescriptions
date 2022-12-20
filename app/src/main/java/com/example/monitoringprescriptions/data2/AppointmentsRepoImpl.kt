@@ -4,51 +4,55 @@ import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.v2.entities.AppointmentsEntity
 import com.example.monitoringprescriptions.domain.v2.entities.PrescriptionEntity
 import com.example.monitoringprescriptions.domain.v2.repos.AppointmentsRepo
+import com.example.monitoringprescriptions.utils.dayIsEqual
 import java.util.*
 
-class AppointmentsRepoImpl(
-    private val appointmentsEntity: AppointmentsEntity,
-    private val prescriptionEntity: PrescriptionEntity
-) : AppointmentsRepo {
+class AppointmentsRepoImpl : AppointmentsRepo {
 
-    val dateAppointments: MutableList<AppointmentsEntity> = mutableListOf()
+    private val dataAppointments: MutableList<AppointmentsEntity> = mutableListOf()
 
     override fun addAppointments(appointmentsEntity: AppointmentsEntity) {
-        dateAppointments.add(appointmentsEntity)
+        dataAppointments.add(appointmentsEntity)
     }
 
     override fun getListAppointments(): List<AppointmentsEntity> {
-        return ArrayList(dateAppointments)
+        return ArrayList(dataAppointments)
     }
 
-    override fun getPrescriptionId(prescriptionId: String): List<AppointmentsEntity?> {
-        val prescription = dateAppointments.find {
-            it.id == prescriptionId
+    override fun getPrescriptionAppointments(prescriptionId: String): List<AppointmentsEntity> {
+        // находим несколько Appointments поэтому filter подходит лучше (фильтруем все сущьности подходящие по условию)
+        return dataAppointments.filter {
+            it.prescriptionId == prescriptionId
         }
-        return listOf(prescription)
-
     }
 
     override fun getByDate(year: Int, month: Int, day: Int): List<AppointmentsEntity> {
-        TODO("Not yet implemented")
+        return dataAppointments.filter {
+            // собираем из года, месяца и дня - Календарь
+            val calendar = Calendar.getInstance()
+            calendar.set(year, month, day)
+            it.time.dayIsEqual(calendar.timeInMillis)
+        }
     }
 
     init {
-        dateAppointments.add(
+        dataAppointments.add(
             AppointmentsEntity(
                 id = UUID.randomUUID().toString(),
                 time = Calendar.getInstance().timeInMillis,
                 status = AppointmentStatus.UNKNOWN,
-                prescriptionId = prescriptionEntity.id
+                prescriptionId = "123"
             )
         )
 
-        dateAppointments.add(
+        // лучше всего использовать объесняющую константу (просто прибавлять непонятное значение неследует)
+        val dayInMs = 20 * 60 * 60 * 1000L
+        dataAppointments.add(
             AppointmentsEntity(
                 id = UUID.randomUUID().toString(),
-                time = Calendar.getInstance().timeInMillis + 86_400_000,
+                time = Calendar.getInstance().timeInMillis + dayInMs,
                 status = AppointmentStatus.UNKNOWN,
-                prescriptionId = prescriptionEntity.id
+                prescriptionId = "123"
             )
         )
     }

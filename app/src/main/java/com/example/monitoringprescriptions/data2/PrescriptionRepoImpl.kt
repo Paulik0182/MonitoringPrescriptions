@@ -18,16 +18,15 @@ class PrescriptionRepoImpl : PrescriptionRepo {
     }
 
     override fun getId(id: String): PrescriptionEntity? {
-        val prescriptionId = date.find {
+        return date.find {
             id == it.id
         }
-        return prescriptionId
     }
 
     init {
         date.add(
             PrescriptionEntity(
-                id = UUID.randomUUID().toString(),
+                id = "123",
 
                 prescribedMedicine = "Таблетка",
 
@@ -45,9 +44,7 @@ class PrescriptionRepoImpl : PrescriptionRepo {
 
                 photo = "path/to/photo", // todo пока не используется
 
-                comment = "нет комментария",
-
-                appointmentsIds = listOf()
+                comment = "нет комментария"
 
             )
         )
