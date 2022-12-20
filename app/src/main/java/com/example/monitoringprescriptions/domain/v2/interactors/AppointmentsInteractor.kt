@@ -1,7 +1,7 @@
 package com.example.monitoringprescriptions.domain.v2.interactors
 
 import com.example.monitoringprescriptions.domain.AppointmentStatus
-import com.example.monitoringprescriptions.domain.v2.entities.AppointmentsEntity
+import com.example.monitoringprescriptions.domain.v2.entities.AppointmentEntity
 import com.example.monitoringprescriptions.domain.v2.entities.AppointmentsFullEntity
 
 interface AppointmentsInteractor {
@@ -13,6 +13,6 @@ interface AppointmentsInteractor {
     fun changeStatus(appointmentId: String, status: AppointmentStatus)
 
     // подписка изменения статуса - принято, пропущено
-    fun subscribe(callback: (AppointmentsEntity) -> Unit)
-    fun unsubscribe(callback: (AppointmentsEntity) -> Unit)
+    fun subscribe(callback: (AppointmentEntity) -> Unit)
+    fun unsubscribe(callback: (AppointmentEntity) -> Unit)
 }

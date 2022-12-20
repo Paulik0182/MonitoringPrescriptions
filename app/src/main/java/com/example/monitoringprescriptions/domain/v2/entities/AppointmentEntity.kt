@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 import java.util.*
 
 @Parcelize
-data class AppointmentsEntity(
+data class AppointmentEntity(
 
     @SerializedName("id")
     var id: String = UUID.randomUUID().toString(),

@@ -5,24 +5,22 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.monitoringprescriptions.domain.AppointmentStatus
-import com.example.monitoringprescriptions.domain.entities.ReceptionEntity
-import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
+import com.example.monitoringprescriptions.domain.v2.entities.AppointmentEntity
 
-class RecordsAdapter(
-    private var data: List<ReceptionRecordPair> = mutableListOf(),
+class AppointmentsAdapter(
+    private var data: List<AppointmentEntity> = mutableListOf(),
     private var showPopupMenu: () -> Unit,
     val context: Context,
     private var listener: (
-        receptionEntity: ReceptionEntity,
-        recordId: String,
+        appointmentId: String,
         appointmentStatus: AppointmentStatus
-    ) -> Unit = { _, _, _ -> },
+    ) -> Unit = { _, _ -> },
 //    private var recordListener: (ReceptionRecordPair) -> Unit = { _ -> }
 ) : RecyclerView.Adapter<RecordsViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(records: List<ReceptionRecordPair>) {
-        data = records.sortedBy { it.recordEntity.id }// сортируем по времени
+    fun setData(records: List<AppointmentEntity>) {
+        data = records.sortedBy { it.time }// сортируем по времени
         notifyDataSetChanged()
     }
 
@@ -40,7 +38,7 @@ class RecordsAdapter(
         holder.bind(getItem(position))
     }
 
-    private fun getItem(position: Int): ReceptionRecordPair = data[position]
+    private fun getItem(position: Int): AppointmentEntity = data[position]
 
     override fun getItemCount(): Int = data.size
 

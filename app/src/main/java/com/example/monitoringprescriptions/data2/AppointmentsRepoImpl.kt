@@ -1,32 +1,31 @@
 package com.example.monitoringprescriptions.data2
 
 import com.example.monitoringprescriptions.domain.AppointmentStatus
-import com.example.monitoringprescriptions.domain.v2.entities.AppointmentsEntity
-import com.example.monitoringprescriptions.domain.v2.entities.PrescriptionEntity
+import com.example.monitoringprescriptions.domain.v2.entities.AppointmentEntity
 import com.example.monitoringprescriptions.domain.v2.repos.AppointmentsRepo
 import com.example.monitoringprescriptions.utils.dayIsEqual
 import java.util.*
 
 class AppointmentsRepoImpl : AppointmentsRepo {
 
-    private val dataAppointments: MutableList<AppointmentsEntity> = mutableListOf()
+    private val dataAppointments: MutableList<AppointmentEntity> = mutableListOf()
 
-    override fun addAppointments(appointmentsEntity: AppointmentsEntity) {
+    override fun addAppointments(appointmentsEntity: AppointmentEntity) {
         dataAppointments.add(appointmentsEntity)
     }
 
-    override fun getListAppointments(): List<AppointmentsEntity> {
+    override fun getListAppointments(): List<AppointmentEntity> {
         return ArrayList(dataAppointments)
     }
 
-    override fun getPrescriptionAppointments(prescriptionId: String): List<AppointmentsEntity> {
+    override fun getPrescriptionAppointments(prescriptionId: String): List<AppointmentEntity> {
         // находим несколько Appointments поэтому filter подходит лучше (фильтруем все сущьности подходящие по условию)
         return dataAppointments.filter {
             it.prescriptionId == prescriptionId
         }
     }
 
-    override fun getByDate(year: Int, month: Int, day: Int): List<AppointmentsEntity> {
+    override fun getByDate(year: Int, month: Int, day: Int): List<AppointmentEntity> {
         return dataAppointments.filter {
             // собираем из года, месяца и дня - Календарь
             val calendar = Calendar.getInstance()
@@ -35,9 +34,20 @@ class AppointmentsRepoImpl : AppointmentsRepo {
         }
     }
 
+    override fun getById(appointmentId: String): AppointmentEntity? {
+        return dataAppointments.find {
+            it.id == appointmentId
+        }
+    }
+
+    override fun updateAppointments(appointment: AppointmentEntity) {
+        dataAppointments.removeIf { appointment.id == it.id }
+        dataAppointments.add(appointment)
+    }
+
     init {
         dataAppointments.add(
-            AppointmentsEntity(
+            AppointmentEntity(
                 id = UUID.randomUUID().toString(),
                 time = Calendar.getInstance().timeInMillis,
                 status = AppointmentStatus.UNKNOWN,
@@ -46,9 +56,9 @@ class AppointmentsRepoImpl : AppointmentsRepo {
         )
 
         // лучше всего использовать объесняющую константу (просто прибавлять непонятное значение неследует)
-        val dayInMs = 20 * 60 * 60 * 1000L
+        val dayInMs = 24 * 60 * 60 * 1000L
         dataAppointments.add(
-            AppointmentsEntity(
+            AppointmentEntity(
                 id = UUID.randomUUID().toString(),
                 time = Calendar.getInstance().timeInMillis + dayInMs,
                 status = AppointmentStatus.UNKNOWN,

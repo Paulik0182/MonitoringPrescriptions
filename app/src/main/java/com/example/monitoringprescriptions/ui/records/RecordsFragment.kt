@@ -24,7 +24,7 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
         parametersOf(extractTimeFromBundle(requireArguments()))
     }
 
-    private lateinit var adapter: RecordsAdapter
+    private lateinit var adapter: AppointmentsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,7 +33,7 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
 
         initViews()
 
-        viewModel.receptionRecordPair.observe(viewLifecycleOwner) {
+        viewModel.appointmentsLiveData.observe(viewLifecycleOwner) {
             adapter.setData(it)
         }
 
@@ -48,15 +48,14 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
 
     private fun initViews() {
         binding.recordsRecyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = RecordsAdapter(
+        adapter = AppointmentsAdapter(
             data = emptyList(),
             showPopupMenu = {
             },
             context = requireContext()
-        ) { receptionEntity, recordId, appointmentStatus ->
+        ) { appointmentId, appointmentStatus ->
             viewModel.onAppointmentSelected(
-                receptionEntity,
-                recordId,
+                appointmentId,
                 appointmentStatus
             )
         }
