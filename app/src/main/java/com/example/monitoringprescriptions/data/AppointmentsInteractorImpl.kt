@@ -1,10 +1,10 @@
-package com.example.monitoringprescriptions.data2
+package com.example.monitoringprescriptions.data
 
 import com.example.monitoringprescriptions.domain.AppointmentStatus
-import com.example.monitoringprescriptions.domain.v2.entities.AppointmentFullEntity
-import com.example.monitoringprescriptions.domain.v2.interactors.AppointmentsInteractor
-import com.example.monitoringprescriptions.domain.v2.repos.AppointmentsRepo
-import com.example.monitoringprescriptions.domain.v2.repos.PrescriptionRepo
+import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
+import com.example.monitoringprescriptions.domain.interactors.AppointmentsInteractor
+import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
+import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
 import java.util.*
 
 class AppointmentsInteractorImpl(

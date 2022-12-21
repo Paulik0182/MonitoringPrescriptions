@@ -12,7 +12,7 @@ import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ItemRecordReceptionBinding
 import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.TypeMedicine
-import com.example.monitoringprescriptions.domain.v2.entities.AppointmentFullEntity
+import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 import com.example.monitoringprescriptions.utils.bpTimeFormatter
 
 class AppointmentsViewHolder(

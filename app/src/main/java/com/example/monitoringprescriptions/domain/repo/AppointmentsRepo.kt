@@ -1,6 +1,6 @@
-package com.example.monitoringprescriptions.domain.v2.repos
+package com.example.monitoringprescriptions.domain.repo
 
-import com.example.monitoringprescriptions.domain.v2.entities.AppointmentEntity
+import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
 
 interface AppointmentsRepo {
 

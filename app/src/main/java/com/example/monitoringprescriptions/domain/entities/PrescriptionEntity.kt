@@ -1,4 +1,4 @@
-package com.example.monitoringprescriptions.domain.v2.entities
+package com.example.monitoringprescriptions.domain.entities
 
 import android.os.Parcelable
 import com.example.monitoringprescriptions.domain.TypeMedicine

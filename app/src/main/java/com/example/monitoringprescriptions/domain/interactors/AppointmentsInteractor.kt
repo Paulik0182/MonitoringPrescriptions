@@ -1,7 +1,7 @@
-package com.example.monitoringprescriptions.domain.v2.interactors
+package com.example.monitoringprescriptions.domain.interactors
 
 import com.example.monitoringprescriptions.domain.AppointmentStatus
-import com.example.monitoringprescriptions.domain.v2.entities.AppointmentFullEntity
+import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 import java.util.*
 
 interface AppointmentsInteractor {

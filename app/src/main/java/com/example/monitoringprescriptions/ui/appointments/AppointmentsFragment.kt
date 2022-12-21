@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentOneDeyRecordsBinding
-import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
+import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.*
@@ -37,9 +37,9 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_records) {
             adapter.setData(it)
         }
 
-        viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
-            getController().openDetailsReception(it)
-        }
+//        viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
+//            getController().openDetailsReception(it)
+//        }
 
         viewModel.loaderVisibilityLiveData.observe(viewLifecycleOwner) {
             // todo показать - скрыть лоадер
@@ -75,7 +75,7 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_records) {
     }
 
     interface Controller {
-        fun openDetailsReception(receptionRecordPair: ReceptionRecordPair)
+        fun openDetailsReception(prescriptionEntity: PrescriptionEntity)
     }
 
     private fun getController(): Controller = activity as Controller

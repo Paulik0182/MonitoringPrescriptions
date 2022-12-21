@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.monitoringprescriptions.domain.AppointmentStatus
-import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
-import com.example.monitoringprescriptions.domain.v2.entities.AppointmentFullEntity
-import com.example.monitoringprescriptions.domain.v2.interactors.AppointmentsInteractor
+import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
+import com.example.monitoringprescriptions.domain.interactors.AppointmentsInteractor
 import com.example.monitoringprescriptions.utils.mutable
 import java.util.*
 
@@ -20,15 +19,15 @@ class AppointmentsViewModel(
         loadData()
     }
 
-    val selectedReceptionLiveData: LiveData<ReceptionRecordPair> = MutableLiveData()
+    //    val selectedReceptionLiveData: LiveData<ReceptionRecordPair> = MutableLiveData()
     val loaderVisibilityLiveData: LiveData<Boolean> = MutableLiveData()
 
     // сообщаем что данные изменились
     val appointmentsLiveData: LiveData<List<AppointmentFullEntity>> = MutableLiveData()
 
-    fun onReceptionClick(receptionRecordPair: ReceptionRecordPair) {
-        (selectedReceptionLiveData as MutableLiveData).value = receptionRecordPair
-    }
+//    fun onReceptionClick(receptionRecordPair: ReceptionRecordPair) {
+//        (selectedReceptionLiveData as MutableLiveData).value = receptionRecordPair
+//    }
 
     //получаем при нажатии статус исполнения приема лекарств
     fun onAppointmentSelected(

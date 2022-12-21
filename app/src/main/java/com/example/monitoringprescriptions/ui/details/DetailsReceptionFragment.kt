@@ -6,9 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentDerailsReceptionBinding
-import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
-import com.example.monitoringprescriptions.domain.interactors.RecordsInteractor
-import org.koin.android.ext.android.inject
+import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 
 private const val DETAILS_RECEPTION_KEY = "DETAILS_RECEPTION_KEY"
 
@@ -16,8 +14,6 @@ class DetailsReceptionFragment : Fragment(R.layout.fragment_derails_reception) {
 
     private var _binding: FragmentDerailsReceptionBinding? = null
     private val binding get() = _binding!!
-
-    private val recordsInteractor: RecordsInteractor by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,10 +33,10 @@ class DetailsReceptionFragment : Fragment(R.layout.fragment_derails_reception) {
 
     companion object {
         @JvmStatic
-        fun newInstance(receptionRecordPair: ReceptionRecordPair) =
+        fun newInstance(prescriptionEntity: PrescriptionEntity) =
             DetailsReceptionFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(DETAILS_RECEPTION_KEY, receptionRecordPair)
+                    putParcelable(DETAILS_RECEPTION_KEY, prescriptionEntity)
                 }
             }
     }

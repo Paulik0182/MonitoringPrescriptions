@@ -6,11 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ActivityRootBinding
-import com.example.monitoringprescriptions.domain.entities.ReceptionEntity
-import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
+import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import com.example.monitoringprescriptions.ui.appointments.AppointmentsFragment
 import com.example.monitoringprescriptions.ui.details.DetailsReceptionFragment
-import com.example.monitoringprescriptions.ui.reception.ReceptionFragment
 import com.example.monitoringprescriptions.ui.schedule.ScheduleFragment
 import com.example.monitoringprescriptions.ui.settings.SettingsFragment
 
@@ -18,7 +16,6 @@ private const val TAG_MAIN_CONTAINER_LAYOUT_KEY = "TAG_MAIN_CONTAINER_LAYOUT_KEY
 private const val TAG_DETAILS_RECEPTION_KEY = "TAG_DETAILS_RECEPTION_KEY"
 
 class RootActivity : AppCompatActivity(),
-    ReceptionFragment.Controller,
     SettingsFragment.Controller,
     AppointmentsFragment.Controller,
     DetailsReceptionFragment.Controller {
@@ -66,8 +63,8 @@ class RootActivity : AppCompatActivity(),
             ).commit()
     }
 
-    private fun detailsReception(receptionRecordPair: ReceptionRecordPair) {
-        val fragment: Fragment = DetailsReceptionFragment.newInstance(receptionRecordPair)
+    private fun detailsReception(prescriptionEntity: PrescriptionEntity) {
+        val fragment: Fragment = DetailsReceptionFragment.newInstance(prescriptionEntity)
         supportFragmentManager
             .beginTransaction()
             .replace(
@@ -81,12 +78,8 @@ class RootActivity : AppCompatActivity(),
         binding.bottomNavBar.visibility = View.GONE
     }
 
-    override fun openDetailsReception(receptionEntity: ReceptionEntity) {
-        TODO("Not yet implemented")
-    }
-
-    override fun openDetailsReception(receptionRecordPair: ReceptionRecordPair) {
-        detailsReception(receptionRecordPair)
+    override fun openDetailsReception(prescriptionEntity: PrescriptionEntity) {
+        detailsReception(prescriptionEntity)
     }
 
     override fun onBackPressed() {

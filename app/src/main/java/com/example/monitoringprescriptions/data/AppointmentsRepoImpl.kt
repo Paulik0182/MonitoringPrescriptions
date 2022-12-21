@@ -1,8 +1,8 @@
-package com.example.monitoringprescriptions.data2
+package com.example.monitoringprescriptions.data
 
 import com.example.monitoringprescriptions.domain.AppointmentStatus
-import com.example.monitoringprescriptions.domain.v2.entities.AppointmentEntity
-import com.example.monitoringprescriptions.domain.v2.repos.AppointmentsRepo
+import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
+import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
 import com.example.monitoringprescriptions.utils.dayIsEqual
 import java.util.*
 

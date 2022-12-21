@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.monitoringprescriptions.domain.AppointmentStatus
-import com.example.monitoringprescriptions.domain.v2.entities.AppointmentFullEntity
+import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 
 class AppointmentsAdapter(
     private var data: List<AppointmentFullEntity> = mutableListOf(),
@@ -15,7 +15,6 @@ class AppointmentsAdapter(
         appointmentId: String,
         appointmentStatus: AppointmentStatus
     ) -> Unit = { _, _ -> },
-//    private var recordListener: (ReceptionRecordPair) -> Unit = { _ -> }
 ) : RecyclerView.Adapter<AppointmentsViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
@@ -30,7 +29,6 @@ class AppointmentsAdapter(
             showPopupMenu,
             context,
             listener,
-//            recordListener
         )
     }
 

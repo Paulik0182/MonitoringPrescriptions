@@ -1,8 +1,8 @@
-package com.example.monitoringprescriptions.data2
+package com.example.monitoringprescriptions.data
 
 import com.example.monitoringprescriptions.domain.TypeMedicine
-import com.example.monitoringprescriptions.domain.v2.entities.PrescriptionEntity
-import com.example.monitoringprescriptions.domain.v2.repos.PrescriptionRepo
+import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
+import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
 import java.util.*
 
 class PrescriptionRepoImpl : PrescriptionRepo {
