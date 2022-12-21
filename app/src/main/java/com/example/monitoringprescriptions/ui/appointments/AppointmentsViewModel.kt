@@ -3,14 +3,14 @@ package com.example.monitoringprescriptions.ui.appointments
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.monitoringprescriptions.data.room.HistoryAppointmentFullEntity
+import com.example.monitoringprescriptions.data.room.HistoryAppointmentFullLocalRepo
 import com.example.monitoringprescriptions.domain.AppointmentStatus
-import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
-import com.example.monitoringprescriptions.domain.interactors.AppointmentsInteractor
 import com.example.monitoringprescriptions.utils.mutable
 import java.util.*
 
 class AppointmentsViewModel(
-    private val appointmentsInteractor: AppointmentsInteractor,
+    private val historyAppointmentFullLocalRepo: HistoryAppointmentFullLocalRepo,
     private val currentCalendar: Calendar
 ) : ViewModel() {
 
@@ -23,7 +23,7 @@ class AppointmentsViewModel(
     val loaderVisibilityLiveData: LiveData<Boolean> = MutableLiveData()
 
     // сообщаем что данные изменились
-    val appointmentsLiveData: LiveData<List<AppointmentFullEntity>> = MutableLiveData()
+    val appointmentsLiveData: LiveData<List<HistoryAppointmentFullEntity>> = MutableLiveData()
 
 //    fun onReceptionClick(receptionRecordPair: ReceptionRecordPair) {
 //        (selectedReceptionLiveData as MutableLiveData).value = receptionRecordPair
@@ -34,13 +34,13 @@ class AppointmentsViewModel(
         appointmentId: String,
         appointmentStatus: AppointmentStatus
     ) {
-        appointmentsInteractor.changeStatus(appointmentId, appointmentStatus)
+        historyAppointmentFullLocalRepo.changeStatus(appointmentId, appointmentStatus)
     }
 
     private fun loadData() {
         loaderVisibilityLiveData.mutable().postValue(true)
 
-        appointmentsInteractor.getByDate(currentCalendar) {
+        historyAppointmentFullLocalRepo.getAllHistory(currentCalendar) {
             loaderVisibilityLiveData.mutable().postValue(false)
             appointmentsLiveData.mutable().postValue(it)
         }
@@ -49,13 +49,13 @@ class AppointmentsViewModel(
     init {
         loadData()
         // подписываемся на статус приема лекарств
-        appointmentsInteractor.subscribe(onAppointmentListener)
+        historyAppointmentFullLocalRepo.subscribe(onAppointmentListener)
     }
 
     override fun onCleared() {
         super.onCleared()
         // отписываемся от приема лекарств
-        appointmentsInteractor.unsubscribe(onAppointmentListener)
+        historyAppointmentFullLocalRepo.unsubscribe(onAppointmentListener)
     }
 
 }

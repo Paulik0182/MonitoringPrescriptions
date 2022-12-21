@@ -1,42 +1,20 @@
-package com.example.monitoringprescriptions.data
+package com.example.monitoringprescriptions.data.room
 
 import com.example.monitoringprescriptions.domain.AppointmentStatus
-import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
-import com.example.monitoringprescriptions.domain.interactors.AppointmentsInteractor
 import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
 import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
 import java.util.*
 
-class AppointmentsInteractorImpl(
+class HistoryAppointmentFullLocalRepoImpl(
+    private val historyAppointmentFullDao: HistoryAppointmentFullDao,
     private val appointmentsRepo: AppointmentsRepo,
     private val prescriptionRepo: PrescriptionRepo
-) : AppointmentsInteractor {
+) : HistoryAppointmentFullLocalRepo {
 
-    private val listeners: MutableSet<() -> Unit> = HashSet()
-
-    override fun changeStatus(appointmentId: String, status: AppointmentStatus) {
-        appointmentsRepo.getById(appointmentId)?.let {
-            appointmentsRepo.updateAppointments(it.copy(status = status))
-        }
-        // Для подписки (статус)
-        notifyListener()
-    }
-
-    private fun notifyListener() {
-        listeners.forEach {
-            it.invoke()
-        }
-    }
-
-    override fun subscribe(callback: () -> Unit) {
-        listeners.add(callback)
-    }
-
-    override fun unsubscribe(callback: () -> Unit) {
-        listeners.remove(callback)
-    }
-
-    override fun getByDate(calendar: Calendar, callback: (List<AppointmentFullEntity>) -> Unit) {
+    override fun getAllHistory(
+        calendar: Calendar,
+        callback: (List<HistoryAppointmentFullEntity>) -> Unit
+    ) {
 
         // Загрузка данных
         // календарь превращаем в дни
@@ -55,7 +33,8 @@ class AppointmentsInteractorImpl(
             // проверка на null
             requireNotNull(prescription)
             // объединяем prescription и appointment
-            return@map AppointmentFullEntity(
+            return@map HistoryAppointmentFullEntity(
+                id = it.id,
                 appointmentId = appointment.id,
                 time = appointment.time,
                 status = appointment.status,
@@ -67,6 +46,34 @@ class AppointmentsInteractorImpl(
                 unitMeasurement = prescription.unitMeasurement
             )
         }
-        callback.invoke(fullAppointments)
+        callback.invoke(historyAppointmentFullDao.getAll())
+    }
+
+    override fun saveEntity(historyAppointmentFullEntity: HistoryAppointmentFullEntity) {
+        historyAppointmentFullDao.insert(historyAppointmentFullEntity)
+    }
+
+    override fun changeStatus(appointmentId: String, status: AppointmentStatus) {
+        appointmentsRepo.getById(appointmentId)?.let {
+            appointmentsRepo.updateAppointments(it.copy(status = status))
+        }
+        // Для подписки (статус)
+        notifyListener()
+    }
+
+    private val listeners: MutableSet<() -> Unit> = HashSet()
+
+    private fun notifyListener() {
+        listeners.forEach {
+            it.invoke()
+        }
+    }
+
+    override fun subscribe(callback: () -> Unit) {
+        listeners.add(callback)
+    }
+
+    override fun unsubscribe(callback: () -> Unit) {
+        listeners.remove(callback)
     }
 }
