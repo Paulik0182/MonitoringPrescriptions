@@ -1,4 +1,4 @@
-package com.example.monitoringprescriptions.ui.records
+package com.example.monitoringprescriptions.ui.appointments
 
 import android.content.Context
 import android.os.Bundle
@@ -7,39 +7,39 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.monitoringprescriptions.R
-import com.example.monitoringprescriptions.databinding.FragmentOneDeyRecordsBinding
-import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
+import com.example.monitoringprescriptions.databinding.FragmentOneDeyAppointmentsBinding
+import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.*
 
 private const val DATE_KEY = "DAY_KEY"
 
-class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
+class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
 
-    private var _binding: FragmentOneDeyRecordsBinding? = null
+    private var _binding: FragmentOneDeyAppointmentsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: RecordsViewModel by viewModel {
+    private val viewModel: AppointmentsViewModel by viewModel {
         parametersOf(extractTimeFromBundle(requireArguments()))
     }
 
-    private lateinit var adapter: RecordsAdapter
+    private lateinit var adapter: AppointmentsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentOneDeyRecordsBinding.bind(view)
+        _binding = FragmentOneDeyAppointmentsBinding.bind(view)
 
         initViews()
 
-        viewModel.receptionRecordPair.observe(viewLifecycleOwner) {
+        viewModel.appointmentsLiveData.observe(viewLifecycleOwner) {
             adapter.setData(it)
         }
 
-        viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
-            getController().openDetailsReception(it)
-        }
+//        viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
+//            getController().openDetailsReception(it)
+//        }
 
         viewModel.loaderVisibilityLiveData.observe(viewLifecycleOwner) {
             // todo показать - скрыть лоадер
@@ -48,15 +48,14 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
 
     private fun initViews() {
         binding.recordsRecyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = RecordsAdapter(
+        adapter = AppointmentsAdapter(
             data = emptyList(),
             showPopupMenu = {
             },
             context = requireContext()
-        ) { receptionEntity, recordId, appointmentStatus ->
+        ) { appointmentId, appointmentStatus ->
             viewModel.onAppointmentSelected(
-                receptionEntity,
-                recordId,
+                appointmentId,
                 appointmentStatus
             )
         }
@@ -64,6 +63,10 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
 //            viewModel.onReceptionClick(reception)
 //        }
         binding.recordsRecyclerView.adapter = adapter
+
+        binding.fab.setOnClickListener {
+            viewModel.onTempCreateClick()
+        }
     }
 
     // достаем календарь и модифицируем его
@@ -76,7 +79,7 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
     }
 
     interface Controller {
-        fun openDetailsReception(receptionRecordPair: ReceptionRecordPair)
+        fun openDetailsReception(prescriptionEntity: PrescriptionEntity)
     }
 
     private fun getController(): Controller = activity as Controller
@@ -94,7 +97,7 @@ class OneDeyRecordsFragment : Fragment(R.layout.fragment_one_dey_records) {
     companion object {
         @JvmStatic
         fun newInstance(calendar: Calendar) =
-            OneDeyRecordsFragment().apply {
+            AppointmentsFragment().apply {
                 arguments = bundleOf(DATE_KEY to calendar.timeInMillis)
             }
     }

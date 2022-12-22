@@ -1,7 +1,7 @@
-package com.example.monitoringprescriptions.domain.v2.interactors
+package com.example.monitoringprescriptions.domain.interactors
 
 import com.example.monitoringprescriptions.domain.TypeMedicine
-import com.example.monitoringprescriptions.domain.v2.entities.PrescriptionEntity
+import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import java.util.*
 
 interface PrescriptionCreatorInteractor {

@@ -1,4 +1,4 @@
-package com.example.monitoringprescriptions.ui.records
+package com.example.monitoringprescriptions.ui.appointments
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -12,17 +12,15 @@ import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ItemRecordReceptionBinding
 import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.TypeMedicine
-import com.example.monitoringprescriptions.domain.entities.ReceptionEntity
-import com.example.monitoringprescriptions.domain.entities.ReceptionRecordPair
+import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 import com.example.monitoringprescriptions.utils.bpTimeFormatter
 
-class RecordsViewHolder(
+class AppointmentsViewHolder(
     parent: ViewGroup,
     showPopupMenu: () -> Unit,
     val context: Context,
     private val listener: (
-        receptionEntity: ReceptionEntity,
-        recordId: String,
+        appointmentId: String,
         appointmentStatus: AppointmentStatus
     ) -> Unit,
 //    recordListener: (ReceptionRecordPair) -> Unit
@@ -33,27 +31,26 @@ class RecordsViewHolder(
 ) {
 
     private val binding: ItemRecordReceptionBinding = ItemRecordReceptionBinding.bind(itemView)
-    private lateinit var receptionRecordPair: ReceptionRecordPair
+    private lateinit var appointmentFullEntity: AppointmentFullEntity
 
-    fun bind(receptionRecordPair: ReceptionRecordPair) {
-        this.receptionRecordPair = receptionRecordPair
+    fun bind(appointmentFullEntity: AppointmentFullEntity) {
+        this.appointmentFullEntity = appointmentFullEntity
 
-        val entity = receptionRecordPair.receptionEntity
-        binding.nameMedicineTextView.text = entity.nameMedicine
-        binding.typeMedicineTextView.text = entity.prescribedMedicine
+        binding.nameMedicineTextView.text = appointmentFullEntity.nameMedicine
+        binding.typeMedicineTextView.text = appointmentFullEntity.prescribedMedicine
 
-        binding.timeTextView.text = bpTimeFormatter.format(receptionRecordPair.recordEntity.time)
+        binding.timeTextView.text = bpTimeFormatter.format(appointmentFullEntity.time)
 
-        binding.dosageTextView.text = entity.dosage.toString()
+        binding.dosageTextView.text = appointmentFullEntity.dosage.toString()
 
-        binding.resultReceptionTextView.text = receptionRecordPair.recordEntity.status.toString()
-        when (receptionRecordPair.recordEntity.status) {
+        binding.resultReceptionTextView.text = appointmentFullEntity.status.toString()
+        when (appointmentFullEntity.status) {
             AppointmentStatus.UNKNOWN -> binding.resultReceptionTextView.setText(R.string.emoji_unknown)
             AppointmentStatus.YES -> binding.resultReceptionTextView.setText(R.string.emoji_yes)
             AppointmentStatus.NO -> binding.resultReceptionTextView.setText(R.string.emoji_no)
         }
-        binding.iconMedicineTextView.text = entity.typeMedicine.toString()
-        when (entity.typeMedicine) {
+        binding.iconMedicineTextView.text = appointmentFullEntity.typeMedicine.toString()
+        when (appointmentFullEntity.typeMedicine) {
             TypeMedicine.PILL -> binding.iconMedicineTextView.setText(R.string.emoji_pill)
             TypeMedicine.SYRINGE -> binding.iconMedicineTextView.setText(R.string.emoji_syringe)
         }
@@ -79,8 +76,7 @@ class RecordsViewHolder(
                 when (item!!.itemId) {
                     R.id.accepted_item -> {
                         listener.invoke(
-                            receptionRecordPair.receptionEntity,
-                            receptionRecordPair.recordEntity.id,
+                            appointmentFullEntity.appointmentId,
                             AppointmentStatus.YES
                         )
 //                        binding.resultReceptionTextView.setText(R.string.emoji_yes)
@@ -93,8 +89,7 @@ class RecordsViewHolder(
                     }
                     R.id.skipped_item -> {
                         listener.invoke(
-                            receptionRecordPair.receptionEntity,
-                            receptionRecordPair.recordEntity.id,
+                            appointmentFullEntity.appointmentId,
                             AppointmentStatus.NO
                         )
 //                        binding.resultReceptionTextView.setText(R.string.emoji_no)

@@ -1,8 +1,8 @@
-package com.example.monitoringprescriptions.data2
+package com.example.monitoringprescriptions.data
 
 import com.example.monitoringprescriptions.domain.TypeMedicine
-import com.example.monitoringprescriptions.domain.v2.entities.PrescriptionEntity
-import com.example.monitoringprescriptions.domain.v2.repos.PrescriptionRepo
+import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
+import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
 import java.util.*
 
 class PrescriptionRepoImpl : PrescriptionRepo {
@@ -17,17 +17,18 @@ class PrescriptionRepoImpl : PrescriptionRepo {
         return ArrayList(date)
     }
 
-    override fun getId(id: String): PrescriptionEntity? {
-        val prescriptionId = date.find {
+    override fun getById(id: String): PrescriptionEntity? {
+        return date.find {
             id == it.id
         }
-        return prescriptionId
     }
 
     init {
         date.add(
             PrescriptionEntity(
-                id = UUID.randomUUID().toString(),
+                id = "123",
+
+                nameMedicine = "Люфастон",
 
                 prescribedMedicine = "Таблетка",
 
@@ -45,9 +46,7 @@ class PrescriptionRepoImpl : PrescriptionRepo {
 
                 photo = "path/to/photo", // todo пока не используется
 
-                comment = "нет комментария",
-
-                appointmentsIds = listOf()
+                comment = "нет комментария"
 
             )
         )

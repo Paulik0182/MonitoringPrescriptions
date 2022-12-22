@@ -35,3 +35,21 @@ fun <T> LiveData<T>.mutable(): MutableLiveData<T> {
 
 // второй вариант
 //val <T> LiveData<T>.mutable: MutableLiveData<T> get() = this as MutableLiveData<T>
+
+
+/**
+ * Два метода позволяющий сравнивать совпадающий день
+ */
+fun Calendar.dayIsEqual(otherCalendar: Calendar): Boolean {
+    return get(Calendar.YEAR) == otherCalendar.get(Calendar.YEAR)
+            && get(Calendar.DAY_OF_YEAR) == otherCalendar.get(Calendar.DAY_OF_YEAR)
+}
+
+fun Long.dayIsEqual(otherTimeMs: Long): Boolean {
+    val firstCalendar = Calendar.getInstance()
+    firstCalendar.timeInMillis = otherTimeMs
+    val secondCalendar = Calendar.getInstance()
+    secondCalendar.timeInMillis = this
+
+    return firstCalendar.dayIsEqual(secondCalendar)
+}

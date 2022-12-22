@@ -1,4 +1,4 @@
-package com.example.monitoringprescriptions.domain.v2.entities
+package com.example.monitoringprescriptions.domain.entities
 
 import android.os.Parcelable
 import com.example.monitoringprescriptions.domain.AppointmentStatus
@@ -6,9 +6,9 @@ import com.example.monitoringprescriptions.domain.TypeMedicine
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class AppointmentsFullEntity(
+data class AppointmentFullEntity(
 
-    val id: String,
+    val appointmentId: String,
 
     val time: Long,
 

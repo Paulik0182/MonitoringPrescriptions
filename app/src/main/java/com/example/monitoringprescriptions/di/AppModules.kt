@@ -1,30 +1,61 @@
 package com.example.monitoringprescriptions.di
 
-import com.example.monitoringprescriptions.data.ReceptionRepoImpl
-import com.example.monitoringprescriptions.data.RecordAppointmentInteractorIpl
-import com.example.monitoringprescriptions.data.RecordsInteractorImpl
-import com.example.monitoringprescriptions.data2.AppointmentsInteractorImpl
-import com.example.monitoringprescriptions.data2.AppointmentsRepoImpl
-import com.example.monitoringprescriptions.data2.PrescriptionRepoImpl
-import com.example.monitoringprescriptions.domain.interactors.RecordAppointmentInteractor
-import com.example.monitoringprescriptions.domain.interactors.RecordsInteractor
-import com.example.monitoringprescriptions.domain.repos.ReceptionRepo
-import com.example.monitoringprescriptions.domain.v2.interactors.AppointmentsInteractor
-import com.example.monitoringprescriptions.domain.v2.repos.AppointmentsRepo
-import com.example.monitoringprescriptions.domain.v2.repos.PrescriptionRepo
-import com.example.monitoringprescriptions.ui.records.RecordsViewModel
+import androidx.room.Room
+import com.example.monitoringprescriptions.data.AppointmentsInteractorImpl
+import com.example.monitoringprescriptions.data.RoomAppointmentRepoImpl
+import com.example.monitoringprescriptions.data.RoomPrescriptionRepoImpl
+import com.example.monitoringprescriptions.data.room.AppDataBase
+import com.example.monitoringprescriptions.data.room.AppointmentDao
+import com.example.monitoringprescriptions.data.room.PrescriptionDao
+import com.example.monitoringprescriptions.domain.interactors.AppointmentsInteractor
+import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
+import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
+import com.example.monitoringprescriptions.ui.appointments.AppointmentsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModules = module {
 
-    single<ReceptionRepo> { ReceptionRepoImpl() }
-    single<RecordsInteractor> { RecordsInteractorImpl(get()) }
-    single<RecordAppointmentInteractor> { RecordAppointmentInteractorIpl(get()) }
+    // создаем БД. сингл в коде коин
+    single<AppDataBase> {
+        Room.databaseBuilder(
+            get(),
+            AppDataBase::class.java, "database"
+        ).allowMainThreadQueries().build()//переделать, должно быть не в основном потоке
 
-    single<PrescriptionRepo> { PrescriptionRepoImpl() }
-    single<AppointmentsRepo> { AppointmentsRepoImpl(get(), get()) }
+
+//        var appInstance: App? = null
+//        var db: AppDataBase? = null
+//        val DB_NAME = "database-name"
+//
+//        if (db == null) {
+//            synchronized(AppDataBase::class.java) {
+//                if (db == null) {
+//                    if (appInstance == null)
+//                        throw IllegalStateException("Application is null DB")
+//                    db = Room.databaseBuilder(
+//                        appInstance!!.applicationContext,
+//                        AppDataBase::class.java,
+//                        DB_NAME
+//                    )
+//                        .allowMainThreadQueries()//переделать, должно быть не в основном потоке
+//                        .build()
+//                }
+//            }
+//        }
+    }
+
+    // создали конкретный Dao
+    single<PrescriptionDao> { get<AppDataBase>().prescriptionDao() }
+    // В качестве get() попадет PrescriptionDao, см выше
+    single<PrescriptionRepo> { RoomPrescriptionRepoImpl(get()) }
+
+    // создали конкретный Dao
+    single<AppointmentDao> { get<AppDataBase>().appointmentDao() }
+    // В качестве get() попадет AppointmentDao, см выше
+    single<AppointmentsRepo> { RoomAppointmentRepoImpl(get()) }
+
     single<AppointmentsInteractor> { AppointmentsInteractorImpl(get(), get()) }
 
-    viewModel { parameters -> RecordsViewModel(get(), get(), parameters.get()) }
+    viewModel { parameters -> AppointmentsViewModel(get(), parameters.get()) }
 }

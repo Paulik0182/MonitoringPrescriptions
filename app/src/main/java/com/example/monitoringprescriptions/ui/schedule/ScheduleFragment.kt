@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentScheduleBinding
-import com.example.monitoringprescriptions.ui.records.OneDeyRecordsFragment
+import com.example.monitoringprescriptions.ui.appointments.AppointmentsFragment
 import com.example.monitoringprescriptions.utils.toUserString
 import java.util.*
 
@@ -50,7 +50,7 @@ class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
     }
 
     private fun onDayChanged(calendar: Calendar) {
-        val fragment: Fragment = OneDeyRecordsFragment.newInstance(calendar)
+        val fragment: Fragment = AppointmentsFragment.newInstance(calendar)
         childFragmentManager
             .beginTransaction()
             .replace(binding.fragmentContainer.id, fragment, TAG_ONE_DAY_CHANGED_KEY)
