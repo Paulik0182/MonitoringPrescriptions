@@ -58,4 +58,8 @@ class AppointmentsViewModel(
         appointmentsInteractor.unsubscribe(onAppointmentListener)
     }
 
+    fun onTempCreateClick() {
+        appointmentsInteractor.generateNewPrescription()
+    }
+
 }

@@ -7,7 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.monitoringprescriptions.R
-import com.example.monitoringprescriptions.databinding.FragmentOneDeyRecordsBinding
+import com.example.monitoringprescriptions.databinding.FragmentOneDeyAppointmentsBinding
 import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -15,9 +15,9 @@ import java.util.*
 
 private const val DATE_KEY = "DAY_KEY"
 
-class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_records) {
+class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
 
-    private var _binding: FragmentOneDeyRecordsBinding? = null
+    private var _binding: FragmentOneDeyAppointmentsBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: AppointmentsViewModel by viewModel {
@@ -29,7 +29,7 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_records) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentOneDeyRecordsBinding.bind(view)
+        _binding = FragmentOneDeyAppointmentsBinding.bind(view)
 
         initViews()
 
@@ -63,6 +63,10 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_records) {
 //            viewModel.onReceptionClick(reception)
 //        }
         binding.recordsRecyclerView.adapter = adapter
+
+        binding.fab.setOnClickListener {
+            viewModel.onTempCreateClick()
+        }
     }
 
     // достаем календарь и модифицируем его

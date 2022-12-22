@@ -14,4 +14,5 @@ interface AppointmentsInteractor {
     fun unsubscribe(callback: () -> Unit)
 
     fun getByDate(calendar: Calendar, callback: (List<AppointmentFullEntity>) -> Unit)
+    fun generateNewPrescription()
 }
