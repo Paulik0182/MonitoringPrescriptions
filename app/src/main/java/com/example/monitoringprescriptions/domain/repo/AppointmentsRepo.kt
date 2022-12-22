@@ -4,7 +4,7 @@ import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
 
 interface AppointmentsRepo {
 
-    fun addAppointments(appointmentsEntity: AppointmentEntity)
+    fun addAppointment(appointmentsEntity: AppointmentEntity)
     fun getListAppointments(): List<AppointmentEntity>
     fun getPrescriptionAppointments(prescriptionId: String): List<AppointmentEntity?>
     fun getByDate(year: Int, month: Int, day: Int): List<AppointmentEntity>

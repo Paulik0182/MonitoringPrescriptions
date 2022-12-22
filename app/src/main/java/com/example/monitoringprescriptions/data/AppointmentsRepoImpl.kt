@@ -10,7 +10,7 @@ class AppointmentsRepoImpl : AppointmentsRepo {
 
     private val dataAppointments: MutableList<AppointmentEntity> = mutableListOf()
 
-    override fun addAppointments(appointmentsEntity: AppointmentEntity) {
+    override fun addAppointment(appointmentsEntity: AppointmentEntity) {
         dataAppointments.add(appointmentsEntity)
     }
 

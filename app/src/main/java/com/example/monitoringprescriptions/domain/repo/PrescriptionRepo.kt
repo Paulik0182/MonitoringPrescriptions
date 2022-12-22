@@ -6,5 +6,5 @@ interface PrescriptionRepo {
 
     fun addPrescription(prescriptionEntity: PrescriptionEntity)
     fun getListPrescription(): List<PrescriptionEntity>
-    fun getId(id: String): PrescriptionEntity?
+    fun getById(id: String): PrescriptionEntity?
 }

@@ -2,6 +2,8 @@ package com.example.monitoringprescriptions.data.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
+import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 
 /**
  * version = 1 - Обязательно должна быть версия, она для того чтобы провести меграцию БД из одной БД
@@ -9,7 +11,12 @@ import androidx.room.RoomDatabase
  *
  */
 
-@Database(entities = [HistoryAppointmentFullEntity::class], version = 1, exportSchema = false)
-abstract class HistoryDataBase : RoomDatabase() {
-    abstract fun historyAppointmentFullDao(): HistoryAppointmentFullDao
+@Database(
+    entities = [AppointmentEntity::class, PrescriptionEntity::class],
+    version = 1,
+    exportSchema = false
+)
+abstract class AppDataBase : RoomDatabase() {
+    abstract fun appointmentDao(): AppointmentDao
+    abstract fun prescriptionDao(): PrescriptionDao
 }

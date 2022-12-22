@@ -9,10 +9,10 @@ import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.monitoringprescriptions.R
-import com.example.monitoringprescriptions.data.room.HistoryAppointmentFullEntity
 import com.example.monitoringprescriptions.databinding.ItemRecordReceptionBinding
 import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.TypeMedicine
+import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 import com.example.monitoringprescriptions.utils.bpTimeFormatter
 
 class AppointmentsViewHolder(
@@ -31,9 +31,9 @@ class AppointmentsViewHolder(
 ) {
 
     private val binding: ItemRecordReceptionBinding = ItemRecordReceptionBinding.bind(itemView)
-    private lateinit var appointmentFullEntity: HistoryAppointmentFullEntity
+    private lateinit var appointmentFullEntity: AppointmentFullEntity
 
-    fun bind(appointmentFullEntity: HistoryAppointmentFullEntity) {
+    fun bind(appointmentFullEntity: AppointmentFullEntity) {
         this.appointmentFullEntity = appointmentFullEntity
 
         binding.nameMedicineTextView.text = appointmentFullEntity.nameMedicine

@@ -50,7 +50,7 @@ class AppointmentsInteractorImpl(
         // обычный список appointments превращаем в список fullAppointments
         val fullAppointments = appointments.map {
             // конкретный рецепт вытащили из репозитория
-            val prescription = prescriptionRepo.getId(it.prescriptionId)
+            val prescription = prescriptionRepo.getById(it.prescriptionId)
             val appointment = it
             // проверка на null
             requireNotNull(prescription)

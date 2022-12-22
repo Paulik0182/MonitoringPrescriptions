@@ -17,7 +17,7 @@ class PrescriptionRepoImpl : PrescriptionRepo {
         return ArrayList(date)
     }
 
-    override fun getId(id: String): PrescriptionEntity? {
+    override fun getById(id: String): PrescriptionEntity? {
         return date.find {
             id == it.id
         }
