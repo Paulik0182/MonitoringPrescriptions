@@ -16,22 +16,33 @@
         android:gravity="center_horizontal"
         android:hint="Наименование"
         android:inputType="textAutoCorrect"
-        android:maxLength="1"
+        android:maxLength="30"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
-    <EditText
-        android:id="@+id/prescribed_medicine_edit_text"
+    <TextView
+        android:id="@+id/prescribed_medicine_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:gravity="center_horizontal"
         android:hint="Вид лекарства"
-        android:inputType="textAutoCorrect"
-        android:maxLength="1"
         android:textColor="@color/black"
         android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/prescribed_medicine_spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/prescribed_medicine_text_view"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:spinnerMode="dialog"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
 
     <EditText
         android:id="@+id/dosage_edit_text"
@@ -42,21 +53,30 @@
         android:gravity="center_horizontal"
         android:hint="Количество"
         android:inputType="textAutoCorrect"
-        android:maxLength="1"
+        android:maxLength="30"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
-    <EditText
-        android:id="@+id/unit_measurement_edit_text"
+    <TextView
+        android:id="@+id/unit_measurement_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:gravity="center_horizontal"
         android:hint="Единица измерения"
-        android:inputType="textAutoCorrect"
-        android:maxLength="1"
         android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/unit_measurement_spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:spinnerMode="dialog"
+        android:textAlignment="center"
         android:textSize="18sp" />
 
     <EditText
@@ -68,7 +88,7 @@
         android:gravity="center_horizontal"
         android:hint="Комментарий"
         android:inputType="textAutoCorrect"
-        android:maxLength="3"
+        android:maxLength="50"
         android:textColor="@color/black"
         android:textSize="18sp" />
 

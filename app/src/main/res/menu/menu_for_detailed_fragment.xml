@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.root.RootActivity">
+
+    <item
+        android:id="@+id/delete_icon_menu_items"
+        android:icon="@drawable/ic_delete_forever_24"
+        android:title="Удалить"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/exit_icon_menu_items"
+        android:icon="@drawable/ic_exit_to_app_24"
+        android:title="Выход"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/save_icon_menu_items"
+        android:icon="@drawable/ic_save"
+        android:title="Сохранить"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+
+
+</menu>

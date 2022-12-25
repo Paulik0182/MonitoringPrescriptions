@@ -10,9 +10,12 @@
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable/ic_arrow_right_red_24.xml" value="0.249" />
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable/ic_baseline_receipt_24.xml" value="0.221" />
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.221" />
+        <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable/ic_delete_forever_24.xml" value="0.1" />
+        <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable/ic_exit_to_app_24.xml" value="0.1" />
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable/ic_launcher_background.xml" value="0.249" />
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable/ic_monitoring_background.xml" value="0.1" />
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable/ic_reception_24.xml" value="0.221" />
+        <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable/ic_save.xml" value="0.1" />
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable/ic_settings_24.xml" value="0.1" />
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/layout/activity_main.xml" value="0.31567028985507245" />
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/layout/activity_root.xml" value="0.25" />
@@ -29,6 +32,7 @@
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/layout/item_day_tab.xml" value="0.3138586956521739" />
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/layout/item_record_reception.xml" value="0.33" />
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
+        <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/menu/menu_for_detailed_fragment.xml" value="0.1" />
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/menu/result_popup_menu.xml" value="0.3569230769230769" />
       </map>
     </option>
