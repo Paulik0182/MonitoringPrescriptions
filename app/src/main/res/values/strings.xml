@@ -17,21 +17,34 @@
     <string name="emoji_syringe">&#128137;</string>
 
     <!-- Spinner-->
-    <string name="selected_item">Selected item:</string>
 
     <string-array name="unit_measurement">
+        <item>Единицы измерения</item>
         <item>шт.</item>
         <item>ложка</item>
         <item>мл.</item>
     </string-array>
 
     <string-array name="prescribed_medicine">
+        <item>Вид лекарств</item>
         <item>Таблетка</item>
         <item>Укол</item>
         <item>Порошок</item>
         <item>Суспензия</item>
         <item>Мазь</item>
         <item>Настойка</item>
+    </string-array>
+
+    <string-array name="dosage">
+        <item>Дозировка</item>
+        <item>0.5</item>
+        <item>1.0</item>
+        <item>1.5</item>
+        <item>2.0</item>
+        <item>2.5</item>
+        <item>3.0</item>
+        <item>3.5</item>
+        <item>4.0</item>
     </string-array>
 
 </resources>
