@@ -23,7 +23,7 @@ class AppointmentsViewHolder(
         appointmentId: String,
         appointmentStatus: AppointmentStatus
     ) -> Unit,
-//    recordListener: (ReceptionRecordPair) -> Unit
+    onPrescriptionClickListener: (AppointmentFullEntity) -> Unit
 ) : RecyclerView.ViewHolder(
 
     LayoutInflater.from(parent.context)
@@ -58,7 +58,7 @@ class AppointmentsViewHolder(
 
     init {
         itemView.setOnClickListener {
-//            recordListener.invoke(receptionRecordPair)
+            onPrescriptionClickListener.invoke(appointmentFullEntity)
         }
 
         binding.resultReceptionTextView.setOnClickListener {

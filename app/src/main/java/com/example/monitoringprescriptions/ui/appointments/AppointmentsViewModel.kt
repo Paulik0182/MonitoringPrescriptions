@@ -19,15 +19,15 @@ class AppointmentsViewModel(
         loadData()
     }
 
-    //    val selectedReceptionLiveData: LiveData<ReceptionRecordPair> = MutableLiveData()
+    val selectedReceptionLiveData: LiveData<AppointmentFullEntity> = MutableLiveData()
     val loaderVisibilityLiveData: LiveData<Boolean> = MutableLiveData()
 
     // сообщаем что данные изменились
     val appointmentsLiveData: LiveData<List<AppointmentFullEntity>> = MutableLiveData()
 
-//    fun onReceptionClick(receptionRecordPair: ReceptionRecordPair) {
-//        (selectedReceptionLiveData as MutableLiveData).value = receptionRecordPair
-//    }
+    fun onPrescriptionClick(appointmentFullEntity: AppointmentFullEntity) {
+        (selectedReceptionLiveData as MutableLiveData).value = appointmentFullEntity
+    }
 
     //получаем при нажатии статус исполнения приема лекарств
     fun onAppointmentSelected(
@@ -61,5 +61,4 @@ class AppointmentsViewModel(
     fun onTempCreateClick() {
         appointmentsInteractor.generateNewPrescription()
     }
-
 }

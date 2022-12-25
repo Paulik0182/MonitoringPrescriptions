@@ -24,6 +24,9 @@ data class AppointmentFullEntity(
 
     val dosage: Float,
 
-    val unitMeasurement: String
+    val unitMeasurement: String,
+
+    // немного рассшил сущьность
+    val comment: String = "нет комментария"
 
 ) : Parcelable

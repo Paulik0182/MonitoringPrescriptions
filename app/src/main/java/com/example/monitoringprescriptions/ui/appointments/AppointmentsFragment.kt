@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentOneDeyAppointmentsBinding
-import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
+import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.*
@@ -37,9 +37,13 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
             adapter.setData(it)
         }
 
-//        viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
-//            getController().openDetailsReception(it)
-//        }
+        viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
+            getController().openDetailsReception(it)
+        }
+
+        binding.fab.setOnClickListener {
+            getController().openDetailsReception(null)
+        }
 
         viewModel.loaderVisibilityLiveData.observe(viewLifecycleOwner) {
             // todo показать - скрыть лоадер
@@ -52,6 +56,9 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
             data = emptyList(),
             showPopupMenu = {
             },
+            onPrescriptionClickListener = {
+                viewModel.onPrescriptionClick(it)
+            },
             context = requireContext()
         ) { appointmentId, appointmentStatus ->
             viewModel.onAppointmentSelected(
@@ -59,14 +66,12 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
                 appointmentStatus
             )
         }
-//        { reception ->
-//            viewModel.onReceptionClick(reception)
-//        }
+
         binding.recordsRecyclerView.adapter = adapter
 
-        binding.fab.setOnClickListener {
-            viewModel.onTempCreateClick()
-        }
+//        binding.fab.setOnClickListener {
+//            viewModel.onTempCreateClick()
+//        }
     }
 
     // достаем календарь и модифицируем его
@@ -79,7 +84,7 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
     }
 
     interface Controller {
-        fun openDetailsReception(prescriptionEntity: PrescriptionEntity)
+        fun openDetailsReception(appointmentFullEntity: AppointmentFullEntity?)
     }
 
     private fun getController(): Controller = activity as Controller

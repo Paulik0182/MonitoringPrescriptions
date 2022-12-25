@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ActivityRootBinding
-import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
+import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 import com.example.monitoringprescriptions.ui.appointments.AppointmentsFragment
 import com.example.monitoringprescriptions.ui.details.DetailsReceptionFragment
 import com.example.monitoringprescriptions.ui.schedule.ScheduleFragment
@@ -63,8 +63,8 @@ class RootActivity : AppCompatActivity(),
             ).commit()
     }
 
-    private fun detailsReception(prescriptionEntity: PrescriptionEntity) {
-        val fragment: Fragment = DetailsReceptionFragment.newInstance(prescriptionEntity)
+    private fun detailsReception(appointmentFullEntity: AppointmentFullEntity?) {
+        val fragment: Fragment = DetailsReceptionFragment.newInstance(appointmentFullEntity)
         supportFragmentManager
             .beginTransaction()
             .replace(
@@ -78,12 +78,16 @@ class RootActivity : AppCompatActivity(),
         binding.bottomNavBar.visibility = View.GONE
     }
 
-    override fun openDetailsReception(prescriptionEntity: PrescriptionEntity) {
-        detailsReception(prescriptionEntity)
+    override fun openDetailsReception(appointmentFullEntity: AppointmentFullEntity?) {
+        detailsReception(appointmentFullEntity)
     }
 
     override fun onBackPressed() {
         binding.bottomNavBar.visibility = View.VISIBLE
         super.onBackPressed()
+    }
+
+    override fun onDataChanged() {
+        finish()
     }
 }

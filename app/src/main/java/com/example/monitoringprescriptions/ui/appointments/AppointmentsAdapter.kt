@@ -10,6 +10,7 @@ import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 class AppointmentsAdapter(
     private var data: List<AppointmentFullEntity> = mutableListOf(),
     private var showPopupMenu: () -> Unit,
+    private var onPrescriptionClickListener: (AppointmentFullEntity) -> Unit = {},
     val context: Context,
     private var listener: (
         appointmentId: String,
@@ -29,6 +30,7 @@ class AppointmentsAdapter(
             showPopupMenu,
             context,
             listener,
+            onPrescriptionClickListener
         )
     }
 
