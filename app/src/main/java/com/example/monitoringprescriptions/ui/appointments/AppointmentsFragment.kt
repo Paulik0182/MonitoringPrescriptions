@@ -85,7 +85,7 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
 
     interface Controller {
         fun openDetailsReception(appointmentFullEntity: AppointmentFullEntity)
-        fun openCreateDetailsReception()
+//        fun openCreateDetailsReception()
     }
 
     private fun getController(): Controller = activity as Controller

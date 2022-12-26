@@ -15,7 +15,10 @@ import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentDerailsPrescriptionBinding
 import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
+import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import com.example.monitoringprescriptions.utils.bpDataFormatter
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 private const val PRESCRIPTION_ID_ARG_KEY = "PRESCRIPTION_ID_ARG_KEY"
 
@@ -26,48 +29,52 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
 
     private lateinit var exitMenuItem: MenuItem
 
-    private var appointEntity: AppointmentFullEntity? = null
+    private val viewModel: DetailsPrescriptionViewModel by viewModel {
+        parametersOf(requireArguments().getString(PRESCRIPTION_ID_ARG_KEY))
+        // второй, боллее очевидный вариант
+//        val prescriptionId = requireArguments().getString(PRESCRIPTION_ID_ARG_KEY)
+//        return@viewModel parametersOf(prescriptionId)
+    }
 
-    private lateinit var unitMeasurement: Array<String>
-    private lateinit var prescribedMedicine: Array<String>
-    private lateinit var dosageSpinner: Array<String>
+    private val unitMeasurement: Array<String> by lazy {
+        resources.getStringArray(R.array.unit_measurement)
+    }
+
+    private val prescribedMedicine: Array<String> by lazy {
+        resources.getStringArray(R.array.prescribed_medicine)
+    }
+
+    private val dosageSpinner: Array<String> by lazy {
+        resources.getStringArray(R.array.dosage)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentDerailsPrescriptionBinding.bind(view)
 
-        unitMeasurement = resources.getStringArray(R.array.unit_measurement)
-        prescribedMedicine = resources.getStringArray(R.array.prescribed_medicine)
-        dosageSpinner = resources.getStringArray(R.array.dosage)
-
         setHasOptionsMenu(true)
 
-        appointEntity =
-            requireArguments().getParcelable(PRESCRIPTION_ID_ARG_KEY)// todo взяли передоваемое значение
-
-        if (appointEntity != null) {
-            setAppointmentFullEntity(appointEntity) // Положили переданное значение
-        } else {
-            setAppointmentFullEntity(null)
-        }
         saveDetailsReception()
 
-        getUnitMeasurementSpinner(appointEntity)
-        getPrescribedMedicineSpinner(appointEntity)
-        getDosageSpinner(appointEntity)
+//        viewModel.appointmentsLiveData.observe(this){ }
+
+        viewModel.prescriptionLiveData.observe(viewLifecycleOwner) {
+            fillPrescription(it)
+        }
+
+        binding.saveButton.setOnClickListener {
+            saveDetailsReception()
+        }
+
     }
 
-    private fun setAppointmentFullEntity(appointEntity: AppointmentFullEntity?) {
-        if (appointEntity != null) {
-            binding.dateStartEditText.setText(bpDataFormatter.format(appointEntity.dateStart))
-            binding.nameMedicineEditText.setText(appointEntity.nameMedicine)
-            binding.prescribedMedicineTextView.text = appointEntity.prescribedMedicine
-            binding.dosageTextView.text = appointEntity.dosage.toString()
-            binding.unitMeasurementTextView.text = appointEntity.unitMeasurement
-            binding.commentEditText.setText(appointEntity.comment)
-        } else {
-            // todo
-        }
+    private fun fillPrescription(prescription: PrescriptionEntity) {
+        binding.dateStartEditText.setText(bpDataFormatter.format(prescription.dateStart))
+        binding.nameMedicineEditText.setText(prescription.nameMedicine)
+        binding.prescribedMedicineTextView.text = prescription.prescribedMedicine
+        binding.dosageTextView.text = prescription.dosage.toString()
+        binding.unitMeasurementTextView.text = prescription.unitMeasurement
+        binding.commentEditText.setText(prescription.comment)
     }
 
     @Deprecated("Deprecated in Java")
@@ -77,11 +84,9 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
     }
 
     private fun saveDetailsReception() {
-        binding.saveButton.setOnClickListener {
 
+//        activity?.supportFragmentManager?.popBackStack() // выход
 
-            activity?.supportFragmentManager?.popBackStack() // выход
-        }
     }
 
     @Deprecated("Deprecated in Java")
@@ -89,14 +94,14 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
         when (item.itemId) {
             R.id.save_icon_menu_items -> {
                 // Делаем копию, далее изменяем данные.
-                val changedAppointEntity = appointEntity?.copy(
-                    nameMedicine = binding.nameMedicineEditText.text.toString(),
-                    prescribedMedicine = binding.prescribedMedicineTextView.text.toString(),
-                    dosage = binding.dosageTextView.text.toString().toFloat(),
-                    unitMeasurement = binding.unitMeasurementTextView.text.toString(),
-                    comment = binding.commentEditText.text.toString(),
-                    dateStart = binding.dateStartEditText.text.toString().toLong()
-                )
+//                val changedAppointEntity = appointEntity?.copy(
+//                    nameMedicine = binding.nameMedicineEditText.text.toString(),
+//                    prescribedMedicine = binding.prescribedMedicineTextView.text.toString(),
+//                    dosage = binding.dosageTextView.text.toString().toFloat(),
+//                    unitMeasurement = binding.unitMeasurementTextView.text.toString(),
+//                    comment = binding.commentEditText.text.toString(),
+//                    dateStart = binding.dateStartEditText.text.toString().toLong()
+//                )
 
 //                val appointmentsRepo = appointmentsRepo
 //                appointmentsRepo.updateAppointments(changedAppointEntity) // добавляем данные
@@ -214,51 +219,6 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
         }
     }
 
-    private fun getDosageSpinner(appointEntity: AppointmentFullEntity?) {
-        val units = binding.dosageSpinner
-        if (units != null) {
-            val unitsAdapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_item,
-                dosageSpinner
-            )
-            units.adapter = unitsAdapter
-
-            units.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-
-                    var value = units.selectedItemPosition
-                    when (value) {
-                        1 -> appointEntity?.dosage
-                        2 -> appointEntity?.dosage
-                        3 -> appointEntity?.dosage
-                        4 -> appointEntity?.dosage
-                        5 -> appointEntity?.dosage
-                        6 -> appointEntity?.dosage
-                        7 -> appointEntity?.dosage
-                        8 -> appointEntity?.dosage
-//                        else -> throw IllegalStateException("Такого значения нет")
-                    }
-
-                    Toast.makeText(
-                        requireContext(),
-                        dosageSpinner[position],
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    // todo
-                }
-            }
-        }
-    }
-
     interface Controller {
         fun onDataChanged()
     }
@@ -272,10 +232,10 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
 
     companion object {
         @JvmStatic
-        fun newInstance(appointmentId: String) =
+        fun newInstance(prescriptionId: String) =
             DetailsPrescriptionFragment().apply {
                 arguments = Bundle().apply {
-                    putString(PRESCRIPTION_ID_ARG_KEY, appointmentId)
+                    putString(PRESCRIPTION_ID_ARG_KEY, prescriptionId)
                 }
             }
     }

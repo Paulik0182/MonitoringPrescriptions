@@ -63,9 +63,9 @@ class RootActivity : AppCompatActivity(),
             ).commit()
     }
 
-    private fun detailsReception(appointmentFullEntity: AppointmentFullEntity) {
+    private fun detailsPrescription(appointmentFullEntity: AppointmentFullEntity) {
         val fragment: Fragment =
-            DetailsPrescriptionFragment.newInstance(appointmentFullEntity.appointmentId)
+            DetailsPrescriptionFragment.newInstance(appointmentFullEntity.prescriptionId)
         supportFragmentManager
             .beginTransaction()
             .replace(
@@ -80,12 +80,12 @@ class RootActivity : AppCompatActivity(),
     }
 
     override fun openDetailsReception(appointmentFullEntity: AppointmentFullEntity) {
-        detailsReception(appointmentFullEntity)
+        detailsPrescription(appointmentFullEntity)
     }
 
-    override fun openCreateDetailsReception() {
-        // todo
-    }
+//    override fun openCreateDetailsReception() {
+//        // todo
+//    }
 
     override fun onBackPressed() {
         binding.bottomNavBar.visibility = View.VISIBLE
