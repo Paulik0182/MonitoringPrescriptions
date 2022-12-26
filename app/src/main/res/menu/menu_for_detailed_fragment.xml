@@ -11,19 +11,4 @@
         android:visible="true"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/exit_icon_menu_items"
-        android:icon="@drawable/ic_exit_to_app_24"
-        android:title="Выход"
-        android:visible="true"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/save_icon_menu_items"
-        android:icon="@drawable/ic_save"
-        android:title="Сохранить"
-        android:visible="true"
-        app:showAsAction="ifRoom" />
-
-
 </menu>

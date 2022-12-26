@@ -23,6 +23,20 @@ class PrescriptionRepoImpl : PrescriptionRepo {
         }
     }
 
+    override fun updatePrescription(prescriptionEntity: PrescriptionEntity) {
+        date.removeIf {
+            it.id == prescriptionEntity.id
+        }
+
+        date.add(prescriptionEntity)
+    }
+
+    override fun delete(prescriptionEntity: PrescriptionEntity) {
+        date.removeIf {
+            it.id == prescriptionEntity.id
+        }
+    }
+
     init {
         date.add(
             PrescriptionEntity(

@@ -58,6 +58,7 @@ class AppointmentsViewModel(
         appointmentsInteractor.unsubscribe(onAppointmentListener)
     }
 
+    // todo Временно!!!!!!!!!!
     fun onTempCreateClick() {
         appointmentsInteractor.generateNewPrescription()
     }

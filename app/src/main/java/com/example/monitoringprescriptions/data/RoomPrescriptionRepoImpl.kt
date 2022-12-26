@@ -22,4 +22,12 @@ class RoomPrescriptionRepoImpl(
     override fun getById(id: String): PrescriptionEntity? {
         return prescriptionDao.getById(id)
     }
+
+    override fun updatePrescription(prescriptionEntity: PrescriptionEntity) {
+        prescriptionDao.updatePrescription(prescriptionEntity)
+    }
+
+    override fun delete(prescriptionEntity: PrescriptionEntity) {
+        prescriptionDao.delete(prescriptionEntity)
+    }
 }

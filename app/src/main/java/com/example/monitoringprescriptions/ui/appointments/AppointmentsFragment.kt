@@ -33,9 +33,7 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
 
         initViews()
 
-        viewModel.appointmentsLiveData.observe(viewLifecycleOwner) {
-            adapter.setData(it)
-        }
+        updateData()
 
         viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
             getController().openDetailsReception(it)
@@ -47,6 +45,12 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
 
         viewModel.loaderVisibilityLiveData.observe(viewLifecycleOwner) {
             // todo показать - скрыть лоадер
+        }
+    }
+
+    private fun updateData() {
+        viewModel.appointmentsLiveData.observe(viewLifecycleOwner) {
+            adapter.setData(it)
         }
     }
 

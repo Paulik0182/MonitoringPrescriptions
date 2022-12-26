@@ -27,8 +27,6 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
     private var _binding: FragmentDerailsPrescriptionBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var exitMenuItem: MenuItem
-
     private val viewModel: DetailsPrescriptionViewModel by viewModel {
         parametersOf(requireArguments().getString(PRESCRIPTION_ID_ARG_KEY))
         // второй, боллее очевидный вариант
@@ -58,6 +56,7 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
 
         binding.saveButton.setOnClickListener {
             saveDetailsReception()
+            toClose("Выйти из рецепта?", Unit)
         }
 
         initSpinner(binding.unitMeasurementSpinner, unitMeasurementSpinnerLabels) {
@@ -91,8 +90,32 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
 
     private fun saveDetailsReception() {
 
-//        activity?.supportFragmentManager?.popBackStack() // выход
+        // пример получения строки из Spinner (получаем позицию). эту строку и передаем
+        unitMeasurementSpinnerLabels[binding.unitMeasurementSpinner.selectedItemPosition]
+        prescribedMedicineSpinnerLabels[binding.prescribedMedicineSpinner.selectedItemPosition]
 
+        viewModel.onSaveDetails(
+            // собираем все данные которые имеются
+//            binding.dateStartEditText.text.toString(), // todo проблема с передачей данных
+            binding.nameMedicineEditText.text.toString(),
+            binding.dosageEditText.text.toString(),
+            binding.commentEditText.text.toString(),
+        )
+    }
+
+    // всплывающее окно (уточнее действия)!!!
+    private fun toClose(message: String, runnable: Unit) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(message)//сообщение на всплыв. окне
+            .setPositiveButton("ДА") { dialogInterface: DialogInterface, i: Int ->
+                runnable
+                activity?.onBackPressed()//выход (кнопка назад)
+                dialogInterface.dismiss()//закрываем окно. Обязательно!!
+            }
+            .setNegativeButton("НЕТ") { dialogInterface: DialogInterface, i: Int ->
+                dialogInterface.dismiss()//закрываем окно
+            }
+            .show()
     }
 
     @Deprecated("Deprecated in Java")
@@ -100,47 +123,13 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
         inflater.inflate(R.menu.menu_for_detailed_fragment, menu)
     }
 
-
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val runnable = viewModel.onDeleteClick()
+
         when (item.itemId) {
-            R.id.save_icon_menu_items -> {
-                // Делаем копию, далее изменяем данные.
-//                val changedAppointEntity = appointEntity?.copy(
-//                    nameMedicine = binding.nameMedicineEditText.text.toString(),
-//                    prescribedMedicine = binding.prescribedMedicineTextView.text.toString(),
-//                    dosage = binding.dosageTextView.text.toString().toFloat(),
-//                    unitMeasurement = binding.unitMeasurementTextView.text.toString(),
-//                    comment = binding.commentEditText.text.toString(),
-//                    dateStart = binding.dateStartEditText.text.toString().toLong()
-//                )
-
-//                val appointmentsRepo = appointmentsRepo
-//                appointmentsRepo.updateAppointments(changedAppointEntity) // добавляем данные
-//                getController().onDataChanged() // обновляем данные
-
-                activity?.supportFragmentManager?.popBackStack() //выход (кнопка назад)
-                return true
-            }
-
-            R.id.exit_icon_menu_items -> {
-                activity?.supportFragmentManager?.popBackStack() //выход (кнопка назад)
-            }
-
             R.id.delete_icon_menu_items -> {
-//                val appointmentsRepo = appointmentsRepo
-
-                // всплывающее окно (уточнее действия)!!!
-                AlertDialog.Builder(requireContext())
-                    .setTitle("Вы уверены что хотите удалить запись?")//сообщение на всплыв. окне
-                    .setPositiveButton("ДА") { dialogInterface: DialogInterface, i: Int ->
-                        viewModel.onDeleteClick() //Удаление записи
-                        dialogInterface.dismiss()//закрываем окно. Обязательно!!
-                    }
-                    .setNegativeButton("НЕТ") { dialogInterface: DialogInterface, i: Int ->
-                        dialogInterface.dismiss()//закрываем окно
-                    }
-                    .show()
+                toClose("Вы уверены что хотите удалить запись?", runnable)
             }
         }
         return super.onOptionsItemSelected(item)
