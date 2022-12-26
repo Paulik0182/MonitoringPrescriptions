@@ -13,30 +13,20 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
-import com.example.monitoringprescriptions.databinding.FragmentDerailsReceptionBinding
+import com.example.monitoringprescriptions.databinding.FragmentDerailsPrescriptionBinding
 import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
-import com.example.monitoringprescriptions.domain.interactors.AppointmentsInteractor
-import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
-import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
 import com.example.monitoringprescriptions.utils.bpDataFormatter
-import org.koin.android.ext.android.inject
 
-private const val DETAILS_RECEPTION_KEY = "DETAILS_RECEPTION_KEY"
+private const val PRESCRIPTION_ID_ARG_KEY = "PRESCRIPTION_ID_ARG_KEY"
 
-class DetailsReceptionFragment : Fragment(R.layout.fragment_derails_reception) {
+class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescription) {
 
-    private var _binding: FragmentDerailsReceptionBinding? = null
+    private var _binding: FragmentDerailsPrescriptionBinding? = null
     private val binding get() = _binding!!
 
-    private val appointmentsRepo: AppointmentsRepo by inject()
-    private val prescriptionRepo: PrescriptionRepo by inject()
-    private val appointmentsInteractor: AppointmentsInteractor by inject()
-
-    private lateinit var saveMenuItem: MenuItem
-    private lateinit var delMenuItem: MenuItem
     private lateinit var exitMenuItem: MenuItem
 
-    private lateinit var appointEntity: AppointmentFullEntity
+    private var appointEntity: AppointmentFullEntity? = null
 
     private lateinit var unitMeasurement: Array<String>
     private lateinit var prescribedMedicine: Array<String>
@@ -44,7 +34,7 @@ class DetailsReceptionFragment : Fragment(R.layout.fragment_derails_reception) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentDerailsReceptionBinding.bind(view)
+        _binding = FragmentDerailsPrescriptionBinding.bind(view)
 
         unitMeasurement = resources.getStringArray(R.array.unit_measurement)
         prescribedMedicine = resources.getStringArray(R.array.prescribed_medicine)
@@ -53,15 +43,14 @@ class DetailsReceptionFragment : Fragment(R.layout.fragment_derails_reception) {
         setHasOptionsMenu(true)
 
         appointEntity =
-            requireArguments().getParcelable(DETAILS_RECEPTION_KEY)
-                ?: appointEntity // todo взяли передоваемое значение
+            requireArguments().getParcelable(PRESCRIPTION_ID_ARG_KEY)// todo взяли передоваемое значение
 
         if (appointEntity != null) {
             setAppointmentFullEntity(appointEntity) // Положили переданное значение
         } else {
             setAppointmentFullEntity(null)
         }
-
+        saveDetailsReception()
 
         getUnitMeasurementSpinner(appointEntity)
         getPrescribedMedicineSpinner(appointEntity)
@@ -84,9 +73,15 @@ class DetailsReceptionFragment : Fragment(R.layout.fragment_derails_reception) {
     @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_for_detailed_fragment, menu)
-        saveMenuItem = menu.findItem(R.id.save_icon_menu_items)
-        delMenuItem = menu.findItem(R.id.delete_icon_menu_items)
         exitMenuItem = menu.findItem(R.id.exit_icon_menu_items)
+    }
+
+    private fun saveDetailsReception() {
+        binding.saveButton.setOnClickListener {
+
+
+            activity?.supportFragmentManager?.popBackStack() // выход
+        }
     }
 
     @Deprecated("Deprecated in Java")
@@ -94,7 +89,7 @@ class DetailsReceptionFragment : Fragment(R.layout.fragment_derails_reception) {
         when (item.itemId) {
             R.id.save_icon_menu_items -> {
                 // Делаем копию, далее изменяем данные.
-                val changedAppointEntity = appointEntity.copy(
+                val changedAppointEntity = appointEntity?.copy(
                     nameMedicine = binding.nameMedicineEditText.text.toString(),
                     prescribedMedicine = binding.prescribedMedicineTextView.text.toString(),
                     dosage = binding.dosageTextView.text.toString().toFloat(),
@@ -103,11 +98,11 @@ class DetailsReceptionFragment : Fragment(R.layout.fragment_derails_reception) {
                     dateStart = binding.dateStartEditText.text.toString().toLong()
                 )
 
-                val appointmentsRepo = appointmentsRepo
+//                val appointmentsRepo = appointmentsRepo
 //                appointmentsRepo.updateAppointments(changedAppointEntity) // добавляем данные
 //                getController().onDataChanged() // обновляем данные
-                activity?.supportFragmentManager?.popBackStack() // выход
 
+                activity?.supportFragmentManager?.popBackStack() //выход (кнопка назад)
                 return true
             }
 
@@ -116,13 +111,13 @@ class DetailsReceptionFragment : Fragment(R.layout.fragment_derails_reception) {
             }
 
             R.id.delete_icon_menu_items -> {
-                val appointmentsRepo = appointmentsRepo
+//                val appointmentsRepo = appointmentsRepo
 
                 // всплывающее окно (уточнее действия)!!!
                 AlertDialog.Builder(requireContext())
                     .setTitle("Вы уверены что хотите удалить запись?")//сообщение на всплыв. окне
                     .setPositiveButton("ДА") { dialogInterface: DialogInterface, i: Int ->
-                        appointmentsRepo //Удаление записи
+//                        appointmentsRepo //Удаление записи
                         activity?.onBackPressed()//выход (кнопка назад)
                         dialogInterface.dismiss()//закрываем окно. Обязательно!!
                     }
@@ -277,10 +272,10 @@ class DetailsReceptionFragment : Fragment(R.layout.fragment_derails_reception) {
 
     companion object {
         @JvmStatic
-        fun newInstance(appointmentFullEntity: AppointmentFullEntity?) =
-            DetailsReceptionFragment().apply {
+        fun newInstance(appointmentId: String) =
+            DetailsPrescriptionFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(DETAILS_RECEPTION_KEY, appointmentFullEntity)
+                    putString(PRESCRIPTION_ID_ARG_KEY, appointmentId)
                 }
             }
     }
