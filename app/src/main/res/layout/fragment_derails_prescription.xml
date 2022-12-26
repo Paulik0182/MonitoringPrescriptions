@@ -16,7 +16,7 @@
         android:layout_marginBottom="5dp"
         android:gravity="center_horizontal"
         android:hint="Начало приема лекарства"
-        android:inputType="date"
+        android:inputType="datetime"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
@@ -33,17 +33,6 @@
         android:textColor="@color/black"
         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/prescribed_medicine_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:gravity="center_horizontal"
-        android:hint="Вид лекарства"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
-
     <Spinner
         android:id="@+id/prescribed_medicine_spinner"
         style="@style/Widget.AppCompat.Spinner.Underlined"
@@ -56,14 +45,16 @@
         android:textAlignment="center" />
 
 
-    <TextView
-        android:id="@+id/dosage_text_view"
+    <EditText
+        android:id="@+id/dosage_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:gravity="center_horizontal"
+        android:inputType="numberDecimal"
         android:hint="Дозеровка"
+        android:maxLength="5"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
@@ -77,17 +68,6 @@
         android:entries="@array/dosage"
         android:spinnerMode="dialog"
         android:textAlignment="center" />
-
-    <TextView
-        android:id="@+id/unit_measurement_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:gravity="center_horizontal"
-        android:hint="Единица измерения"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/unit_measurement_spinner"

@@ -33,6 +33,7 @@
         <item>Суспензия</item>
         <item>Мазь</item>
         <item>Настойка</item>
+        <item>Капли</item>
     </string-array>
 
     <string-array name="dosage">

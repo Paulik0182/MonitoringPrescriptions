@@ -10,13 +10,13 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentDerailsPrescriptionBinding
-import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import com.example.monitoringprescriptions.utils.bpDataFormatter
+import com.example.monitoringprescriptions.utils.decimalForm
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -36,15 +36,15 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
 //        return@viewModel parametersOf(prescriptionId)
     }
 
-    private val unitMeasurement: Array<String> by lazy {
+    private val unitMeasurementSpinnerLabels: Array<String> by lazy {
         resources.getStringArray(R.array.unit_measurement)
     }
 
-    private val prescribedMedicine: Array<String> by lazy {
+    private val prescribedMedicineSpinnerLabels: Array<String> by lazy {
         resources.getStringArray(R.array.prescribed_medicine)
     }
 
-    private val dosageSpinner: Array<String> by lazy {
+    private val dosageSpinnerLabels: Array<String> by lazy {
         resources.getStringArray(R.array.dosage)
     }
 
@@ -56,8 +56,6 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
 
         saveDetailsReception()
 
-//        viewModel.appointmentsLiveData.observe(this){ }
-
         viewModel.prescriptionLiveData.observe(viewLifecycleOwner) {
             fillPrescription(it)
         }
@@ -66,21 +64,43 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
             saveDetailsReception()
         }
 
+        initSpinner(binding.unitMeasurementSpinner, unitMeasurementSpinnerLabels) {
+            viewModel.onUnitMeasurementSelectSpinner(it)
+        }
+
+        initSpinner(binding.prescribedMedicineSpinner, prescribedMedicineSpinnerLabels) {
+            viewModel.onMedicineSelectSpinner(it)
+        }
+
+        initSpinner(binding.dosageSpinner, dosageSpinnerLabels) {
+            viewModel.onDosageSelectSpinner(it)
+        }
     }
 
     private fun fillPrescription(prescription: PrescriptionEntity) {
         binding.dateStartEditText.setText(bpDataFormatter.format(prescription.dateStart))
         binding.nameMedicineEditText.setText(prescription.nameMedicine)
-        binding.prescribedMedicineTextView.text = prescription.prescribedMedicine
-        binding.dosageTextView.text = prescription.dosage.toString()
-        binding.unitMeasurementTextView.text = prescription.unitMeasurement
+        binding.dosageEditText.setText(decimalForm.format(prescription.dosage))
         binding.commentEditText.setText(prescription.comment)
-    }
 
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_for_detailed_fragment, menu)
-        exitMenuItem = menu.findItem(R.id.exit_icon_menu_items)
+        // выясняем какому элементу массива соответствует выставленное значение
+        prescribedMedicineSpinnerLabels.forEachIndexed { i, medicine ->
+            if (medicine == prescription.prescribedMedicine) {
+                binding.prescribedMedicineSpinner.setSelection(i)
+            }
+        }
+
+        unitMeasurementSpinnerLabels.forEachIndexed { i, unit ->
+            if (unit == prescription.unitMeasurement) {
+                binding.unitMeasurementSpinner.setSelection(i)
+            }
+        }
+
+        dosageSpinnerLabels.forEachIndexed { i, dosage ->
+            if (dosage == prescription.dosage.toString()) {
+                binding.dosageSpinner.setSelection(i)
+            }
+        }
     }
 
     private fun saveDetailsReception() {
@@ -88,6 +108,12 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
 //        activity?.supportFragmentManager?.popBackStack() // выход
 
     }
+
+    @Deprecated("Deprecated in Java")
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_for_detailed_fragment, menu)
+    }
+
 
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -122,8 +148,7 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
                 AlertDialog.Builder(requireContext())
                     .setTitle("Вы уверены что хотите удалить запись?")//сообщение на всплыв. окне
                     .setPositiveButton("ДА") { dialogInterface: DialogInterface, i: Int ->
-//                        appointmentsRepo //Удаление записи
-                        activity?.onBackPressed()//выход (кнопка назад)
+                        viewModel.onDeleteClick() //Удаление записи
                         dialogInterface.dismiss()//закрываем окно. Обязательно!!
                     }
                     .setNegativeButton("НЕТ") { dialogInterface: DialogInterface, i: Int ->
@@ -136,85 +161,31 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
     }
 
 
-    private fun getUnitMeasurementSpinner(appointEntity: AppointmentFullEntity?) {
-        val units = binding.unitMeasurementSpinner
-        if (units != null) {
-            val unitsAdapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_item,
-                unitMeasurement
-            )
-            units.adapter = unitsAdapter
+    private fun initSpinner(spinner: Spinner, labels: Array<String>, onSelect: (String) -> Unit) {
+        spinner.adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            labels
+        )
 
-            units.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                onSelect(labels[position])// здесь позиция котораю передали
 
-                    var value = units.selectedItemPosition
-                    when (value) {
-                        1 -> appointEntity?.unitMeasurement
-                        2 -> appointEntity?.unitMeasurement
-                        3 -> appointEntity?.unitMeasurement
-//                        else -> throw IllegalStateException("Такого значения нет")
-                    }
-
-                    Toast.makeText(
-                        requireContext(),
-                        unitMeasurement[position],
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    // todo
-                }
+//                Toast.makeText(
+//                    requireContext(),
+//                    labels[position],
+//                    Toast.LENGTH_SHORT
+//                ).show()
             }
-        }
-    }
 
-    private fun getPrescribedMedicineSpinner(appointEntity: AppointmentFullEntity?) {
-        val units = binding.prescribedMedicineSpinner
-        if (units != null) {
-            val unitsAdapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_item,
-                prescribedMedicine
-            )
-            units.adapter = unitsAdapter
-
-            units.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-
-                    var value = units.selectedItemPosition
-                    when (value) {
-                        1 -> appointEntity?.prescribedMedicine
-                        2 -> appointEntity?.prescribedMedicine
-                        3 -> appointEntity?.prescribedMedicine
-                        4 -> appointEntity?.prescribedMedicine
-                        5 -> appointEntity?.prescribedMedicine
-                        6 -> appointEntity?.prescribedMedicine
-//                        else -> throw IllegalStateException("Такого значения нет")
-                    }
-
-                    Toast.makeText(
-                        requireContext(),
-                        prescribedMedicine[position],
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    // todo
-                }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // todo
             }
         }
     }

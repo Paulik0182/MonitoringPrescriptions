@@ -11,6 +11,22 @@ class DetailsPrescriptionViewModel(
     private val prescriptionId: String,
     private val prescriptionRepo: PrescriptionRepo
 ) : ViewModel() {
+    fun onDeleteClick() {
+//        prescriptionRepo.delete()
+        // todo
+    }
+
+    fun onUnitMeasurementSelectSpinner(unitMeasurement: String) {
+        // todo
+    }
+
+    fun onMedicineSelectSpinner(medicine: String) {
+        // todo
+    }
+
+    fun onDosageSelectSpinner(dosage: String) {
+        // todo
+    }
 
     // сообщаем ViewModel отрисовать данные
     val prescriptionLiveData: LiveData<PrescriptionEntity> = MutableLiveData()
