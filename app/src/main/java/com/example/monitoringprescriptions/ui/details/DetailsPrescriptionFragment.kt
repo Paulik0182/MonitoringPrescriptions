@@ -44,10 +44,6 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
         resources.getStringArray(R.array.prescribed_medicine)
     }
 
-    private val dosageSpinnerLabels: Array<String> by lazy {
-        resources.getStringArray(R.array.dosage)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentDerailsPrescriptionBinding.bind(view)
@@ -71,10 +67,6 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
         initSpinner(binding.prescribedMedicineSpinner, prescribedMedicineSpinnerLabels) {
             viewModel.onMedicineSelectSpinner(it)
         }
-
-        initSpinner(binding.dosageSpinner, dosageSpinnerLabels) {
-            viewModel.onDosageSelectSpinner(it)
-        }
     }
 
     private fun fillPrescription(prescription: PrescriptionEntity) {
@@ -93,12 +85,6 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
         unitMeasurementSpinnerLabels.forEachIndexed { i, unit ->
             if (unit == prescription.unitMeasurement) {
                 binding.unitMeasurementSpinner.setSelection(i)
-            }
-        }
-
-        dosageSpinnerLabels.forEachIndexed { i, dosage ->
-            if (dosage == prescription.dosage.toString()) {
-                binding.dosageSpinner.setSelection(i)
             }
         }
     }

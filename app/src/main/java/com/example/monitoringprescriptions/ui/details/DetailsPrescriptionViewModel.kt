@@ -24,10 +24,6 @@ class DetailsPrescriptionViewModel(
         // todo
     }
 
-    fun onDosageSelectSpinner(dosage: String) {
-        // todo
-    }
-
     // сообщаем ViewModel отрисовать данные
     val prescriptionLiveData: LiveData<PrescriptionEntity> = MutableLiveData()
 

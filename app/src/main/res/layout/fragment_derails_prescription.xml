@@ -33,7 +33,7 @@
         android:textColor="@color/black"
         android:textSize="18sp" />
 
-    <Spinner
+    <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/prescribed_medicine_spinner"
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="match_parent"
@@ -57,17 +57,6 @@
         android:maxLength="5"
         android:textColor="@color/black"
         android:textSize="18sp" />
-
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/dosage_spinner"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:entries="@array/dosage"
-        android:spinnerMode="dialog"
-        android:textAlignment="center" />
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/unit_measurement_spinner"
