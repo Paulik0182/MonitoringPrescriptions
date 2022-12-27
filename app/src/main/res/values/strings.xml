@@ -19,14 +19,14 @@
     <!-- Spinner-->
 
     <string-array name="unit_measurement">
-        <item>Единицы измерения</item>
+        <item>Еди. изм.</item>
         <item>шт.</item>
         <item>ложка</item>
         <item>мл.</item>
     </string-array>
 
     <string-array name="prescribed_medicine">
-        <item>Вид лекарств</item>
+        <item></item>
         <item>Таблетка</item>
         <item>Укол</item>
         <item>Порошок</item>

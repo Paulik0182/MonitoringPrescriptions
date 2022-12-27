@@ -8,79 +8,231 @@
     android:orientation="vertical"
     tools:context=".ui.details.DetailsPrescriptionFragment">
 
-    <EditText
-        android:id="@+id/date_start_edit_text"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:gravity="center_horizontal"
-        android:hint="Начало приема лекарства"
-        android:inputType="datetime"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:background="@drawable/my_radius_15"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/name_medicine_edit_text"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:gravity="start"
+                android:text="Начало приема лекарства:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/default_abbreviation_text" />
+
+            <EditText
+                android:id="@+id/date_start_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:hint="00.00.0000"
+                android:inputType="datetime"
+                android:textColor="@color/black"
+                android:textSize="@dimen/default_text" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:text="Наименование:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/default_abbreviation_text" />
+
+            <EditText
+                android:id="@+id/name_medicine_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1.9"
+                android:gravity="center_horizontal"
+                android:hint="Наименование"
+                android:inputType="textAutoCorrect"
+                android:maxLength="30"
+                android:textColor="@color/black"
+                android:textSize="@dimen/default_text" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:text="Вид лекарства:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/default_abbreviation_text" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/prescribed_medicine_spinner"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="2"
+                android:entries="@array/prescribed_medicine"
+                android:gravity="center_horizontal"
+                android:spinnerMode="dialog"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:text="Дозировка:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/default_abbreviation_text" />
+
+            <EditText
+                android:id="@+id/dosage_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:hint="Дозеровка"
+                android:inputType="numberDecimal"
+                android:maxLength="5"
+                android:textColor="@color/black"
+                android:textSize="@dimen/default_text" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/unit_measurement_spinner"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:entries="@array/unit_measurement"
+                android:gravity="center_horizontal"
+                android:spinnerMode="dialog"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:gravity="center_horizontal"
-        android:hint="Наименование"
-        android:inputType="textAutoCorrect"
-        android:maxLength="30"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:layout_marginTop="@dimen/default_margin"
+        android:background="@drawable/my_radius_15"
+        android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/prescribed_medicine_spinner"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start_description_details_bp"
+            android:layout_marginTop="@dimen/margin_top_end_description_details_bp"
+            android:gravity="left|top"
+            android:hint="Комментарий:"
+            android:textColor="@color/black"
+            android:textSize="@dimen/default_abbreviation_text" />
+
+        <EditText
+            android:id="@+id/comment_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_description_details_bp"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="left|top"
+            android:hint="Комментарий"
+            android:inputType="textAutoCorrect"
+            android:maxLength="60"
+            android:textColor="@color/black"
+            android:textSize="@dimen/default_text" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:spinnerMode="dialog"
-        android:entries="@array/prescribed_medicine"
-        android:textAlignment="center" />
+        android:layout_height="250dp"
+        android:layout_marginTop="@dimen/default_margin"
+        android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/dosage_edit_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:gravity="center_horizontal"
-        android:inputType="numberDecimal"
-        android:hint="Дозеровка"
-        android:maxLength="5"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Прием - дата/время"
+                android:textColor="@color/black"
+                android:textSize="@dimen/default_abbreviation_text" />
 
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/unit_measurement_spinner"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:spinnerMode="dialog"
-        android:entries="@array/unit_measurement"
-        android:textAlignment="center" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Принято"
+                android:textColor="@color/black"
+                android:textSize="@dimen/default_abbreviation_text" />
+        </LinearLayout>
 
-    <EditText
-        android:id="@+id/comment_edit_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:gravity="center_horizontal"
-        android:hint="Комментарий"
-        android:inputType="textAutoCorrect"
-        android:maxLength="50"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/records_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="1dp"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/item_assigned" />
+
+    </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/save_button"

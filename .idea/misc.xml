@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable-v24/my_radius_25.xml" value="0.2185" />
+        <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable-v24/my_radius_50.xml" value="0.2185" />
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable/add_header.xml" value="0.22" />
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable/border.xml" value="0.22" />
         <entry key="..\:/ProgramsAndroid/MonitoringPrescriptions/app/src/main/res/drawable/ic_arrow_right_green_24.xml" value="0.249" />
