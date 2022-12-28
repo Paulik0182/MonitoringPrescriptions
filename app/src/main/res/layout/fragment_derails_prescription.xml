@@ -30,7 +30,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/default_abbreviation_text" />
 
-            <EditText
+            <TextView
                 android:id="@+id/date_start_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -39,7 +39,6 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:hint="00.00.0000"
-                android:inputType="datetime"
                 android:textColor="@color/black"
                 android:textSize="@dimen/default_text" />
 

@@ -1,6 +1,9 @@
 package com.example.monitoringprescriptions.ui.details
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
@@ -8,9 +11,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.monitoringprescriptions.R
@@ -20,10 +21,14 @@ import com.example.monitoringprescriptions.utils.bpDataFormatter
 import com.example.monitoringprescriptions.utils.decimalForm
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.util.*
 
 private const val PRESCRIPTION_ID_ARG_KEY = "PRESCRIPTION_ID_ARG_KEY"
 
-class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescription) {
+class DetailsPrescriptionFragment :
+    Fragment(R.layout.fragment_derails_prescription),
+    DatePickerDialog.OnDateSetListener,
+    TimePickerDialog.OnTimeSetListener {
 
     private var _binding: FragmentDerailsPrescriptionBinding? = null
     private val binding get() = _binding!!
@@ -55,6 +60,7 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
 
         initPrescription()
 
+        picDate()
 
         viewModel.prescriptionListLiveDate.observe(viewLifecycleOwner) {
             prescriptionAdapter.setData(it)
@@ -209,4 +215,52 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
         super.onDestroyView()
         _binding = null
     }
+
+    private var gay = 0
+    private var month = 0
+    private var year = 0
+    private var hour = 0
+    private var minute = 0
+
+    private var saveDay = 0
+    private var saveMonth = 0
+    private var saveYear = 0
+    private var saveHour = 0
+    private var saveMinute = 0
+
+    private fun getDateTimeCalendar() {
+        val calendar = Calendar.getInstance()
+        gay = calendar.get(Calendar.DAY_OF_MONTH)
+        month = calendar.get(Calendar.MONTH)
+        year = calendar.get(Calendar.YEAR)
+        hour = calendar.get(Calendar.HOUR)
+        minute = calendar.get(Calendar.MINUTE)
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        saveDay = dayOfMonth
+        saveMonth = month
+        saveYear = year
+
+        getDateTimeCalendar()
+
+        TimePickerDialog(requireContext(), this, hour, minute, true).show()
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        saveHour = hourOfDay
+        saveMinute = minute
+
+        binding.dateStartEditText.text =
+            "$saveDay.$saveMonth.$saveYear\n Время: $saveHour:$saveMinute"
+    }
+
+    private fun picDate() {
+        binding.dateStartEditText.setOnClickListener {
+            getDateTimeCalendar()
+            DatePickerDialog(requireContext(), this, year, month, gay).show()
+        }
+    }
+
 }
