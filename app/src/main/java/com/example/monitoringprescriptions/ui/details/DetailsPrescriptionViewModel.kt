@@ -3,14 +3,17 @@ package com.example.monitoringprescriptions.ui.details
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
 import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import com.example.monitoringprescriptions.domain.interactors.AppointmentsInteractor
+import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
 import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
 import com.example.monitoringprescriptions.utils.mutable
 
 class DetailsPrescriptionViewModel(
     private val prescriptionId: String,
     private val prescriptionRepo: PrescriptionRepo,
+    private val appointmentsRepo: AppointmentsRepo,
     private val appointmentsInteractor: AppointmentsInteractor
 ) : ViewModel() {
 
