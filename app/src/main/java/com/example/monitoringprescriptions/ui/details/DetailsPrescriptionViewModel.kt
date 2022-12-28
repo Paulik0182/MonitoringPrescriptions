@@ -41,7 +41,7 @@ class DetailsPrescriptionViewModel(
     }
 
 
-    val prescriptionListLiveDate: LiveData<List<PrescriptionEntity>> = MutableLiveData()
+    val prescriptionListLiveDate: LiveData<List<AppointmentEntity?>> = MutableLiveData()
 
     // сообщаем ViewModel отрисовать данные
     val prescriptionLiveData: LiveData<PrescriptionEntity> = MutableLiveData()
@@ -51,8 +51,8 @@ class DetailsPrescriptionViewModel(
         val prescription = prescriptionRepo.getById(prescriptionId)
         prescriptionLiveData.mutable().postValue(prescription)
 
-        val prescriptionList = prescriptionRepo.getListPrescriptionId(prescriptionId)
-        prescriptionListLiveDate.mutable().postValue(prescriptionList)
+        val appointmentList = appointmentsRepo.getPrescriptionAppointments(prescriptionId)
+        prescriptionListLiveDate.mutable().postValue(appointmentList)
     }
 
 }
