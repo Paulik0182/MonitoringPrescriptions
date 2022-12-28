@@ -12,6 +12,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentDerailsPrescriptionBinding
 import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
@@ -34,6 +35,8 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
 //        return@viewModel parametersOf(prescriptionId)
     }
 
+    private lateinit var prescriptionAdapter: PrescriptionAdapter
+
     private val unitMeasurementSpinnerLabels: Array<String> by lazy {
         resources.getStringArray(R.array.unit_measurement)
     }
@@ -49,6 +52,13 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
         setHasOptionsMenu(true)
 
         saveDetailsReception()
+
+        initPrescription()
+
+
+        viewModel.prescriptionListLiveDate.observe(viewLifecycleOwner) {
+            prescriptionAdapter.setData(it)
+        }
 
         viewModel.prescriptionLiveData.observe(viewLifecycleOwner) {
             fillPrescription(it)
@@ -163,6 +173,15 @@ class DetailsPrescriptionFragment : Fragment(R.layout.fragment_derails_prescript
                 // todo
             }
         }
+    }
+
+    private fun initPrescription() {
+        binding.recordsRecyclerView.layoutManager = LinearLayoutManager(context)
+        prescriptionAdapter = PrescriptionAdapter(
+            data = emptyList(),
+            context = requireContext()
+        )
+        binding.recordsRecyclerView.adapter = prescriptionAdapter
     }
 
     interface Controller {
