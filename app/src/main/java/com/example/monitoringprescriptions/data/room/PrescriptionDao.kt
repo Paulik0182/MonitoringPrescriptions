@@ -17,6 +17,10 @@ interface PrescriptionDao {
     @Query("SELECT * FROM prescriptions WHERE id == (:id)")
     fun getById(id: String): PrescriptionEntity?
 
+    // Запрос ("ВЫБЕРИТЕ * ИЗ рецептов, ГДЕ id == (:id))
+    @Query("SELECT * FROM prescriptions WHERE id == (:id)")
+    fun getListById(id: String): List<PrescriptionEntity>
+
     @Update
     fun updatePrescription(prescriptionEntity: PrescriptionEntity)
 

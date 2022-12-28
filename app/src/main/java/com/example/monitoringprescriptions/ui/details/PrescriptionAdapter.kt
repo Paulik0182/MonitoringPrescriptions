@@ -4,15 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
+import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 
 class PrescriptionAdapter(
-    private var data: List<AppointmentEntity> = mutableListOf(),
+    private var data: List<PrescriptionEntity> = mutableListOf(),
     val context: Context,
 ) : RecyclerView.Adapter<PrescriptionViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(prescriptionEntity: List<AppointmentEntity>) {
+    fun setData(prescriptionEntity: List<PrescriptionEntity>) {
         data = prescriptionEntity
         notifyDataSetChanged()
     }
@@ -28,7 +28,7 @@ class PrescriptionAdapter(
         holder.bind(getItem(position))
     }
 
-    private fun getItem(position: Int): AppointmentEntity = data[position]
+    private fun getItem(position: Int): PrescriptionEntity = data[position]
 
     override fun getItemCount(): Int = data.size
 }

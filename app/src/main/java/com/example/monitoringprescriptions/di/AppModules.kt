@@ -59,5 +59,5 @@ val appModules = module {
     single<AppointmentsInteractor> { AppointmentsInteractorImpl(get(), get()) }
 
     viewModel { parameters -> AppointmentsViewModel(get(), parameters.get()) }
-    viewModel { parameters -> DetailsPrescriptionViewModel(parameters.get(), get(), get(), get()) }
+    viewModel { parameters -> DetailsPrescriptionViewModel(parameters.get(), get(), get()) }
 }

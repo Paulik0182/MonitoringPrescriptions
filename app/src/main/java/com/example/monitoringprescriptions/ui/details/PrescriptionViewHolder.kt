@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ItemAssignedBinding
-import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
+import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 
 class PrescriptionViewHolder(
     parent: ViewGroup,
@@ -17,11 +17,12 @@ class PrescriptionViewHolder(
 ) {
 
     private val binding: ItemAssignedBinding = ItemAssignedBinding.bind(itemView)
-    private lateinit var prescriptionEntity: AppointmentEntity
+    private lateinit var prescriptionEntity: PrescriptionEntity
 
-    fun bind(prescriptionEntity: AppointmentEntity) {
+    fun bind(prescriptionEntity: PrescriptionEntity) {
         this.prescriptionEntity = prescriptionEntity
 
-        binding.nameMedicineTextView.text = prescriptionEntity.prescriptionId
+        binding.nameMedicineTextView.text = prescriptionEntity.nameMedicine
+
     }
 }
