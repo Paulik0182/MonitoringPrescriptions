@@ -107,15 +107,27 @@ class DetailsPrescriptionFragment :
     private fun saveDetailsReception() {
 
         // пример получения строки из Spinner (получаем позицию). эту строку и передаем
-        unitMeasurementSpinnerLabels[binding.unitMeasurementSpinner.selectedItemPosition]
-        prescribedMedicineSpinnerLabels[binding.prescribedMedicineSpinner.selectedItemPosition]
+        val unitMeasurement =
+            unitMeasurementSpinnerLabels[binding.unitMeasurementSpinner.selectedItemPosition]
+        val prescribedMedicine =
+            prescribedMedicineSpinnerLabels[binding.prescribedMedicineSpinner.selectedItemPosition]
+
+        val dateStartMs = Calendar.getInstance().apply {
+            set(Calendar.YEAR, saveYear)
+            set(Calendar.MONTH, saveMonth)
+            set(Calendar.DAY_OF_MONTH, saveDay)
+            set(Calendar.HOUR_OF_DAY, saveHour)
+            set(Calendar.MINUTE, saveMinute)
+        }.timeInMillis
 
         viewModel.onSaveDetails(
             // собираем все данные которые имеются
-//            binding.dateStartEditText.text.toString(), // todo проблема с передачей данных
+            dateStartMs,
             binding.nameMedicineEditText.text.toString(),
             binding.dosageEditText.text.toString(),
             binding.commentEditText.text.toString(),
+            prescribedMedicine,
+            unitMeasurement
         )
     }
 
@@ -169,12 +181,6 @@ class DetailsPrescriptionFragment :
                 id: Long
             ) {
                 onSelect(labels[position])// здесь позиция котораю передали
-
-//                Toast.makeText(
-//                    requireContext(),
-//                    labels[position],
-//                    Toast.LENGTH_SHORT
-//                ).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {

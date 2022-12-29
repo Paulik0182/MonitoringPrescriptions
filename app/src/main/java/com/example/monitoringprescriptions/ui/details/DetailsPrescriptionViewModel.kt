@@ -32,9 +32,18 @@ class DetailsPrescriptionViewModel(
         // todo
     }
 
-    fun onSaveDetails(nameMedicine: String, dosage: String, comment: String) {
+    fun onSaveDetails(
+        dateStart: Long,
+        nameMedicine: String,
+        dosage: String,
+        comment: String,
+        prescribedMedicine: String,
+        unitMeasurement: String,
+    ) {
         prescriptionLiveData.value?.copy(
-//            dateStart = dateStart.toLong(), // todo проблема с передачей данных
+            dateStart = dateStart,
+            prescribedMedicine = prescribedMedicine,
+            unitMeasurement = unitMeasurement,
             nameMedicine = nameMedicine,
             dosage = dosage.toFloat(),
             comment = comment
