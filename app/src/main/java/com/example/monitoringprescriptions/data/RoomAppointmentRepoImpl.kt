@@ -49,4 +49,8 @@ class RoomAppointmentRepoImpl(
     override fun updateAppointments(copy: AppointmentEntity) {
         appointmentDao.updateAppointments(copy)
     }
+
+    override fun deletePrescriptionAppointments(prescriptionId: String) {
+        appointmentDao.remove(appointmentDao.getPrescriptionAppointments(prescriptionId))
+    }
 }

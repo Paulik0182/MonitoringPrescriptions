@@ -18,7 +18,4 @@ interface AppointmentsInteractor {
     fun generateNewPrescription()
     fun delete(prescriptionEntity: PrescriptionEntity) // todo изменил (удаление)!!!!
 
-    // подписка изменения данных // todo изменил (удаление)!!!!
-    fun addOnDataChangedListener(listener: Runnable)
-    fun removeListener(listener: Runnable)
 }

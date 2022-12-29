@@ -45,6 +45,12 @@ class AppointmentsRepoImpl : AppointmentsRepo {
         dataAppointments.add(appointment)
     }
 
+    override fun deletePrescriptionAppointments(prescriptionId: String) {
+        dataAppointments.removeIf {
+            it.prescriptionId == prescriptionId
+        }
+    }
+
     init {
         dataAppointments.add(
             AppointmentEntity(

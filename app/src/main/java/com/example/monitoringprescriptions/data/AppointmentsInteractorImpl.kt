@@ -100,17 +100,10 @@ class AppointmentsInteractorImpl(
     }
 
     override fun delete(prescriptionEntity: PrescriptionEntity) {
+        // удаляем все appointment
+        appointmentsRepo.deletePrescriptionAppointments(prescriptionEntity.id)
+        // потом удаляем prescription
         prescriptionRepo.delete(prescriptionEntity)
         notifyListener()
-    }
-
-    // todo изменил (удаление)!!!!
-    override fun addOnDataChangedListener(listener: Runnable) {
-//        listeners.add(listener)
-    }
-
-    // todo изменил (удаление)!!!!
-    override fun removeListener(listener: Runnable) {
-        // todo
     }
 }
