@@ -33,14 +33,14 @@ class DetailsPrescriptionFragment :
     private var _binding: FragmentDerailsPrescriptionBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var prescriptionAdapter: PrescriptionAdapter
+
     private val viewModel: DetailsPrescriptionViewModel by viewModel {
         parametersOf(requireArguments().getString(PRESCRIPTION_ID_ARG_KEY))
         // второй, боллее очевидный вариант
 //        val prescriptionId = requireArguments().getString(PRESCRIPTION_ID_ARG_KEY)
 //        return@viewModel parametersOf(prescriptionId)
     }
-
-    private lateinit var prescriptionAdapter: PrescriptionAdapter
 
     private val unitMeasurementSpinnerLabels: Array<String> by lazy {
         resources.getStringArray(R.array.unit_measurement)
@@ -60,7 +60,7 @@ class DetailsPrescriptionFragment :
 
         initPrescription()
 
-        picDate()
+        initDateView()
 
         viewModel.prescriptionListLiveDate.observe(viewLifecycleOwner) {
             prescriptionAdapter.setData(it)
@@ -218,7 +218,7 @@ class DetailsPrescriptionFragment :
         _binding = null
     }
 
-    private var gay = 0
+    private var day = 0
     private var month = 0
     private var year = 0
     private var hour = 0
@@ -230,9 +230,9 @@ class DetailsPrescriptionFragment :
     private var saveHour = 0
     private var saveMinute = 0
 
-    private fun getDateTimeCalendar() {
+    private fun fillTimeFields() {
         val calendar = Calendar.getInstance()
-        gay = calendar.get(Calendar.DAY_OF_MONTH)
+        day = calendar.get(Calendar.DAY_OF_MONTH)
         month = calendar.get(Calendar.MONTH)
         year = calendar.get(Calendar.YEAR)
         hour = calendar.get(Calendar.HOUR)
@@ -244,7 +244,7 @@ class DetailsPrescriptionFragment :
         saveMonth = month
         saveYear = year
 
-        getDateTimeCalendar()
+        fillTimeFields()
 
         TimePickerDialog(requireContext(), this, hour, minute, true).show()
     }
@@ -258,10 +258,10 @@ class DetailsPrescriptionFragment :
             "$saveDay.$saveMonth.$saveYear\n Время: $saveHour:$saveMinute"
     }
 
-    private fun picDate() {
+    private fun initDateView() {
         binding.dateStartEditText.setOnClickListener {
-            getDateTimeCalendar()
-            DatePickerDialog(requireContext(), this, year, month, gay).show()
+            fillTimeFields()
+            DatePickerDialog(requireContext(), this, year, month, day).show()
         }
     }
 
