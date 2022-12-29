@@ -9,6 +9,9 @@ import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
 import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
 import java.util.*
 
+private const val DAY_IN_MS = 24 * 60 * 60 * 1000L
+
+
 class AppointmentsInteractorImpl(
     private val appointmentsRepo: AppointmentsRepo,
     private val prescriptionRepo: PrescriptionRepo
@@ -85,7 +88,7 @@ class AppointmentsInteractorImpl(
         )
 
         val tomorrowAppointment = AppointmentEntity(
-            time = Calendar.getInstance().timeInMillis + 24 * 60 * 60 * 1_000,
+            time = Calendar.getInstance().timeInMillis + DAY_IN_MS,
             prescriptionId = prescription.id
         )
 

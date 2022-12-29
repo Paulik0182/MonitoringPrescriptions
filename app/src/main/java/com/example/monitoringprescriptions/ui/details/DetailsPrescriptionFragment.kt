@@ -72,7 +72,7 @@ class DetailsPrescriptionFragment :
 
         binding.saveButton.setOnClickListener {
             saveDetailsReception()
-            toClose("Выйти из рецепта?", Unit)
+            showCloseDialog("Выйти из рецепта?")
         }
 
         initSpinner(binding.unitMeasurementSpinner, unitMeasurementSpinnerLabels) {
@@ -120,11 +120,11 @@ class DetailsPrescriptionFragment :
     }
 
     // всплывающее окно (уточнее действия)!!!
-    private fun toClose(message: String, runnable: Unit) {
+    private fun showCloseDialog(message: String, runnable: Runnable? = null) {
         AlertDialog.Builder(requireContext())
             .setTitle(message)//сообщение на всплыв. окне
             .setPositiveButton("ДА") { dialogInterface: DialogInterface, i: Int ->
-                runnable
+                runnable?.run()
                 activity?.onBackPressed()//выход (кнопка назад)
                 dialogInterface.dismiss()//закрываем окно. Обязательно!!
             }
@@ -141,11 +141,13 @@ class DetailsPrescriptionFragment :
 
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val runnable = viewModel.onDeleteClick()
+        val runnable = {
+            viewModel.onDeleteClick()
+        }
 
         when (item.itemId) {
             R.id.delete_icon_menu_items -> {
-                toClose("Вы уверены что хотите удалить запись?", runnable)
+                showCloseDialog("Вы уверены что хотите удалить запись?", runnable)
             }
         }
         return super.onOptionsItemSelected(item)
