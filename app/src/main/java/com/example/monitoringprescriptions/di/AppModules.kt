@@ -11,6 +11,7 @@ import com.example.monitoringprescriptions.domain.interactors.AppointmentsIntera
 import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
 import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
 import com.example.monitoringprescriptions.ui.appointments.AppointmentsViewModel
+import com.example.monitoringprescriptions.ui.details.DetailsPrescriptionViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -58,4 +59,5 @@ val appModules = module {
     single<AppointmentsInteractor> { AppointmentsInteractorImpl(get(), get()) }
 
     viewModel { parameters -> AppointmentsViewModel(get(), parameters.get()) }
+    viewModel { parameters -> DetailsPrescriptionViewModel(parameters.get(), get(), get(), get()) }
 }

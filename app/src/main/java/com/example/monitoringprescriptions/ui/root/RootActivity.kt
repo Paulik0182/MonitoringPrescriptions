@@ -8,7 +8,7 @@ import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ActivityRootBinding
 import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 import com.example.monitoringprescriptions.ui.appointments.AppointmentsFragment
-import com.example.monitoringprescriptions.ui.details.DetailsReceptionFragment
+import com.example.monitoringprescriptions.ui.details.DetailsPrescriptionFragment
 import com.example.monitoringprescriptions.ui.schedule.ScheduleFragment
 import com.example.monitoringprescriptions.ui.settings.SettingsFragment
 
@@ -18,7 +18,7 @@ private const val TAG_DETAILS_RECEPTION_KEY = "TAG_DETAILS_RECEPTION_KEY"
 class RootActivity : AppCompatActivity(),
     SettingsFragment.Controller,
     AppointmentsFragment.Controller,
-    DetailsReceptionFragment.Controller {
+    DetailsPrescriptionFragment.Controller {
 
     private lateinit var binding: ActivityRootBinding
 
@@ -63,8 +63,9 @@ class RootActivity : AppCompatActivity(),
             ).commit()
     }
 
-    private fun detailsReception(appointmentFullEntity: AppointmentFullEntity?) {
-        val fragment: Fragment = DetailsReceptionFragment.newInstance(appointmentFullEntity)
+    private fun detailsPrescription(appointmentFullEntity: AppointmentFullEntity) {
+        val fragment: Fragment =
+            DetailsPrescriptionFragment.newInstance(appointmentFullEntity.prescriptionId)
         supportFragmentManager
             .beginTransaction()
             .replace(
@@ -78,9 +79,13 @@ class RootActivity : AppCompatActivity(),
         binding.bottomNavBar.visibility = View.GONE
     }
 
-    override fun openDetailsReception(appointmentFullEntity: AppointmentFullEntity?) {
-        detailsReception(appointmentFullEntity)
+    override fun openDetailsReception(appointmentFullEntity: AppointmentFullEntity) {
+        detailsPrescription(appointmentFullEntity)
     }
+
+//    override fun openCreateDetailsReception() {
+//        // todo
+//    }
 
     override fun onBackPressed() {
         binding.bottomNavBar.visibility = View.VISIBLE

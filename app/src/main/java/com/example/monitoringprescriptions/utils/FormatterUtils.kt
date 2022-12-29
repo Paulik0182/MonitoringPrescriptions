@@ -1,6 +1,7 @@
 package com.example.monitoringprescriptions.utils
 
 import android.annotation.SuppressLint
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 /**
@@ -15,3 +16,6 @@ var bpDataFormatter = SimpleDateFormat("dd.MM.yyyy")
 
 @SuppressLint("SimpleDateFormat")
 var bpDataTimeFormatter = SimpleDateFormat("dd.MM.yyyy   HH:mm")
+
+@SuppressLint("SimpleDateFormat")
+var decimalForm = DecimalFormat("##.##")

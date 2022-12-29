@@ -2,6 +2,7 @@ package com.example.monitoringprescriptions.domain.interactors
 
 import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
+import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import java.util.*
 
 interface AppointmentsInteractor {
@@ -15,4 +16,6 @@ interface AppointmentsInteractor {
 
     fun getByDate(calendar: Calendar, callback: (List<AppointmentFullEntity>) -> Unit)
     fun generateNewPrescription()
+    fun delete(prescriptionEntity: PrescriptionEntity) // todo изменил (удаление)!!!!
+
 }

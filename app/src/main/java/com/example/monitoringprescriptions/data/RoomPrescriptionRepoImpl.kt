@@ -18,8 +18,20 @@ class RoomPrescriptionRepoImpl(
         return prescriptionDao.getAll()
     }
 
+    override fun getListPrescriptionId(id: String): List<PrescriptionEntity> {
+        return prescriptionDao.getListById(id)
+    }
+
     // получить конкретную запись
     override fun getById(id: String): PrescriptionEntity? {
         return prescriptionDao.getById(id)
+    }
+
+    override fun updatePrescription(prescriptionEntity: PrescriptionEntity) {
+        prescriptionDao.updatePrescription(prescriptionEntity)
+    }
+
+    override fun delete(prescriptionEntity: PrescriptionEntity) {
+        prescriptionDao.delete(prescriptionEntity)
     }
 }

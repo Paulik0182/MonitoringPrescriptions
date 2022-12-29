@@ -15,4 +15,25 @@
     <!-- emoji product-->
     <string name="emoji_pill">&#128138;</string>
     <string name="emoji_syringe">&#128137;</string>
+
+    <!-- Spinner-->
+
+    <string-array name="unit_measurement">
+        <item>Еди. изм.</item>
+        <item>шт.</item>
+        <item>ложка</item>
+        <item>мл.</item>
+    </string-array>
+
+    <string-array name="prescribed_medicine">
+        <item></item>
+        <item>Таблетка</item>
+        <item>Укол</item>
+        <item>Порошок</item>
+        <item>Суспензия</item>
+        <item>Мазь</item>
+        <item>Настойка</item>
+        <item>Капли</item>
+    </string-array>
+
 </resources>

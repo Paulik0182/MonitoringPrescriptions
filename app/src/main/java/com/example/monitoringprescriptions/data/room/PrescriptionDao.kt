@@ -1,8 +1,6 @@
 package com.example.monitoringprescriptions.data.room
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 
 @Dao
@@ -18,4 +16,14 @@ interface PrescriptionDao {
     // Запрос ("ВЫБЕРИТЕ * ИЗ рецептов, ГДЕ id == (:id))
     @Query("SELECT * FROM prescriptions WHERE id == (:id)")
     fun getById(id: String): PrescriptionEntity?
+
+    // Запрос ("ВЫБЕРИТЕ * ИЗ рецептов, ГДЕ id == (:id))
+    @Query("SELECT * FROM prescriptions WHERE id == (:id)")
+    fun getListById(id: String): List<PrescriptionEntity>
+
+    @Update
+    fun updatePrescription(prescriptionEntity: PrescriptionEntity)
+
+    @Delete
+    fun delete(prescriptionEntity: PrescriptionEntity)
 }

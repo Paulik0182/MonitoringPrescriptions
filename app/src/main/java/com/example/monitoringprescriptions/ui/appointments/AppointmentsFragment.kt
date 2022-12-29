@@ -33,20 +33,24 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
 
         initViews()
 
-        viewModel.appointmentsLiveData.observe(viewLifecycleOwner) {
-            adapter.setData(it)
-        }
+        updateData()
 
         viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
             getController().openDetailsReception(it)
         }
 
-        binding.fab.setOnClickListener {
-            getController().openDetailsReception(null)
-        }
+//        binding.fab.setOnClickListener {
+//            getController().openCreateDetailsReception()
+//        }
 
         viewModel.loaderVisibilityLiveData.observe(viewLifecycleOwner) {
             // todo показать - скрыть лоадер
+        }
+    }
+
+    private fun updateData() {
+        viewModel.appointmentsLiveData.observe(viewLifecycleOwner) {
+            adapter.setData(it)
         }
     }
 
@@ -69,9 +73,9 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
 
         binding.recordsRecyclerView.adapter = adapter
 
-//        binding.fab.setOnClickListener {
-//            viewModel.onTempCreateClick()
-//        }
+        binding.fab.setOnClickListener {
+            viewModel.onTempCreateClick()
+        }
     }
 
     // достаем календарь и модифицируем его
@@ -84,7 +88,8 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
     }
 
     interface Controller {
-        fun openDetailsReception(appointmentFullEntity: AppointmentFullEntity?)
+        fun openDetailsReception(appointmentFullEntity: AppointmentFullEntity)
+//        fun openCreateDetailsReception()
     }
 
     private fun getController(): Controller = activity as Controller

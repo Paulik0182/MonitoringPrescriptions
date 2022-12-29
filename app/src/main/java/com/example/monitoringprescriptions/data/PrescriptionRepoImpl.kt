@@ -17,9 +17,29 @@ class PrescriptionRepoImpl : PrescriptionRepo {
         return ArrayList(date)
     }
 
+    override fun getListPrescriptionId(id: String): List<PrescriptionEntity> {
+        return ArrayList(date).filter {
+            id == it.id
+        }
+    }
+
     override fun getById(id: String): PrescriptionEntity? {
         return date.find {
             id == it.id
+        }
+    }
+
+    override fun updatePrescription(prescriptionEntity: PrescriptionEntity) {
+        date.removeIf {
+            it.id == prescriptionEntity.id
+        }
+
+        date.add(prescriptionEntity)
+    }
+
+    override fun delete(prescriptionEntity: PrescriptionEntity) {
+        date.removeIf {
+            it.id == prescriptionEntity.id
         }
     }
 

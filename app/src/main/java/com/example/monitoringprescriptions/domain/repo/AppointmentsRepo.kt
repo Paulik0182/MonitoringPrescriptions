@@ -10,4 +10,5 @@ interface AppointmentsRepo {
     fun getByDate(year: Int, month: Int, day: Int): List<AppointmentEntity>
     fun getById(appointmentId: String): AppointmentEntity?
     fun updateAppointments(copy: AppointmentEntity)
+    fun deletePrescriptionAppointments(prescriptionId: String)
 }

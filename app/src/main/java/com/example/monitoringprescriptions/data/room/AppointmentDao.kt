@@ -1,9 +1,6 @@
 package com.example.monitoringprescriptions.data.room
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
 
 @Dao
@@ -16,7 +13,7 @@ interface AppointmentDao {
     fun addAppointment(appointmentsEntity: AppointmentEntity)
 
     @Query("SELECT * FROM appointment WHERE prescription_id  == (:prescriptionId)")
-    fun getPrescriptionAppointments(prescriptionId: String): List<AppointmentEntity?>
+    fun getPrescriptionAppointments(prescriptionId: String): List<AppointmentEntity>
 
     // Запрос ("ВЫБЕРИТЕ * ИЗ назначения, ГДЕ время > (:из начало) И время < (:конец)")
     @Query("SELECT * FROM appointment WHERE time > (:fromMs) AND time < (:toMs)")
@@ -27,5 +24,11 @@ interface AppointmentDao {
 
     @Update
     fun updateAppointments(copy: AppointmentEntity)
+
+    @Delete
+    fun remove(appointmentEntity: AppointmentEntity)
+
+    @Delete
+    fun remove(appointmentEntity: List<AppointmentEntity>)
 
 }
