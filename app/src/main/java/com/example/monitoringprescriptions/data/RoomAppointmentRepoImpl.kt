@@ -17,7 +17,7 @@ class RoomAppointmentRepoImpl(
         return appointmentDao.getAll()
     }
 
-    override fun getPrescriptionAppointments(prescriptionId: String): List<AppointmentEntity?> {
+    override fun getPrescriptionAppointments(prescriptionId: String): List<AppointmentEntity> {
         return appointmentDao.getPrescriptionAppointments(prescriptionId)
     }
 

@@ -53,7 +53,7 @@ class DetailsPrescriptionViewModel(
     }
 
 
-    val prescriptionListLiveDate: LiveData<List<AppointmentEntity?>> = MutableLiveData()
+    val prescriptionListLiveDate: LiveData<List<AppointmentEntity>> = MutableLiveData()
 
     // сообщаем ViewModel отрисовать данные
     val prescriptionLiveData: LiveData<PrescriptionEntity> = MutableLiveData()

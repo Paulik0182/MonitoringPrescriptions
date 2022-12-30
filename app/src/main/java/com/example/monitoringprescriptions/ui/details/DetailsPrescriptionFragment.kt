@@ -18,6 +18,7 @@ import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentDerailsPrescriptionBinding
 import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import com.example.monitoringprescriptions.utils.bpDataFormatter
+import com.example.monitoringprescriptions.utils.bpTimeFormatter
 import com.example.monitoringprescriptions.utils.decimalForm
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -33,7 +34,7 @@ class DetailsPrescriptionFragment :
     private var _binding: FragmentDerailsPrescriptionBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var prescriptionAdapter: PrescriptionAdapter
+    private lateinit var appointmentInPrescriptionAdapter: AppointmentInPrescriptionAdapter
 
     private val viewModel: DetailsPrescriptionViewModel by viewModel {
         parametersOf(requireArguments().getString(PRESCRIPTION_ID_ARG_KEY))
@@ -63,7 +64,7 @@ class DetailsPrescriptionFragment :
         initDateView()
 
         viewModel.prescriptionListLiveDate.observe(viewLifecycleOwner) {
-            prescriptionAdapter.setData(it)
+            appointmentInPrescriptionAdapter.setData(it)
         }
 
         viewModel.prescriptionLiveData.observe(viewLifecycleOwner) {
@@ -112,13 +113,7 @@ class DetailsPrescriptionFragment :
         val prescribedMedicine =
             prescribedMedicineSpinnerLabels[binding.prescribedMedicineSpinner.selectedItemPosition]
 
-        val dateStartMs = Calendar.getInstance().apply {
-            set(Calendar.YEAR, saveYear)
-            set(Calendar.MONTH, saveMonth)
-            set(Calendar.DAY_OF_MONTH, saveDay)
-            set(Calendar.HOUR_OF_DAY, saveHour)
-            set(Calendar.MINUTE, saveMinute)
-        }.timeInMillis
+        val dateStartMs = calendarFromView.timeInMillis
 
         viewModel.onSaveDetails(
             // собираем все данные которые имеются
@@ -191,11 +186,11 @@ class DetailsPrescriptionFragment :
 
     private fun initPrescription() {
         binding.recordsRecyclerView.layoutManager = LinearLayoutManager(context)
-        prescriptionAdapter = PrescriptionAdapter(
+        appointmentInPrescriptionAdapter = AppointmentInPrescriptionAdapter(
             data = emptyList(),
             context = requireContext()
         )
-        binding.recordsRecyclerView.adapter = prescriptionAdapter
+        binding.recordsRecyclerView.adapter = appointmentInPrescriptionAdapter
     }
 
     interface Controller {
@@ -224,51 +219,50 @@ class DetailsPrescriptionFragment :
         _binding = null
     }
 
-    private var day = 0
-    private var month = 0
-    private var year = 0
-    private var hour = 0
-    private var minute = 0
-
-    private var saveDay = 0
-    private var saveMonth = 0
-    private var saveYear = 0
-    private var saveHour = 0
-    private var saveMinute = 0
-
-    private fun fillTimeFields() {
-        val calendar = Calendar.getInstance()
-        day = calendar.get(Calendar.DAY_OF_MONTH)
-        month = calendar.get(Calendar.MONTH)
-        year = calendar.get(Calendar.YEAR)
-        hour = calendar.get(Calendar.HOUR)
-        minute = calendar.get(Calendar.MINUTE)
-    }
+    private val calendarFromView = Calendar.getInstance()
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        saveDay = dayOfMonth
-        saveMonth = month
-        saveYear = year
+        calendarFromView.set(Calendar.YEAR, year)
+        calendarFromView.set(Calendar.MONTH, month)
+        calendarFromView.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-        fillTimeFields()
+        val calendar = Calendar.getInstance()
 
-        TimePickerDialog(requireContext(), this, hour, minute, true).show()
+        TimePickerDialog(
+            requireContext(),
+            this,
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            true
+        ).show()
     }
 
     @SuppressLint("SetTextI18n")
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        saveHour = hourOfDay
-        saveMinute = minute
+        calendarFromView.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        calendarFromView.set(Calendar.MINUTE, minute)
 
         binding.dateStartEditText.text =
-            "$saveDay.$saveMonth.$saveYear\n Время: $saveHour:$saveMinute"
+            "${
+                bpDataFormatter.format(
+                    calendarFromView.time
+                )
+            }\n " +
+                    "Время: ${
+                        bpTimeFormatter.format(
+                            calendarFromView.time
+                        )
+                    }"
     }
 
     private fun initDateView() {
         binding.dateStartEditText.setOnClickListener {
-            fillTimeFields()
-            DatePickerDialog(requireContext(), this, year, month, day).show()
+            val calendar = Calendar.getInstance()
+            val currentDay = calendar.get(Calendar.DAY_OF_YEAR)
+            val currentMonth = calendar.get(Calendar.MONTH)
+            val currentYear = calendar.get(Calendar.YEAR)
+
+            DatePickerDialog(requireContext(), this, currentYear, currentMonth, currentDay).show()
         }
     }
-
 }
