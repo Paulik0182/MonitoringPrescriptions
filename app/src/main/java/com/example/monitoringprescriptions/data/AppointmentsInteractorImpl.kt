@@ -11,7 +11,6 @@ import java.util.*
 
 private const val DAY_IN_MS = 24 * 60 * 60 * 1000L
 
-
 class AppointmentsInteractorImpl(
     private val appointmentsRepo: AppointmentsRepo,
     private val prescriptionRepo: PrescriptionRepo

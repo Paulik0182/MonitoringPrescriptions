@@ -32,21 +32,33 @@ class DetailsPrescriptionViewModel(
         // todo
     }
 
+    fun onNumberAdmissionsPerDaySelectSpinner(perDay: String) {
+        // todo
+    }
+
     fun onSaveDetails(
         dateStart: Long,
+        dateEnd: Long,
         nameMedicine: String,
         dosage: String,
         comment: String,
         prescribedMedicine: String,
         unitMeasurement: String,
+        numberAdmissionsPerDay: String,
+        numberOfDays: String,
+        medicationsCourse: String
     ) {
         prescriptionLiveData.value?.copy(
             dateStart = dateStart,
+            dateEnd = dateEnd,
             prescribedMedicine = prescribedMedicine,
             unitMeasurement = unitMeasurement,
+            numberAdmissionsPerDay = numberAdmissionsPerDay,
             nameMedicine = nameMedicine,
             dosage = dosage.toFloat(),
-            comment = comment
+            comment = comment,
+            numberDaysTakingMedicine = numberOfDays.toInt(),
+            medicationsCourse = numberOfDays.toFloat()
         )?.let {
             prescriptionRepo.updatePrescription(it)
         }
