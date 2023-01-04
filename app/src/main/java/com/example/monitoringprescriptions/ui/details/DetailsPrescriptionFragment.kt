@@ -15,7 +15,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.monitoringprescriptions.R
-import com.example.monitoringprescriptions.databinding.FragmentDerailsPrescriptionBinding
+import com.example.monitoringprescriptions.databinding.FragmentDetailsPrescriptionBinding
 import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import com.example.monitoringprescriptions.utils.bpDataFormatter
 import com.example.monitoringprescriptions.utils.bpTimeFormatter
@@ -29,11 +29,11 @@ private const val PRESCRIPTION_ID_ARG_KEY = "PRESCRIPTION_ID_ARG_KEY"
 private const val DAY_IN_MS = 24 * 60 * 60 * 1000L
 
 class DetailsPrescriptionFragment :
-    Fragment(R.layout.fragment_derails_prescription),
+    Fragment(R.layout.fragment_details_prescription),
     DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
 
-    private var _binding: FragmentDerailsPrescriptionBinding? = null
+    private var _binding: FragmentDetailsPrescriptionBinding? = null
     private val binding get() = _binding!!
 
     private val calendarFromView = Calendar.getInstance()
@@ -61,7 +61,7 @@ class DetailsPrescriptionFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentDerailsPrescriptionBinding.bind(view)
+        _binding = FragmentDetailsPrescriptionBinding.bind(view)
 
         setHasOptionsMenu(true)
 

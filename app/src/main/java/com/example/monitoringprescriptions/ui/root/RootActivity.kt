@@ -9,16 +9,19 @@ import com.example.monitoringprescriptions.databinding.ActivityRootBinding
 import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 import com.example.monitoringprescriptions.ui.appointments.AppointmentsFragment
 import com.example.monitoringprescriptions.ui.details.DetailsPrescriptionFragment
+import com.example.monitoringprescriptions.ui.details.create.NewPrescriptionFragment
 import com.example.monitoringprescriptions.ui.schedule.ScheduleFragment
 import com.example.monitoringprescriptions.ui.settings.SettingsFragment
 
 private const val TAG_MAIN_CONTAINER_LAYOUT_KEY = "TAG_MAIN_CONTAINER_LAYOUT_KEY"
-private const val TAG_DETAILS_RECEPTION_KEY = "TAG_DETAILS_RECEPTION_KEY"
+private const val TAG_DETAILS_PRESCRIPTION_KEY = "TAG_DETAILS_RECEPTION_KEY"
+private const val TAG_NEW_PRESCRIPTION_KEY = "TAG_NEW_PRESCRIPTION_KEY"
 
 class RootActivity : AppCompatActivity(),
     SettingsFragment.Controller,
     AppointmentsFragment.Controller,
-    DetailsPrescriptionFragment.Controller {
+    DetailsPrescriptionFragment.Controller,
+    NewPrescriptionFragment.Controller {
 
     private lateinit var binding: ActivityRootBinding
 
@@ -71,7 +74,7 @@ class RootActivity : AppCompatActivity(),
             .replace(
                 binding.fragmentContainerFrameLayout.id,
                 fragment,
-                TAG_DETAILS_RECEPTION_KEY
+                TAG_DETAILS_PRESCRIPTION_KEY
             )
             .addToBackStack(null)
             .commit()
@@ -79,13 +82,28 @@ class RootActivity : AppCompatActivity(),
         binding.bottomNavBar.visibility = View.GONE
     }
 
-    override fun openDetailsReception(appointmentFullEntity: AppointmentFullEntity) {
+    private fun newPrescription() {
+        val fragment: Fragment = NewPrescriptionFragment.newInstance()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(
+                binding.fragmentContainerFrameLayout.id,
+                fragment,
+                TAG_NEW_PRESCRIPTION_KEY
+            )
+            .addToBackStack(null)
+            .commit()
+
+        binding.bottomNavBar.visibility = View.GONE
+    }
+
+    override fun openDetailsPrescription(appointmentFullEntity: AppointmentFullEntity) {
         detailsPrescription(appointmentFullEntity)
     }
 
-//    override fun openCreateDetailsReception() {
-//        // todo
-//    }
+    override fun openNewPrescription() {
+        newPrescription()
+    }
 
     override fun onBackPressed() {
         binding.bottomNavBar.visibility = View.VISIBLE

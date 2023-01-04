@@ -36,12 +36,12 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
         updateData()
 
         viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
-            getController().openDetailsReception(it)
+            getController().openDetailsPrescription(it)
         }
 
-//        binding.fab.setOnClickListener {
-//            getController().openCreateDetailsReception()
-//        }
+        binding.fab.setOnClickListener {
+            getController().openNewPrescription()
+        }
 
         viewModel.loaderVisibilityLiveData.observe(viewLifecycleOwner) {
             // todo показать - скрыть лоадер
@@ -88,8 +88,8 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
     }
 
     interface Controller {
-        fun openDetailsReception(appointmentFullEntity: AppointmentFullEntity)
-//        fun openCreateDetailsReception()
+        fun openDetailsPrescription(appointmentFullEntity: AppointmentFullEntity)
+        fun openNewPrescription()
     }
 
     private fun getController(): Controller = activity as Controller

@@ -12,6 +12,7 @@ import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
 import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
 import com.example.monitoringprescriptions.ui.appointments.AppointmentsViewModel
 import com.example.monitoringprescriptions.ui.details.DetailsPrescriptionViewModel
+import com.example.monitoringprescriptions.ui.details.create.NewPrescriptionViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -60,4 +61,5 @@ val appModules = module {
 
     viewModel { parameters -> AppointmentsViewModel(get(), parameters.get()) }
     viewModel { parameters -> DetailsPrescriptionViewModel(parameters.get(), get(), get(), get()) }
+    viewModel { NewPrescriptionViewModel(get()) }
 }
