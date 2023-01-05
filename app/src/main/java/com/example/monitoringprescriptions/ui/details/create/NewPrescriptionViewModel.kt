@@ -3,14 +3,18 @@ package com.example.monitoringprescriptions.ui.details.create
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
 import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
+import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
 import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
 
 class NewPrescriptionViewModel(
-    private val prescriptionRepo: PrescriptionRepo
+    private val prescriptionRepo: PrescriptionRepo,
+    private val appointmentsRepo: AppointmentsRepo
 ) : ViewModel() {
 
     private lateinit var prescriptionEntity: PrescriptionEntity
+    private lateinit var appointmentEntity: AppointmentEntity
 
     fun onUnitMeasurementSelectSpinner(unitMeasurement: String) {
         // todo
@@ -47,15 +51,20 @@ class NewPrescriptionViewModel(
             comment = comment,
             numberDaysTakingMedicine = numberOfDays.toInt(),
             medicationsCourse = medicationsCourse.toFloat()
-        )
+        )?.let {
+            prescriptionRepo.addPrescription(it)
+        }
     }
 
     // сообщаем ViewModel
     val prescriptionLiveData: LiveData<PrescriptionEntity> = MutableLiveData()
+    val appointmentsLiveData: LiveData<AppointmentEntity> = MutableLiveData()
 
 //    init {
 //        val prescription = prescriptionRepo.addPrescription(prescriptionEntity)
 //        prescriptionLiveData.mutable().postValue(prescription)
+//
+//        val appointment = appointmentsRepo.addAppointment(appointmentEntity)
+//        appointmentsLiveData.mutable().postValue(appointment)
 //    }
-
 }
