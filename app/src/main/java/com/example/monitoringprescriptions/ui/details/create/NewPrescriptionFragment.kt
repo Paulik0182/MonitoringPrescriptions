@@ -12,18 +12,13 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentNewPrescriptionBinding
-import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
-import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
-import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
-import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
+import com.example.monitoringprescriptions.domain.TypeMedicine
+import com.example.monitoringprescriptions.domain.interactors.PrescriptionCreatorInteractor
 import com.example.monitoringprescriptions.utils.bpDataFormatter
 import com.example.monitoringprescriptions.utils.bpTimeFormatter
-import com.example.monitoringprescriptions.utils.forEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
-
-private const val DAY_IN_MS = 24 * 60 * 60 * 1000L
 
 class NewPrescriptionFragment :
     Fragment(R.layout.fragment_new_prescription),
@@ -33,9 +28,7 @@ class NewPrescriptionFragment :
     private var _binding: FragmentNewPrescriptionBinding? = null
     private val binding get() = _binding!!
 
-    private val prescriptionRepo: PrescriptionRepo by inject()
-    private val appointmentsRepo: AppointmentsRepo by inject()
-    private lateinit var prescriptionEntity: PrescriptionEntity
+    private val prescriptionCreatorInteractor: PrescriptionCreatorInteractor by inject()
 
     private val calendarFromView = Calendar.getInstance()
 
@@ -91,34 +84,22 @@ class NewPrescriptionFragment :
         val numberOfReceptionsPerDay =
             numberOfReceptionsPerDaySpinnerLabels[binding.numberAdmissionsPerDaySpinner.selectedItemPosition]
 
-        val dateStartMs = calendarFromView.timeInMillis
-        val dateEndMs = calendarFromView.timeInMillis
-
-        val changedPrescriptionEntity = PrescriptionEntity(
-            dateStart = dateStartMs,
-            dateEnd = dateEndMs,
-            prescribedMedicine = prescribedMedicine,
+        prescriptionCreatorInteractor.create(
             nameMedicine = binding.nameMedicineEditText.text.toString(),
-            unitMeasurement = unitMeasurement,
-            numberAdmissionsPerDay = numberOfReceptionsPerDay,
+            prescribedMedicine = prescribedMedicine,
+            typeMedicine = TypeMedicine.PILL, // todo подумать как убрать это поле (совместить с другим полем)
             dosage = binding.dosageEditText.text.toString().toFloatOrNull()
                 ?: 0F, //todo требуется проверка на валидность
+            unitMeasurement = unitMeasurement,
             comment = binding.commentEditText.text.toString(),
+            dateStart = calendarFromView,
             numberDaysTakingMedicine = binding.numberOfDaysEditText.text.toString().toIntOrNull()
-                ?: 0, //todo требуется проверка на валидность
+                ?: 0, //todo требуется проверка на валидность,
+            dateEnd = calendarFromView, // todo вырезать (возможно не стоит это хранить)
+            numberAdmissionsPerDay = numberOfReceptionsPerDay,
             medicationsCourse = binding.medicationsCourseEditText.text.toString().toFloatOrNull()
                 ?: 0F //todo требуется проверка на валидность
         )
-        prescriptionRepo.addPrescription(changedPrescriptionEntity)
-        // от единицы до количества дней будем
-        changedPrescriptionEntity.numberDaysTakingMedicine.forEach {
-            val appointmentEntity = AppointmentEntity(
-                time = dateStartMs + it * DAY_IN_MS,
-                prescriptionId = changedPrescriptionEntity.id
-            )
-            appointmentsRepo.addAppointment(appointmentEntity)
-        }
-
     }
 
     private fun saveNewReception() {
