@@ -27,6 +27,11 @@ fun String.toFloatSafeOrNull(): Float? {
     }
 }
 
+// todo экстеншен forEach для каждого Int (запускается от единицы до указанного значения)
+inline fun Int.forEach(action: (Int) -> Unit) {
+    for (i in 0 until this) action(i)
+}
+
 // экстеншен, get() постоянный
 val Context.app get() = applicationContext as App
 
