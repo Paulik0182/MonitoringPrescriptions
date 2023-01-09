@@ -12,11 +12,8 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentNewPrescriptionBinding
-import com.example.monitoringprescriptions.domain.TypeMedicine
-import com.example.monitoringprescriptions.domain.interactors.PrescriptionCreatorInteractor
 import com.example.monitoringprescriptions.utils.bpDataFormatter
 import com.example.monitoringprescriptions.utils.bpTimeFormatter
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -27,8 +24,6 @@ class NewPrescriptionFragment :
 
     private var _binding: FragmentNewPrescriptionBinding? = null
     private val binding get() = _binding!!
-
-    private val prescriptionCreatorInteractor: PrescriptionCreatorInteractor by inject()
 
     private val calendarFromView = Calendar.getInstance()
 
@@ -51,8 +46,7 @@ class NewPrescriptionFragment :
         _binding = FragmentNewPrescriptionBinding.bind(view)
 
         binding.saveButton.setOnClickListener {
-//            saveNewReception()
-            saveTestNewReception()
+            saveNewReception()
             showCloseDialog("Выйти из рецепта?")
         }
 
@@ -74,7 +68,7 @@ class NewPrescriptionFragment :
         }
     }
 
-    private fun saveTestNewReception() {
+    private fun saveNewReception() {
         //todo требуется проверка на валидность всех вводимых значений, а потом сохранить запись!!!!
         // пример получения строки из Spinner (получаем позицию). эту строку и передаем
         val unitMeasurement =
@@ -84,49 +78,21 @@ class NewPrescriptionFragment :
         val numberOfReceptionsPerDay =
             numberOfReceptionsPerDaySpinnerLabels[binding.numberAdmissionsPerDaySpinner.selectedItemPosition]
 
-        prescriptionCreatorInteractor.create(
+        viewModel.onSaveNewPrescription(
+            // собираем все данные которые имеются
             nameMedicine = binding.nameMedicineEditText.text.toString(),
             prescribedMedicine = prescribedMedicine,
-            typeMedicine = TypeMedicine.PILL, // todo подумать как убрать это поле (совместить с другим полем)
             dosage = binding.dosageEditText.text.toString().toFloatOrNull()
                 ?: 0F, //todo требуется проверка на валидность
             unitMeasurement = unitMeasurement,
             comment = binding.commentEditText.text.toString(),
-            dateStart = calendarFromView,
+            dateStart = calendarFromView.timeInMillis,
             numberDaysTakingMedicine = binding.numberOfDaysEditText.text.toString().toIntOrNull()
                 ?: 0, //todo требуется проверка на валидность,
-            dateEnd = calendarFromView, // todo вырезать (возможно не стоит это хранить)
+            dateEnd = calendarFromView.timeInMillis, // todo вырезать (возможно не стоит это хранить)
             numberAdmissionsPerDay = numberOfReceptionsPerDay,
             medicationsCourse = binding.medicationsCourseEditText.text.toString().toFloatOrNull()
                 ?: 0F //todo требуется проверка на валидность
-        )
-    }
-
-    private fun saveNewReception() {
-
-        // пример получения строки из Spinner (получаем позицию). эту строку и передаем
-        val unitMeasurement =
-            unitMeasurementSpinnerLabels[binding.unitMeasurementSpinner.selectedItemPosition]
-        val prescribedMedicine =
-            prescribedMedicineSpinnerLabels[binding.prescribedMedicineSpinner.selectedItemPosition]
-        val numberOfReceptionsPerDay =
-            numberOfReceptionsPerDaySpinnerLabels[binding.numberAdmissionsPerDaySpinner.selectedItemPosition]
-
-        val dateStartMs = calendarFromView.timeInMillis
-        val dateEndMs = calendarFromView.timeInMillis
-
-        viewModel.onSaveNewPrescription(
-            // собираем все данные которые имеются
-            dateStartMs,
-            dateEndMs,
-            binding.nameMedicineEditText.text.toString(),
-            binding.dosageEditText.text.toString(),
-            binding.commentEditText.text.toString(),
-            prescribedMedicine,
-            unitMeasurement,
-            numberOfReceptionsPerDay,
-            binding.numberOfDaysEditText.text.toString(),
-            binding.medicationsCourseEditText.text.toString()
         )
     }
 

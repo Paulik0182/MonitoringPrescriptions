@@ -44,5 +44,5 @@ val appModules = module {
 
     viewModel { parameters -> AppointmentsViewModel(get(), parameters.get()) }
     viewModel { parameters -> DetailsPrescriptionViewModel(parameters.get(), get(), get(), get()) }
-    viewModel { NewPrescriptionViewModel(get(), get()) }
+    viewModel { NewPrescriptionViewModel(get()) }
 }

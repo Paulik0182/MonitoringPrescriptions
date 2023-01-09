@@ -1,20 +1,13 @@
 package com.example.monitoringprescriptions.ui.details.create
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
-import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
-import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
-import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
+import com.example.monitoringprescriptions.domain.TypeMedicine
+import com.example.monitoringprescriptions.domain.interactors.PrescriptionCreatorInteractor
+import java.util.*
 
 class NewPrescriptionViewModel(
-    private val prescriptionRepo: PrescriptionRepo,
-    private val appointmentsRepo: AppointmentsRepo
+    private val prescriptionCreatorInteractor: PrescriptionCreatorInteractor,
 ) : ViewModel() {
-
-    private lateinit var prescriptionEntity: PrescriptionEntity
-    private lateinit var appointmentEntity: AppointmentEntity
 
     fun onUnitMeasurementSelectSpinner(unitMeasurement: String) {
         // todo
@@ -29,42 +22,31 @@ class NewPrescriptionViewModel(
     }
 
     fun onSaveNewPrescription(
-        dateStart: Long,
-        dateEnd: Long,
         nameMedicine: String,
-        dosage: String,
-        comment: String,
         prescribedMedicine: String,
+
+        dosage: Float,
         unitMeasurement: String,
+        comment: String,
+        dateStart: Long,
+        numberDaysTakingMedicine: Int,
+        dateEnd: Long,
         numberAdmissionsPerDay: String,
-        numberOfDays: String,
-        medicationsCourse: String
+        medicationsCourse: Float
     ) {
-        prescriptionLiveData.value?.copy(
-            dateStart = dateStart,
-            dateEnd = dateEnd,
-            prescribedMedicine = prescribedMedicine,
-            unitMeasurement = unitMeasurement,
-            numberAdmissionsPerDay = numberAdmissionsPerDay,
+        prescriptionCreatorInteractor.create(
             nameMedicine = nameMedicine,
-            dosage = dosage.toFloat(),
+            prescribedMedicine = prescribedMedicine,
+            typeMedicine = TypeMedicine.PILL, // todo подумать как убрать это поле (совместить с другим полем)
+            dosage = dosage, //todo требуется проверка на валидность
+            unitMeasurement = unitMeasurement,
             comment = comment,
-            numberDaysTakingMedicine = numberOfDays.toInt(),
-            medicationsCourse = medicationsCourse.toFloat()
-        )?.let {
-            prescriptionRepo.addPrescription(it)
-        }
+            dateStart = Calendar.getInstance().apply { timeInMillis = dateStart },
+            numberDaysTakingMedicine = numberDaysTakingMedicine, //todo требуется проверка на валидность,
+            dateEnd = Calendar.getInstance()
+                .apply { timeInMillis = dateEnd }, // todo вырезать (возможно не стоит это хранить)
+            numberAdmissionsPerDay = numberAdmissionsPerDay,
+            medicationsCourse = medicationsCourse //todo требуется проверка на валидность
+        )
     }
-
-    // сообщаем ViewModel
-    val prescriptionLiveData: LiveData<PrescriptionEntity> = MutableLiveData()
-    val appointmentsLiveData: LiveData<AppointmentEntity> = MutableLiveData()
-
-//    init {
-//        val prescription = prescriptionRepo.addPrescription(prescriptionEntity)
-//        prescriptionLiveData.mutable().postValue(prescription)
-//
-//        val appointment = appointmentsRepo.addAppointment(appointmentEntity)
-//        appointmentsLiveData.mutable().postValue(appointment)
-//    }
 }
