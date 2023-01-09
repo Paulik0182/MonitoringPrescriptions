@@ -18,6 +18,15 @@ fun Calendar.toUserString(): String {
     }"
 }
 
+// todo экстеншен toFloat (есть встроенный) лучше использовать если кидается исключение (Просто пример)
+fun String.toFloatSafeOrNull(): Float? {
+    return try {
+        this.toFloat()
+    } catch (ex: Exception) {
+        null
+    }
+}
+
 // экстеншен, get() постоянный
 val Context.app get() = applicationContext as App
 
