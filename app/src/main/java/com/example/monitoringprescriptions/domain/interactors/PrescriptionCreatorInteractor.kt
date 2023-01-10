@@ -18,7 +18,6 @@ interface PrescriptionCreatorInteractor {
         numberDaysTakingMedicine: Int, // сколько дней длится прием лекарств (количество дней приема лекарства)
 
         // добавлено
-        dateEnd: Calendar, // дата окончания приема лекарства  todo вырезать (возможно не стоит это хранить)
         numberAdmissionsPerDay: String, // количество приемов в день
         medicationsCourse: Float // количество лекарства на весь курс лечения
 

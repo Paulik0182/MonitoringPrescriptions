@@ -39,10 +39,6 @@ data class PrescriptionEntity(
     @SerializedName("date_start")
     val dateStart: Long = Calendar.getInstance().timeInMillis,
 
-    @ColumnInfo(name = "date_end")
-    @SerializedName("date_end")
-    val dateEnd: Long = Calendar.getInstance().timeInMillis, // todo пока не используется
-
     @ColumnInfo(name = "reception_frequency")
     @SerializedName("reception_frequency")
     val receptionFrequency: Int = 1, // todo как описать. пока не используется

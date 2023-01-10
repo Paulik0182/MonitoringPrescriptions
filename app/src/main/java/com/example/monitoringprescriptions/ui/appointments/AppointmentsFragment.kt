@@ -72,10 +72,6 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
         }
 
         binding.recordsRecyclerView.adapter = adapter
-
-        binding.fab.setOnClickListener {
-            viewModel.onTempCreateClick()
-        }
     }
 
     // достаем календарь и модифицируем его

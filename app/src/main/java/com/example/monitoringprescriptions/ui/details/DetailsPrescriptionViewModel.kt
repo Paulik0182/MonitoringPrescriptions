@@ -38,7 +38,6 @@ class DetailsPrescriptionViewModel(
 
     fun onSaveDetails(
         dateStart: Long,
-        dateEnd: Long,
         nameMedicine: String,
         dosage: String,
         comment: String,
@@ -50,7 +49,6 @@ class DetailsPrescriptionViewModel(
     ) {
         prescriptionLiveData.value?.copy(
             dateStart = dateStart,
-            dateEnd = dateEnd,
             prescribedMedicine = prescribedMedicine,
             unitMeasurement = unitMeasurement,
             numberAdmissionsPerDay = numberAdmissionsPerDay,

@@ -36,7 +36,6 @@ class NewPrescriptionViewModel(
         comment: String,
         dateStart: Long,
         numberDaysTakingMedicine: Int,
-        dateEnd: Long,
         numberAdmissionsPerDay: String,
         medicationsCourse: Float
     ) {
@@ -62,10 +61,6 @@ class NewPrescriptionViewModel(
                     comment = comment,
                     dateStart = Calendar.getInstance().apply { timeInMillis = dateStart },
                     numberDaysTakingMedicine = numberDaysTakingMedicine, //todo требуется проверка на валидность,
-                    dateEnd = Calendar.getInstance()
-                        .apply {
-                            timeInMillis = dateEnd
-                        }, // todo вырезать (возможно не стоит это хранить)
                     numberAdmissionsPerDay = numberAdmissionsPerDay,
                     medicationsCourse = medicationsCourse //todo требуется проверка на валидность
                 )

@@ -101,16 +101,16 @@ class DetailsPrescriptionFragment :
     }
 
     private fun fillPrescription(prescription: PrescriptionEntity) {
-        val dataStart = prescription.dateStart
+        val dateStart = prescription.dateStart
         val numberDaysTakingMedicine = prescription.numberDaysTakingMedicine
-        val resultData = (DAY_IN_MS * numberDaysTakingMedicine) - DAY_IN_MS
+        val dateEnd = dateStart + (DAY_IN_MS * numberDaysTakingMedicine) - DAY_IN_MS
 
         val dosage = prescription.dosage
         val numberAdmissionsPerDay = prescription.numberAdmissionsPerDay
         val medicationsCourse = (numberAdmissionsPerDay.toInt() * dosage) * numberDaysTakingMedicine
 
-        binding.dateStartTextView.text = bpDataFormatter.format(dataStart)
-        binding.dateEndTextView.text = bpDataFormatter.format(prescription.dateEnd + resultData)
+        binding.dateStartTextView.text = bpDataFormatter.format(dateStart)
+        binding.dateEndTextView.text = bpDataFormatter.format(dateEnd)
         binding.nameMedicineEditText.setText(prescription.nameMedicine)
         binding.dosageEditText.setText(decimalForm.format(dosage))
         binding.commentEditText.setText(prescription.comment)
@@ -148,12 +148,10 @@ class DetailsPrescriptionFragment :
             numberOfReceptionsPerDaySpinnerLabels[binding.numberAdmissionsPerDaySpinner.selectedItemPosition]
 
         val dateStartMs = calendarFromView.timeInMillis
-        val dateEndMs = calendarFromView.timeInMillis
 
         viewModel.onSaveDetails(
             // собираем все данные которые имеются
             dateStartMs,
-            dateEndMs,
             binding.nameMedicineEditText.text.toString(),
             binding.dosageEditText.text.toString(),
             binding.commentEditText.text.toString(),

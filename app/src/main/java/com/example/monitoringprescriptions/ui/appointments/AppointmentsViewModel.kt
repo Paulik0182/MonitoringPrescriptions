@@ -57,9 +57,4 @@ class AppointmentsViewModel(
         // отписываемся от приема лекарств
         appointmentsInteractor.unsubscribe(onAppointmentListener)
     }
-
-    // todo Временно!!!!!!!!!!
-    fun onTempCreateClick() {
-        appointmentsInteractor.generateNewPrescription()
-    }
 }

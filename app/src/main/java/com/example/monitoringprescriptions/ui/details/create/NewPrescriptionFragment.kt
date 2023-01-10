@@ -100,7 +100,6 @@ class NewPrescriptionFragment :
             numberDaysTakingMedicine = binding.numberDaysTakingMedicineEditText.text.toString()
                 .toIntOrNull()
                 ?: 0, //todo требуется проверка на валидность,
-            dateEnd = calendarFromView.timeInMillis, // todo вырезать (возможно не стоит это хранить)
             numberAdmissionsPerDay = numberAdmissionsPerDay,
             medicationsCourse = binding.medicationsCourseEditText.text.toString().toFloatOrNull()
                 ?: 0F //todo требуется проверка на валидность

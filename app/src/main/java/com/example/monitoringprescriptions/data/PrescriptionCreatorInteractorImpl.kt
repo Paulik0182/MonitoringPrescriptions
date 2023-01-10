@@ -24,7 +24,6 @@ class PrescriptionCreatorInteractorImpl(
         comment: String,
         dateStart: Calendar,
         numberDaysTakingMedicine: Int,
-        dateEnd: Calendar,
         numberAdmissionsPerDay: String,
         medicationsCourse: Float
     ): PrescriptionEntity {
@@ -38,7 +37,6 @@ class PrescriptionCreatorInteractorImpl(
             comment = comment,
             dateStart = dateStart.timeInMillis,
             numberDaysTakingMedicine = numberDaysTakingMedicine,
-            dateEnd = dateEnd.timeInMillis, // todo вырезать (возможно не стоит это хранить)
             numberAdmissionsPerDay = numberAdmissionsPerDay,
             medicationsCourse = medicationsCourse
         )
