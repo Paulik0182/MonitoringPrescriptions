@@ -102,19 +102,19 @@ class DetailsPrescriptionFragment :
 
     private fun fillPrescription(prescription: PrescriptionEntity) {
         val dataStart = prescription.dateStart
-        val numberOfDays = prescription.numberDaysTakingMedicine
-        val resultData = (DAY_IN_MS * numberOfDays) - DAY_IN_MS
+        val numberDaysTakingMedicine = prescription.numberDaysTakingMedicine
+        val resultData = (DAY_IN_MS * numberDaysTakingMedicine) - DAY_IN_MS
 
         val dosage = prescription.dosage
         val numberAdmissionsPerDay = prescription.numberAdmissionsPerDay
-        val medicationsCourse = (numberAdmissionsPerDay.toInt() * dosage) * numberOfDays
+        val medicationsCourse = (numberAdmissionsPerDay.toInt() * dosage) * numberDaysTakingMedicine
 
-        binding.dateStartTextView.setText(bpDataFormatter.format(dataStart))
-        binding.dateEndTextView.setText(bpDataFormatter.format(prescription.dateEnd + resultData))
+        binding.dateStartTextView.text = bpDataFormatter.format(dataStart)
+        binding.dateEndTextView.text = bpDataFormatter.format(prescription.dateEnd + resultData)
         binding.nameMedicineEditText.setText(prescription.nameMedicine)
         binding.dosageEditText.setText(decimalForm.format(dosage))
         binding.commentEditText.setText(prescription.comment)
-        binding.numberOfDaysEditText.setText(numberForm.format(numberOfDays))
+        binding.numberDaysTakingMedicineEditText.setText(numberForm.format(numberDaysTakingMedicine))
         binding.medicationsCourseEditText.text = medicationsCourse.toString()
 
         // выясняем какому элементу массива соответствует выставленное значение
@@ -160,7 +160,7 @@ class DetailsPrescriptionFragment :
             prescribedMedicine,
             unitMeasurement,
             numberOfReceptionsPerDay,
-            binding.numberOfDaysEditText.text.toString(),
+            binding.numberDaysTakingMedicineEditText.text.toString(),
             binding.medicationsCourseEditText.text.toString()
         )
     }
@@ -227,6 +227,7 @@ class DetailsPrescriptionFragment :
         }
     }
 
+    // todo почему не получается Spinner с Array<Int> ?
     private fun initIntSpinner(spinner: Spinner, labels: Array<Int>, onSelect: (Int) -> Unit) {
         spinner.adapter = ArrayAdapter(
             requireContext(),

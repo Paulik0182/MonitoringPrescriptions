@@ -86,7 +86,7 @@ class NewPrescriptionFragment :
             unitMeasurementSpinnerLabels[binding.unitMeasurementSpinner.selectedItemPosition]
         val prescribedMedicine =
             prescribedMedicineSpinnerLabels[binding.prescribedMedicineSpinner.selectedItemPosition]
-        val numberOfReceptionsPerDay =
+        val numberAdmissionsPerDay =
             numberOfReceptionsPerDaySpinnerLabels[binding.numberAdmissionsPerDaySpinner.selectedItemPosition]
 
         viewModel.onSaveNewPrescription(
@@ -97,10 +97,11 @@ class NewPrescriptionFragment :
             unitMeasurement = unitMeasurement,
             comment = binding.commentEditText.text.toString(),
             dateStart = calendarFromView.timeInMillis,
-            numberDaysTakingMedicine = binding.numberOfDaysEditText.text.toString().toIntOrNull()
+            numberDaysTakingMedicine = binding.numberDaysTakingMedicineEditText.text.toString()
+                .toIntOrNull()
                 ?: 0, //todo требуется проверка на валидность,
             dateEnd = calendarFromView.timeInMillis, // todo вырезать (возможно не стоит это хранить)
-            numberAdmissionsPerDay = numberOfReceptionsPerDay,
+            numberAdmissionsPerDay = numberAdmissionsPerDay,
             medicationsCourse = binding.medicationsCourseEditText.text.toString().toFloatOrNull()
                 ?: 0F //todo требуется проверка на валидность
         )
