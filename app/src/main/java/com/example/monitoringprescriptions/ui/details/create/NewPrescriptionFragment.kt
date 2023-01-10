@@ -66,6 +66,17 @@ class NewPrescriptionFragment :
         ) {
             viewModel.onNumberAdmissionsPerDaySelectSpinner(it)
         }
+
+        viewModel.errorsLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.DosageError -> {
+                    binding.dosageEditText.error = it.errorsMassage
+                }
+                else -> {
+
+                }
+            }
+        }
     }
 
     private fun saveNewReception() {
@@ -82,8 +93,7 @@ class NewPrescriptionFragment :
             // собираем все данные которые имеются
             nameMedicine = binding.nameMedicineEditText.text.toString(),
             prescribedMedicine = prescribedMedicine,
-            dosage = binding.dosageEditText.text.toString().toFloatOrNull()
-                ?: 0F, //todo требуется проверка на валидность
+            dosage = binding.dosageEditText.text.toString().toFloatOrNull(),
             unitMeasurement = unitMeasurement,
             comment = binding.commentEditText.text.toString(),
             dateStart = calendarFromView.timeInMillis,
@@ -96,6 +106,7 @@ class NewPrescriptionFragment :
         )
     }
 
+    // todo перенести во viewModel
     // всплывающее окно (уточнее действия)!!!
     private fun showCloseDialog(message: String, runnable: Runnable? = null) {
         AlertDialog.Builder(requireContext())
