@@ -23,6 +23,10 @@
         <item>шт.</item>
         <item>ложка</item>
         <item>мл.</item>
+        <item>гр.</item>
+        <item>пакет</item>
+        <item>тюбик</item>
+        <item>капя</item>
     </string-array>
 
     <string-array name="prescribed_medicine">

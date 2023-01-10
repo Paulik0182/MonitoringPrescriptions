@@ -1,6 +1,8 @@
 package com.example.monitoringprescriptions.utils
 
 import android.content.Context
+import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -66,4 +68,12 @@ fun Long.dayIsEqual(otherTimeMs: Long): Boolean {
     secondCalendar.timeInMillis = this
 
     return firstCalendar.dayIsEqual(secondCalendar)
+}
+
+fun Context.toastMake(text: String) {
+    Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+}
+
+fun View.toastMake(text: String) {
+    Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
 }

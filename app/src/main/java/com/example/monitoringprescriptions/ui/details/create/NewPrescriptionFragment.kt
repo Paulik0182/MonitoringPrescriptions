@@ -17,6 +17,7 @@ import com.example.monitoringprescriptions.utils.bpTimeFormatter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
+
 class NewPrescriptionFragment :
     Fragment(R.layout.fragment_new_prescription),
     DatePickerDialog.OnDateSetListener,
@@ -69,8 +70,38 @@ class NewPrescriptionFragment :
 
         viewModel.errorsLiveData.observe(viewLifecycleOwner) {
             when (it) {
+                // todo проблема с показом ошибки
+                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.DateStartError -> {
+                    (binding.dateStartTextView.error as TextView).error = it.errorsMassage
+                }
+                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.NumberDaysTakingMedicineError -> {
+                    binding.numberDaysTakingMedicineEditText.error = it.errorsMassage
+                }
+                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.NameMedicineError -> {
+                    binding.nameMedicineEditText.error = it.errorsMassage
+                }
+                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.PrescribedMedicineError -> {
+                    (binding.prescribedMedicineSpinner.selectedView as TextView).error =
+                        it.errorsMassage
+                }
                 is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.DosageError -> {
                     binding.dosageEditText.error = it.errorsMassage
+                }
+                // todo проблема с показом текста ошибки
+                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.UnitMeasurementError -> {
+                    (binding.unitMeasurementSpinner.selectedView as TextView).error =
+                        it.errorsMassage
+                }
+                // todo Дополнительная проверка на соответствие значений проблема с показом текста ошибки
+                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError -> {
+                    (binding.unitMeasurementSpinner.selectedView as TextView).error =
+                        it.errorsMassage
+                }
+
+                // todo проблема с показом текста ошибки
+                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.NumberAdmissionsPerDayError -> {
+                    (binding.numberAdmissionsPerDaySpinner.selectedView as TextView).error =
+                        it.errorsMassage
                 }
                 else -> {
 
@@ -98,8 +129,7 @@ class NewPrescriptionFragment :
             comment = binding.commentEditText.text.toString(),
             dateStart = calendarFromView.timeInMillis,
             numberDaysTakingMedicine = binding.numberDaysTakingMedicineEditText.text.toString()
-                .toIntOrNull()
-                ?: 0, //todo требуется проверка на валидность,
+                .toIntOrNull(), //todo требуется проверка на валидность,
             numberAdmissionsPerDay = numberAdmissionsPerDay,
             medicationsCourse = binding.medicationsCourseEditText.text.toString().toFloatOrNull()
                 ?: 0F //todo требуется проверка на валидность
