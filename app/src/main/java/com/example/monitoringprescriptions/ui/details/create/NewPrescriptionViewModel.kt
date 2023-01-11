@@ -1,23 +1,19 @@
-package com.example.monitoringprescriptions.ui.details
+package com.example.monitoringprescriptions.ui.details.create
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
-import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
-import com.example.monitoringprescriptions.domain.interactors.AppointmentsInteractor
-import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
-import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
+import com.example.monitoringprescriptions.domain.TypeMedicine
+import com.example.monitoringprescriptions.domain.interactors.PrescriptionCreatorInteractor
 import com.example.monitoringprescriptions.ui.CloseDialog
+import com.example.monitoringprescriptions.ui.details.CreationPrescriptionScreenErrors
 import com.example.monitoringprescriptions.utils.mutable
 import com.example.monitoringprescriptions.utils.toastMake
+import java.util.*
 
-class DetailsPrescriptionViewModel(
-    private val prescriptionId: String,
-    private val prescriptionRepo: PrescriptionRepo,
-    private val appointmentsRepo: AppointmentsRepo,
-    private val appointmentsInteractor: AppointmentsInteractor,
+class NewPrescriptionViewModel(
+    private val prescriptionCreatorInteractor: PrescriptionCreatorInteractor,
     private val context: Context
 ) : ViewModel() {
 
@@ -26,14 +22,6 @@ class DetailsPrescriptionViewModel(
 
     // для дополнительного уведомления
     val dialogLiveData: LiveData<CloseDialog> = MutableLiveData()
-    val closeDialogLiveData: LiveData<CloseDialog> = MutableLiveData()
-
-    fun onDeleteClick() {
-        prescriptionLiveData.value?.let {
-//            prescriptionRepo.delete(it)
-            appointmentsInteractor.delete(it)
-        }
-    }
 
     fun onUnitMeasurementSelectSpinner(unitMeasurement: String) {
         // todo
@@ -47,9 +35,10 @@ class DetailsPrescriptionViewModel(
         // todo
     }
 
-    fun onSaveDetails(
+    fun onSaveNewPrescription(
         nameMedicine: String,
         prescribedMedicine: String,
+
         dosage: Float?,
         unitMeasurement: String?,
         comment: String,
@@ -207,44 +196,23 @@ class DetailsPrescriptionViewModel(
 
             // todo после проверки
             else -> {
-                prescriptionLiveData.value?.copy(
+                prescriptionCreatorInteractor.create(
                     nameMedicine = nameMedicine,
                     prescribedMedicine = prescribedMedicine,
+                    typeMedicine = TypeMedicine.PILL, // todo подумать как убрать это поле (совместить с другим полем)
                     dosage = dosage,
                     unitMeasurement = unitMeasurement,
                     comment = comment,
-                    dateStart = dateStart,
+                    dateStart = Calendar.getInstance().apply { timeInMillis = dateStart },
                     numberDaysTakingMedicine = numberDaysTakingMedicine,
                     numberAdmissionsPerDay = numberAdmissionsPerDay,
                     medicationsCourse = medicationsCourse
-                )?.let {
-                    prescriptionRepo.updatePrescription(it)
-
-                    // todo сюда вставить диалог (данные сохранены) одноразовая LiveDate (singleLiveDate)
-                    dialogLiveData.mutable().postValue(
-                        CloseDialog.ShowDialog("Запись создана")
-                    )
-                    closeDialogLiveData.mutable().postValue(
-                        CloseDialog.ShowCloseDialog("Выйти из рецепта?")
-                    )
-                }
+                )
+                // todo сюда вставить диалог (данные сохранены) одноразовая LiveDate (singleLiveDate)
+                dialogLiveData.mutable().postValue(
+                    CloseDialog.ShowCloseDialog("Запись создана")
+                )
             }
         }
     }
-
-
-    val prescriptionListLiveDate: LiveData<List<AppointmentEntity>> = MutableLiveData()
-
-    // сообщаем ViewModel отрисовать данные
-    val prescriptionLiveData: LiveData<PrescriptionEntity> = MutableLiveData()
-
-    init {
-        // получаем данные
-        val prescription = prescriptionRepo.getById(prescriptionId)
-        prescriptionLiveData.mutable().postValue(prescription)
-
-        val appointmentList = appointmentsRepo.getPrescriptionAppointments(prescriptionId)
-        prescriptionListLiveDate.mutable().postValue(appointmentList)
-    }
-
 }

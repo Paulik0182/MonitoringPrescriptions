@@ -17,5 +17,8 @@ var bpDataFormatter = SimpleDateFormat("dd.MM.yyyy")
 @SuppressLint("SimpleDateFormat")
 var bpDataTimeFormatter = SimpleDateFormat("dd.MM.yyyy   HH:mm")
 
-@SuppressLint("SimpleDateFormat")
+@SuppressLint("SimpleDecimalFormat")
 var decimalForm = DecimalFormat("##.##")
+
+@SuppressLint("SimpleNumberFormat")
+var numberForm = DecimalFormat("###")

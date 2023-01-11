@@ -23,6 +23,10 @@
         <item>шт.</item>
         <item>ложка</item>
         <item>мл.</item>
+        <item>гр.</item>
+        <item>пакет</item>
+        <item>тюбик</item>
+        <item>капя</item>
     </string-array>
 
     <string-array name="prescribed_medicine">
@@ -34,6 +38,14 @@
         <item>Мазь</item>
         <item>Настойка</item>
         <item>Капли</item>
+    </string-array>
+
+    <string-array name="number_of_receptions_per_day">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
     </string-array>
 
 </resources>

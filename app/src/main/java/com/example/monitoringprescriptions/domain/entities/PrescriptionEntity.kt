@@ -37,11 +37,7 @@ data class PrescriptionEntity(
 
     @ColumnInfo(name = "date_start")
     @SerializedName("date_start")
-    val dateStart: Long = Calendar.getInstance().timeInMillis, // todo пока не используется
-
-    @ColumnInfo(name = "date_end")
-    @SerializedName("date_end")
-    val dateEnd: Long = Calendar.getInstance().timeInMillis, // todo пока не используется
+    val dateStart: Long = Calendar.getInstance().timeInMillis,
 
     @ColumnInfo(name = "reception_frequency")
     @SerializedName("reception_frequency")
@@ -61,6 +57,18 @@ data class PrescriptionEntity(
 
     @ColumnInfo(name = "comment")
     @SerializedName("comment")
-    val comment: String = "нет комментария"
+    val comment: String = "нет комментария",
+
+    @ColumnInfo(name = "number_days_taking_medicine")
+    @SerializedName("number_days_taking_medicine")
+    val numberDaysTakingMedicine: Int = 2,
+
+    @ColumnInfo(name = "number_admissions_per_day")
+    @SerializedName("number_admissions_per_day")
+    val numberAdmissionsPerDay: String = "3",
+
+    @ColumnInfo(name = "medications_course")
+    @SerializedName("medications_course")
+    val medicationsCourse: Float = 0.0f
 
 ) : Parcelable
