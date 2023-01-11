@@ -43,6 +43,14 @@ val appModules = module {
     single<PrescriptionCreatorInteractor> { PrescriptionCreatorInteractorImpl(get(), get()) }
 
     viewModel { parameters -> AppointmentsViewModel(get(), parameters.get()) }
-    viewModel { parameters -> DetailsPrescriptionViewModel(parameters.get(), get(), get(), get()) }
+    viewModel { parameters ->
+        DetailsPrescriptionViewModel(
+            parameters.get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
     viewModel { NewPrescriptionViewModel(get(), get()) }
 }

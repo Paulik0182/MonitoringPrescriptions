@@ -71,6 +71,8 @@ class DetailsPrescriptionFragment :
 
         initDateView()
 
+        errorMassage()
+
         viewModel.prescriptionListLiveDate.observe(viewLifecycleOwner) {
             appointmentInPrescriptionAdapter.setData(it)
         }
@@ -81,7 +83,7 @@ class DetailsPrescriptionFragment :
 
         binding.saveButton.setOnClickListener {
             saveDetailsReception()
-            showCloseDialog("Выйти из рецепта?")
+//            showCloseDialog("Выйти из рецепта?") // todo времмено (замннить на LiveDate)
         }
 
         initStringSpinner(binding.unitMeasurementSpinner, unitMeasurementSpinnerLabels) {
@@ -97,6 +99,30 @@ class DetailsPrescriptionFragment :
             numberOfReceptionsPerDaySpinnerLabels
         ) {
             viewModel.onNumberAdmissionsPerDaySelectSpinner(it)
+        }
+
+        // todo Дублирующий код
+        viewModel.dialogLiveData.observe(viewLifecycleOwner) {
+            AlertDialog.Builder(requireContext())
+                .setTitle(it.massage)
+                .setPositiveButton("ОК") { dialogInterface: DialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }.show()
+        }
+
+        // todo Дублирующий код (функция -> showCloseDialog в данном классе)
+        viewModel.closeDialogLiveData.observe(viewLifecycleOwner) {
+            AlertDialog.Builder(requireContext())
+                .setTitle(it.massage)//сообщение на всплыв. окне
+                .setPositiveButton("ДА") { dialogInterface: DialogInterface, i: Int ->
+                    it.runnable?.run()
+                    activity?.onBackPressed()//выход (кнопка назад)
+                    dialogInterface.dismiss()//закрываем окно. Обязательно!!
+                }
+                .setNegativeButton("НЕТ") { dialogInterface: DialogInterface, i: Int ->
+                    dialogInterface.dismiss()//закрываем окно
+                }
+                .show()
         }
     }
 
@@ -138,32 +164,77 @@ class DetailsPrescriptionFragment :
     }
 
     private fun saveDetailsReception() {
-
         // пример получения строки из Spinner (получаем позицию). эту строку и передаем
         val unitMeasurement =
             unitMeasurementSpinnerLabels[binding.unitMeasurementSpinner.selectedItemPosition]
         val prescribedMedicine =
             prescribedMedicineSpinnerLabels[binding.prescribedMedicineSpinner.selectedItemPosition]
-        val numberOfReceptionsPerDay =
+        val numberAdmissionsPerDay =
             numberOfReceptionsPerDaySpinnerLabels[binding.numberAdmissionsPerDaySpinner.selectedItemPosition]
 
         val dateStartMs = calendarFromView.timeInMillis
 
         viewModel.onSaveDetails(
             // собираем все данные которые имеются
-            dateStartMs,
-            binding.nameMedicineEditText.text.toString(),
-            binding.dosageEditText.text.toString(),
-            binding.commentEditText.text.toString(),
-            prescribedMedicine,
-            unitMeasurement,
-            numberOfReceptionsPerDay,
-            binding.numberDaysTakingMedicineEditText.text.toString(),
-            binding.medicationsCourseEditText.text.toString()
+            nameMedicine = binding.nameMedicineEditText.text.toString(),
+            prescribedMedicine = prescribedMedicine,
+            dosage = binding.dosageEditText.text.toString().toFloatOrNull(),
+            unitMeasurement = unitMeasurement,
+            comment = binding.commentEditText.text.toString(),
+            dateStart = dateStartMs,
+            numberDaysTakingMedicine = binding.numberDaysTakingMedicineEditText.text.toString()
+                .toIntOrNull(),
+            numberAdmissionsPerDay = numberAdmissionsPerDay,
+            medicationsCourse = binding.medicationsCourseEditText.text.toString().toFloatOrNull()
+                ?: 0F
         )
     }
 
-    // всплывающее окно (уточнее действия)!!!
+    // todo Дублирующий код (в NewPrescriptionFragment и данном классе)
+    private fun errorMassage() {
+        viewModel.errorsLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                // todo проблема с показом ошибки
+                is CreationPrescriptionScreenErrors.DateStartError -> {
+                    (binding.dateStartTextView.error as TextView).error = it.errorsMassage
+                }
+                is CreationPrescriptionScreenErrors.NumberDaysTakingMedicineError -> {
+                    binding.numberDaysTakingMedicineEditText.error = it.errorsMassage
+                }
+                is CreationPrescriptionScreenErrors.NameMedicineError -> {
+                    binding.nameMedicineEditText.error = it.errorsMassage
+                }
+                is CreationPrescriptionScreenErrors.PrescribedMedicineError -> {
+                    (binding.prescribedMedicineSpinner.selectedView as TextView).error =
+                        it.errorsMassage
+                }
+                is CreationPrescriptionScreenErrors.DosageError -> {
+                    binding.dosageEditText.error = it.errorsMassage
+                }
+                // todo проблема с показом текста ошибки
+                is CreationPrescriptionScreenErrors.UnitMeasurementError -> {
+                    (binding.unitMeasurementSpinner.selectedView as TextView).error =
+                        it.errorsMassage
+                }
+                // todo Дополнительная проверка на соответствие значений проблема с показом текста ошибки
+                is CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError -> {
+                    (binding.unitMeasurementSpinner.selectedView as TextView).error =
+                        it.errorsMassage
+                }
+
+                // todo проблема с показом текста ошибки
+                is CreationPrescriptionScreenErrors.NumberAdmissionsPerDayError -> {
+                    (binding.numberAdmissionsPerDaySpinner.selectedView as TextView).error =
+                        it.errorsMassage
+                }
+                else -> {
+
+                }
+            }
+        }
+    }
+
+    // всплывающее окно (уточнее действия)!!! // todo дублирующий код!!!!
     private fun showCloseDialog(message: String, runnable: Runnable? = null) {
         AlertDialog.Builder(requireContext())
             .setTitle(message)//сообщение на всплыв. окне
