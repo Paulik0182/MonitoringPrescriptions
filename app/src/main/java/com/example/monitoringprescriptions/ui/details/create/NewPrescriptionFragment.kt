@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentNewPrescriptionBinding
+import com.example.monitoringprescriptions.ui.details.CreationPrescriptionScreenErrors
 import com.example.monitoringprescriptions.utils.bpDataFormatter
 import com.example.monitoringprescriptions.utils.bpTimeFormatter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -48,7 +49,6 @@ class NewPrescriptionFragment :
 
         binding.saveButton.setOnClickListener {
             saveNewReception()
-            showCloseDialog("Выйти из рецепта?")
         }
 
         initDateView()
@@ -71,35 +71,35 @@ class NewPrescriptionFragment :
         viewModel.errorsLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 // todo проблема с показом ошибки
-                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.DateStartError -> {
+                is CreationPrescriptionScreenErrors.DateStartError -> {
                     (binding.dateStartTextView.error as TextView).error = it.errorsMassage
                 }
-                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.NumberDaysTakingMedicineError -> {
+                is CreationPrescriptionScreenErrors.NumberDaysTakingMedicineError -> {
                     binding.numberDaysTakingMedicineEditText.error = it.errorsMassage
                 }
-                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.NameMedicineError -> {
+                is CreationPrescriptionScreenErrors.NameMedicineError -> {
                     binding.nameMedicineEditText.error = it.errorsMassage
                 }
-                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.PrescribedMedicineError -> {
+                is CreationPrescriptionScreenErrors.PrescribedMedicineError -> {
                     (binding.prescribedMedicineSpinner.selectedView as TextView).error =
                         it.errorsMassage
                 }
-                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.DosageError -> {
+                is CreationPrescriptionScreenErrors.DosageError -> {
                     binding.dosageEditText.error = it.errorsMassage
                 }
                 // todo проблема с показом текста ошибки
-                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.UnitMeasurementError -> {
+                is CreationPrescriptionScreenErrors.UnitMeasurementError -> {
                     (binding.unitMeasurementSpinner.selectedView as TextView).error =
                         it.errorsMassage
                 }
                 // todo Дополнительная проверка на соответствие значений проблема с показом текста ошибки
-                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError -> {
+                is CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError -> {
                     (binding.unitMeasurementSpinner.selectedView as TextView).error =
                         it.errorsMassage
                 }
 
                 // todo проблема с показом текста ошибки
-                is NewPrescriptionViewModel.CreationPrescriptionScreenErrors.NumberAdmissionsPerDayError -> {
+                is CreationPrescriptionScreenErrors.NumberAdmissionsPerDayError -> {
                     (binding.numberAdmissionsPerDaySpinner.selectedView as TextView).error =
                         it.errorsMassage
                 }
@@ -108,10 +108,17 @@ class NewPrescriptionFragment :
                 }
             }
         }
+
+        viewModel.dialogLiveData.observe(viewLifecycleOwner) {
+            AlertDialog.Builder(requireContext())
+                .setTitle(it.massage)
+                .setPositiveButton("ОК") { dialogInterface: DialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }.show()
+        }
     }
 
     private fun saveNewReception() {
-        //todo требуется проверка на валидность всех вводимых значений, а потом сохранить запись!!!!
         // пример получения строки из Spinner (получаем позицию). эту строку и передаем
         val unitMeasurement =
             unitMeasurementSpinnerLabels[binding.unitMeasurementSpinner.selectedItemPosition]
@@ -134,22 +141,6 @@ class NewPrescriptionFragment :
             medicationsCourse = binding.medicationsCourseEditText.text.toString().toFloatOrNull()
                 ?: 0F //todo требуется проверка на валидность
         )
-    }
-
-    // todo перенести во viewModel
-    // всплывающее окно (уточнее действия)!!!
-    private fun showCloseDialog(message: String, runnable: Runnable? = null) {
-        AlertDialog.Builder(requireContext())
-            .setTitle(message)//сообщение на всплыв. окне
-            .setPositiveButton("ДА") { dialogInterface: DialogInterface, i: Int ->
-                runnable?.run()
-                activity?.onBackPressed()//выход (кнопка назад)
-                dialogInterface.dismiss()//закрываем окно. Обязательно!!
-            }
-            .setNegativeButton("НЕТ") { dialogInterface: DialogInterface, i: Int ->
-                dialogInterface.dismiss()//закрываем окно
-            }
-            .show()
     }
 
     private fun initStringSpinner(
