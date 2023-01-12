@@ -65,8 +65,6 @@ class DetailsPrescriptionFragment :
 
         setHasOptionsMenu(true)
 
-        saveDetailsReception()
-
         initPrescription()
 
         initDateView()
@@ -112,17 +110,7 @@ class DetailsPrescriptionFragment :
 
         // todo Дублирующий код (функция -> showCloseDialog в данном классе)
         viewModel.closeDialogLiveData.observe(viewLifecycleOwner) {
-            AlertDialog.Builder(requireContext())
-                .setTitle(it.massage)//сообщение на всплыв. окне
-                .setPositiveButton("ДА") { dialogInterface: DialogInterface, i: Int ->
-                    it.runnable?.run()
-                    activity?.onBackPressed()//выход (кнопка назад)
-                    dialogInterface.dismiss()//закрываем окно. Обязательно!!
-                }
-                .setNegativeButton("НЕТ") { dialogInterface: DialogInterface, i: Int ->
-                    dialogInterface.dismiss()//закрываем окно
-                }
-                .show()
+            showCloseDialog(it.massage)
         }
     }
 

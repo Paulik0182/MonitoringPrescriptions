@@ -108,8 +108,7 @@ class NewPrescriptionViewModel(
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == listOf("Таблетка")[0] &&
-                    unitMeasurement != listOf("шт.")[0] -> {
+            prescribedMedicine == "Таблетка" && unitMeasurement != "шт." -> {
                 context.toastMake("Не верно указана единица измерения")
                 errorsLiveData.mutable().postValue(
                     CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
@@ -119,8 +118,8 @@ class NewPrescriptionViewModel(
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == listOf("Укол")[0] &&
-                    unitMeasurement != listOf("мл.")[0] -> {
+            prescribedMedicine == "Укол" &&
+                    unitMeasurement != "мл." -> {
                 context.toastMake("Не верно указана единица измерения")
                 errorsLiveData.mutable().postValue(
                     CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
@@ -130,9 +129,22 @@ class NewPrescriptionViewModel(
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == listOf("Порошок")[0] && (
-                    unitMeasurement != listOf("ложка")[0] ||
-                            unitMeasurement != listOf("гр.")[0]
+            prescribedMedicine == "Порошок" && (
+                    unitMeasurement != "ложка" &&
+                            unitMeasurement != "гр.") -> {
+                context.toastMake("Не верно указана единица измерения")
+                errorsLiveData.mutable().postValue(
+                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                        "Не верно указана единица измерения"
+                    )
+                )
+            }
+
+            // todo дополнительная проверка на соответствие значений
+            prescribedMedicine == "Суспензия" && (
+                    unitMeasurement != "пакет" &&
+                            unitMeasurement != "шт." &&
+                            unitMeasurement != "мл."
                     ) -> {
                 context.toastMake("Не верно указана единица измерения")
                 errorsLiveData.mutable().postValue(
@@ -143,10 +155,8 @@ class NewPrescriptionViewModel(
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == listOf("Суспензия")[0] && (
-                    unitMeasurement != listOf("пакет")[0] ||
-                            unitMeasurement != listOf("шт.")[0] ||
-                            unitMeasurement != listOf("мл.")[0]
+            prescribedMedicine == "Мазь" && (
+                    unitMeasurement != "гр." && unitMeasurement != "тюбик"
                     ) -> {
                 context.toastMake("Не верно указана единица измерения")
                 errorsLiveData.mutable().postValue(
@@ -157,10 +167,7 @@ class NewPrescriptionViewModel(
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == listOf("Мазь")[0] && (
-                    unitMeasurement != listOf("гр.")[0] ||
-                            unitMeasurement != listOf("тюбик")[0]
-                    ) -> {
+            prescribedMedicine == "Настойка" && unitMeasurement != "мл." -> {
                 context.toastMake("Не верно указана единица измерения")
                 errorsLiveData.mutable().postValue(
                     CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
@@ -170,22 +177,7 @@ class NewPrescriptionViewModel(
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == listOf("Настойка")[0] && (
-                    unitMeasurement != listOf("мл.")[0]
-                    ) -> {
-                context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
-                )
-            }
-
-            // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == listOf("Капли")[0] && (
-                    unitMeasurement != listOf("капя")[0]
-                    )
-            -> {
+            prescribedMedicine == "Капли" && unitMeasurement != "капя" -> {
                 context.toastMake("Не верно указана единица измерения")
                 errorsLiveData.mutable().postValue(
                     CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
