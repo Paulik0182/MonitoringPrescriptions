@@ -59,82 +59,64 @@ class DetailsPrescriptionViewModel(
         medicationsCourse: Float
     ) {
         when {
-
             numberDaysTakingMedicine == null || numberDaysTakingMedicine == 0 -> {
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.NumberDaysTakingMedicineError(
-                        "Укажите количество дней приема лекарства"
-                    )
+                CreationPrescriptionScreenErrors.NumberDaysTakingMedicineError(
+                    "Укажите количество дней приема лекарства"
                 )
             }
 
             nameMedicine.isEmpty() -> {
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.NameMedicineError(
-                        "Укажите название лекарства"
-                    )
+                CreationPrescriptionScreenErrors.NameMedicineError(
+                    "Укажите название лекарства"
                 )
             }
 
             prescribedMedicine.isEmpty() -> {
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.PrescribedMedicineError(
-                        "Укажите вид лекарства"
-                    )
+                CreationPrescriptionScreenErrors.PrescribedMedicineError(
+                    "Укажите вид лекарства"
                 )
             }
 
             dosage == null -> {
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.DosageError(
-                        "Укажите дозировку"
-                    )
+                CreationPrescriptionScreenErrors.DosageError(
+                    "Укажите дозировку"
                 )
             }
 
             // todo доработать (единица измерения должна соответствовать виду лекарства)
             unitMeasurement == null || unitMeasurement == listOf("Еди. изм.")[0] -> {
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementError(
-                        "Укажите единицу измерения"
-                    )
+                CreationPrescriptionScreenErrors.UnitMeasurementError(
+                    "Укажите единицу измерения"
                 )
             }
 
             // todo не выполняется проверка
             dateStart == null || dateStart == 0L -> {
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.DateStartError(
-                        "Укажите дату приема лекарства"
-                    )
+                CreationPrescriptionScreenErrors.DateStartError(
+                    "Укажите дату приема лекарства"
                 )
             }
 
             numberAdmissionsPerDay == null -> {
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.NumberAdmissionsPerDayError(
-                        "Укажите количество приемов день"
-                    )
+                CreationPrescriptionScreenErrors.NumberAdmissionsPerDayError(
+                    "Укажите количество приемов день"
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
             prescribedMedicine == "Таблетка" && unitMeasurement != "шт." -> {
                 context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    "Не верно указана единица измерения"
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == "Укол" && unitMeasurement != "мл." -> {
+            prescribedMedicine == "Укол" &&
+                    unitMeasurement != "мл." -> {
                 context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    "Не верно указана единица измерения"
                 )
             }
 
@@ -143,10 +125,8 @@ class DetailsPrescriptionViewModel(
                     unitMeasurement != "ложка" &&
                             unitMeasurement != "гр.") -> {
                 context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    "Не верно указана единица измерения"
                 )
             }
 
@@ -157,10 +137,8 @@ class DetailsPrescriptionViewModel(
                             unitMeasurement != "мл."
                     ) -> {
                 context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    "Не верно указана единица измерения"
                 )
             }
 
@@ -169,30 +147,24 @@ class DetailsPrescriptionViewModel(
                     unitMeasurement != "гр." && unitMeasurement != "тюбик"
                     ) -> {
                 context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    "Не верно указана единица измерения"
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
             prescribedMedicine == "Настойка" && unitMeasurement != "мл." -> {
                 context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    "Не верно указана единица измерения"
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
             prescribedMedicine == "Капли" && unitMeasurement != "капя" -> {
                 context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    "Не верно указана единица измерения"
                 )
             }
 
@@ -218,11 +190,14 @@ class DetailsPrescriptionViewModel(
                     closeDialogLiveData.mutable().postValue(
                         CloseDialog.ShowCloseDialog("Выйти из рецепта?")
                     )
+                    null
                 }
             }
+        }?.let {
+            errorsLiveData.mutable().postValue(it)
+            return
         }
     }
-
 
     val prescriptionListLiveDate: LiveData<List<AppointmentEntity>> = MutableLiveData()
 
@@ -237,5 +212,4 @@ class DetailsPrescriptionViewModel(
         val appointmentList = appointmentsRepo.getPrescriptionAppointments(prescriptionId)
         prescriptionListLiveDate.mutable().postValue(appointmentList)
     }
-
 }
