@@ -24,7 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.*
 
-private const val PRESCRIPTION_ID_ARG_KEY = "PRESCRIPTION_ID_ARG_KEY"
+const val PRESCRIPTION_ID_ARG_KEY = "PRESCRIPTION_ID_ARG_KEY"
 private const val DAY_IN_MS = 24 * 60 * 60 * 1000L
 
 class DetailsPrescriptionFragment :
@@ -124,7 +124,7 @@ class DetailsPrescriptionFragment :
 
         val dosage = prescription.dosage
         val numberAdmissionsPerDay = prescription.numberAdmissionsPerDay
-        val medicationsCourse = (numberAdmissionsPerDay.toInt() * dosage) * numberDaysTakingMedicine
+        val medicationsCourse = (numberAdmissionsPerDay * dosage) * numberDaysTakingMedicine
 
         binding.dateStartTextView.text = bpDataFormatter.format(dateStart)
         binding.dateEndTextView.text = bpDataFormatter.format(dateEnd)
@@ -248,7 +248,7 @@ class DetailsPrescriptionFragment :
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val runnable = {
-            viewModel.onDeleteClick()
+            viewModel.onDeleteAppointments()
         }
 
         when (item.itemId) {
@@ -287,35 +287,12 @@ class DetailsPrescriptionFragment :
         }
     }
 
-    // todo почему не получается Spinner с Array<Int> ?
-    private fun initIntSpinner(spinner: Spinner, labels: Array<Int>, onSelect: (Int) -> Unit) {
-        spinner.adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            labels
-        )
-
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                onSelect(labels[position])// здесь позиция котораю передали
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // todo
-            }
-        }
-    }
-
     private fun initPrescription() {
         binding.recordsRecyclerView.layoutManager = LinearLayoutManager(context)
         appointmentInPrescriptionAdapter = AppointmentInPrescriptionAdapter(
             data = emptyList(),
-            context = requireContext()
+            context = requireContext(),
+//            prescriptionRepo =
         )
         binding.recordsRecyclerView.adapter = appointmentInPrescriptionAdapter
     }

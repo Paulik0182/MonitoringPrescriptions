@@ -30,10 +30,16 @@ class DetailsPrescriptionViewModel(
     val dialogLiveData: LiveData<CloseDialog> = MutableLiveData()
     val closeDialogLiveData: LiveData<CloseDialog> = MutableLiveData()
 
-    fun onDeleteClick() {
+    fun onDeleteAppointments() {
         prescriptionLiveData.value?.let {
 //            prescriptionRepo.delete(it)
             appointmentsInteractor.delete(it)
+        }
+    }
+
+    fun onDeletePrescription() {
+        prescriptionLiveData.value?.let {
+            prescriptionRepo.delete(it)
         }
     }
 

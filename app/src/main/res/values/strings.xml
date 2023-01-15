@@ -3,9 +3,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="submit">Добавить измерение</string>
 
-    <!-- bottom nav menu -->
+    <!-- menu -->
     <string name="reception">Расписание</string>
     <string name="settings">Настройки</string>
+    <string name="delete_menu">Удалить</string>
+    <string name="accepted_menu">Принято</string>
+    <string name="skipped_menu">Пропущено</string>
 
     <!-- emoji -->
     <string name="emoji_yes">&#9989;</string>
@@ -15,7 +18,12 @@
     <!-- emoji product-->
     <string name="emoji_pill">&#128138;</string>
     <string name="emoji_syringe">&#128137;</string>
-    <string name="emoji_powder">&#128137;</string>
+    <string name="emoji_powder">&#127862;</string>
+    <string name="emoji_suspension">&#129371;</string>
+    <string name="emoji_ointment">&#129524;</string>
+    <string name="emoji_tincture">&#129371;</string>
+    <string name="emoji_drops">💧</string>
+    <string name="emoji_candles">&#9904;</string>
 
     <!-- для Spinner-->
     <!-- unit_measurement-->
