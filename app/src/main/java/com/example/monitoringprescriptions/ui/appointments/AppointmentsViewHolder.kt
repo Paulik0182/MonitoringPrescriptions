@@ -14,6 +14,7 @@ import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.TypeMedicine
 import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 import com.example.monitoringprescriptions.utils.bpTimeFormatter
+import com.example.monitoringprescriptions.utils.toString
 
 class AppointmentsViewHolder(
     parent: ViewGroup,
@@ -37,7 +38,7 @@ class AppointmentsViewHolder(
         this.appointmentFullEntity = appointmentFullEntity
 
         binding.nameMedicineTextView.text = appointmentFullEntity.nameMedicine
-        binding.typeMedicineTextView.text = appointmentFullEntity.prescribedMedicine
+        binding.typeMedicineTextView.text = appointmentFullEntity.typeMedicine.toString(context)
 
         binding.timeTextView.text = bpTimeFormatter.format(appointmentFullEntity.time)
 
@@ -51,8 +52,15 @@ class AppointmentsViewHolder(
         }
         binding.iconMedicineTextView.text = appointmentFullEntity.typeMedicine.toString()
         when (appointmentFullEntity.typeMedicine) {
+            TypeMedicine.TYPE_MED -> null
             TypeMedicine.PILL -> binding.iconMedicineTextView.setText(R.string.emoji_pill)
             TypeMedicine.SYRINGE -> binding.iconMedicineTextView.setText(R.string.emoji_syringe)
+            TypeMedicine.POWDER -> binding.iconMedicineTextView.setText(R.string.emoji_syringe)
+            TypeMedicine.SUSPENSION -> binding.iconMedicineTextView.setText(R.string.emoji_syringe)
+            TypeMedicine.OINTMENT -> binding.iconMedicineTextView.setText(R.string.emoji_syringe)
+            TypeMedicine.TINCTURE -> binding.iconMedicineTextView.setText(R.string.emoji_syringe)
+            TypeMedicine.DROPS -> binding.iconMedicineTextView.setText(R.string.emoji_syringe)
+            TypeMedicine.CANDLES -> binding.iconMedicineTextView.setText(R.string.emoji_syringe)
         }
     }
 

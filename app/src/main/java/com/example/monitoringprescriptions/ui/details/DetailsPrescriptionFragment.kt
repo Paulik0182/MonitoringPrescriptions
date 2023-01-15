@@ -16,11 +16,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentDetailsPrescriptionBinding
+import com.example.monitoringprescriptions.domain.TypeMedicine
+import com.example.monitoringprescriptions.domain.UnitsMeasurement
 import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
-import com.example.monitoringprescriptions.utils.bpDataFormatter
-import com.example.monitoringprescriptions.utils.bpTimeFormatter
-import com.example.monitoringprescriptions.utils.decimalForm
-import com.example.monitoringprescriptions.utils.numberForm
+import com.example.monitoringprescriptions.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.*
@@ -48,15 +47,17 @@ class DetailsPrescriptionFragment :
     }
 
     private val unitMeasurementSpinnerLabels: Array<String> by lazy {
-        resources.getStringArray(R.array.unit_measurement)
+        UnitsMeasurement.values().map { it.toString(requireContext()) }
+            .toTypedArray() // мапим значения из спинера чтобы получить норм. список
     }
 
     private val prescribedMedicineSpinnerLabels: Array<String> by lazy {
-        resources.getStringArray(R.array.prescribed_medicine)
+        TypeMedicine.values().map { it.toString(requireContext()) }
+            .toTypedArray() // мапим значения из спинера чтобы получить норм. список
     }
 
-    private val numberOfReceptionsPerDaySpinnerLabels: Array<String> by lazy {
-        resources.getStringArray(R.array.number_of_receptions_per_day)
+    private val numberOfReceptionsPerDaySpinnerLabels: Array<Int> by lazy {
+        resources.getIntArray(R.array.number_of_receptions_per_day).toTypedArray()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,7 +95,9 @@ class DetailsPrescriptionFragment :
 
         initStringSpinner(
             binding.numberAdmissionsPerDaySpinner,
-            numberOfReceptionsPerDaySpinnerLabels
+            numberOfReceptionsPerDaySpinnerLabels.map { it.toString() }
+                .toTypedArray() // особенность с Int спинером
+            // toTypedArray заганяет Array обратно в массив
         ) {
             viewModel.onNumberAdmissionsPerDaySelectSpinner(it)
         }
@@ -133,13 +136,13 @@ class DetailsPrescriptionFragment :
 
         // выясняем какому элементу массива соответствует выставленное значение
         prescribedMedicineSpinnerLabels.forEachIndexed { i, medicine ->
-            if (medicine == prescription.prescribedMedicine) {
+            if (medicine == prescription.typeMedicine.toString(requireContext())) {
                 binding.prescribedMedicineSpinner.setSelection(i)
             }
         }
 
         unitMeasurementSpinnerLabels.forEachIndexed { i, unit ->
-            if (unit == prescription.unitMeasurement) {
+            if (unit == prescription.unitMeasurement.toString(requireContext())) {
                 binding.unitMeasurementSpinner.setSelection(i)
             }
         }
@@ -151,23 +154,23 @@ class DetailsPrescriptionFragment :
         }
     }
 
+
     private fun saveDetailsReception() {
         // пример получения строки из Spinner (получаем позицию). эту строку и передаем
         val unitMeasurement =
             unitMeasurementSpinnerLabels[binding.unitMeasurementSpinner.selectedItemPosition]
-        val prescribedMedicine =
+        val typeMedicine =
             prescribedMedicineSpinnerLabels[binding.prescribedMedicineSpinner.selectedItemPosition]
         val numberAdmissionsPerDay =
             numberOfReceptionsPerDaySpinnerLabels[binding.numberAdmissionsPerDaySpinner.selectedItemPosition]
-
         val dateStartMs = calendarFromView.timeInMillis
 
         viewModel.onSaveDetails(
             // собираем все данные которые имеются
             nameMedicine = binding.nameMedicineEditText.text.toString(),
-            prescribedMedicine = prescribedMedicine,
             dosage = binding.dosageEditText.text.toString().toFloatOrNull(),
-            unitMeasurement = unitMeasurement,
+            unitMeasurement = unitMeasurement.toUnitMeasurement(requireContext()),
+            typeMedicine = typeMedicine.toTypeMedicine(requireContext()),
             comment = binding.commentEditText.text.toString(),
             dateStart = dateStartMs,
             numberDaysTakingMedicine = binding.numberDaysTakingMedicineEditText.text.toString()
@@ -184,36 +187,36 @@ class DetailsPrescriptionFragment :
             when (it) {
                 // todo проблема с показом ошибки
                 is CreationPrescriptionScreenErrors.DateStartError -> {
-                    (binding.dateStartTextView.error as TextView).error = it.errorsMassage
+                    (binding.dateStartTextView.error as TextView).error = it.errorsMessage
                 }
                 is CreationPrescriptionScreenErrors.NumberDaysTakingMedicineError -> {
-                    binding.numberDaysTakingMedicineEditText.error = it.errorsMassage
+                    binding.numberDaysTakingMedicineEditText.error = it.errorsMessage
                 }
                 is CreationPrescriptionScreenErrors.NameMedicineError -> {
-                    binding.nameMedicineEditText.error = it.errorsMassage
+                    binding.nameMedicineEditText.error = it.errorsMessage
                 }
                 is CreationPrescriptionScreenErrors.PrescribedMedicineError -> {
                     (binding.prescribedMedicineSpinner.selectedView as TextView).error =
-                        it.errorsMassage
+                        it.errorsMessage
                 }
                 is CreationPrescriptionScreenErrors.DosageError -> {
-                    binding.dosageEditText.error = it.errorsMassage
+                    binding.dosageEditText.error = it.errorsMessage
                 }
                 // todo проблема с показом текста ошибки
                 is CreationPrescriptionScreenErrors.UnitMeasurementError -> {
                     (binding.unitMeasurementSpinner.selectedView as TextView).error =
-                        it.errorsMassage
+                        it.errorsMessage
                 }
                 // todo Дополнительная проверка на соответствие значений проблема с показом текста ошибки
                 is CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError -> {
                     (binding.unitMeasurementSpinner.selectedView as TextView).error =
-                        it.errorsMassage
+                        it.errorsMessage
                 }
 
                 // todo проблема с показом текста ошибки
                 is CreationPrescriptionScreenErrors.NumberAdmissionsPerDayError -> {
                     (binding.numberAdmissionsPerDaySpinner.selectedView as TextView).error =
-                        it.errorsMassage
+                        it.errorsMessage
                 }
                 else -> {
 

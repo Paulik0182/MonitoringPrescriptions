@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.monitoringprescriptions.domain.TypeMedicine
+import com.example.monitoringprescriptions.domain.UnitsMeasurement
 import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
 import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import com.example.monitoringprescriptions.domain.interactors.AppointmentsInteractor
@@ -49,13 +51,13 @@ class DetailsPrescriptionViewModel(
 
     fun onSaveDetails(
         nameMedicine: String,
-        prescribedMedicine: String,
         dosage: Float?,
-        unitMeasurement: String?,
+        unitMeasurement: UnitsMeasurement?,
+        typeMedicine: TypeMedicine,
         comment: String,
         dateStart: Long?,
         numberDaysTakingMedicine: Int?,
-        numberAdmissionsPerDay: String?,
+        numberAdmissionsPerDay: Int?,
         medicationsCourse: Float
     ) {
         when {
@@ -71,7 +73,7 @@ class DetailsPrescriptionViewModel(
                 )
             }
 
-            prescribedMedicine.isEmpty() -> {
+            typeMedicine == TypeMedicine.TYPE_MED -> {
                 CreationPrescriptionScreenErrors.PrescribedMedicineError(
                     "Укажите вид лекарства"
                 )
@@ -84,7 +86,7 @@ class DetailsPrescriptionViewModel(
             }
 
             // todo доработать (единица измерения должна соответствовать виду лекарства)
-            unitMeasurement == null || unitMeasurement == listOf("Еди. изм.")[0] -> {
+            unitMeasurement == null || unitMeasurement == UnitsMeasurement.UNITS_MEAS -> {
                 CreationPrescriptionScreenErrors.UnitMeasurementError(
                     "Укажите единицу измерения"
                 )
@@ -104,7 +106,7 @@ class DetailsPrescriptionViewModel(
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == "Таблетка" && unitMeasurement != "шт." -> {
+            typeMedicine == TypeMedicine.PILL && unitMeasurement != UnitsMeasurement.PIECES -> {
                 context.toastMake("Не верно указана единица измерения")
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
                     "Не верно указана единица измерения"
@@ -112,8 +114,8 @@ class DetailsPrescriptionViewModel(
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == "Укол" &&
-                    unitMeasurement != "мл." -> {
+            typeMedicine == TypeMedicine.SYRINGE &&
+                    unitMeasurement != UnitsMeasurement.MILLILITER -> {
                 context.toastMake("Не верно указана единица измерения")
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
                     "Не верно указана единица измерения"
@@ -121,9 +123,9 @@ class DetailsPrescriptionViewModel(
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == "Порошок" && (
-                    unitMeasurement != "ложка" &&
-                            unitMeasurement != "гр.") -> {
+            typeMedicine == TypeMedicine.POWDER && (
+                    unitMeasurement != UnitsMeasurement.SPOON &&
+                            unitMeasurement != UnitsMeasurement.GRAM) -> {
                 context.toastMake("Не верно указана единица измерения")
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
                     "Не верно указана единица измерения"
@@ -131,10 +133,10 @@ class DetailsPrescriptionViewModel(
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == "Суспензия" && (
-                    unitMeasurement != "пакет" &&
-                            unitMeasurement != "шт." &&
-                            unitMeasurement != "мл."
+            typeMedicine == TypeMedicine.SUSPENSION && (
+                    unitMeasurement != UnitsMeasurement.PACKAGE &&
+                            unitMeasurement != UnitsMeasurement.PIECES &&
+                            unitMeasurement != UnitsMeasurement.MILLILITER
                     ) -> {
                 context.toastMake("Не верно указана единица измерения")
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
@@ -143,8 +145,8 @@ class DetailsPrescriptionViewModel(
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == "Мазь" && (
-                    unitMeasurement != "гр." && unitMeasurement != "тюбик"
+            typeMedicine == TypeMedicine.OINTMENT && (
+                    unitMeasurement != UnitsMeasurement.GRAM && unitMeasurement != UnitsMeasurement.TUBE
                     ) -> {
                 context.toastMake("Не верно указана единица измерения")
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
@@ -153,7 +155,7 @@ class DetailsPrescriptionViewModel(
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == "Настойка" && unitMeasurement != "мл." -> {
+            typeMedicine == TypeMedicine.TINCTURE && unitMeasurement != UnitsMeasurement.MILLILITER -> {
                 context.toastMake("Не верно указана единица измерения")
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
                     "Не верно указана единица измерения"
@@ -161,7 +163,15 @@ class DetailsPrescriptionViewModel(
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == "Капли" && unitMeasurement != "капя" -> {
+            typeMedicine == TypeMedicine.DROPS && unitMeasurement != UnitsMeasurement.DROP -> {
+                context.toastMake("Не верно указана единица измерения")
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    "Не верно указана единица измерения"
+                )
+            }
+
+            // todo дополнительная проверка на соответствие значений
+            typeMedicine == TypeMedicine.CANDLES && unitMeasurement != UnitsMeasurement.PIECES -> {
                 context.toastMake("Не верно указана единица измерения")
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
                     "Не верно указана единица измерения"
@@ -172,9 +182,9 @@ class DetailsPrescriptionViewModel(
             else -> {
                 prescriptionLiveData.value?.copy(
                     nameMedicine = nameMedicine,
-                    prescribedMedicine = prescribedMedicine,
                     dosage = dosage,
                     unitMeasurement = unitMeasurement,
+                    typeMedicine = typeMedicine,
                     comment = comment,
                     dateStart = dateStart,
                     numberDaysTakingMedicine = numberDaysTakingMedicine,

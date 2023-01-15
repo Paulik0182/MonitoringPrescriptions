@@ -14,28 +14,28 @@ package com.example.monitoringprescriptions.ui.details
  */
 
 // для примера завели sealed класс для сообщения ошибки
-sealed class CreationPrescriptionScreenErrors(val errorsMassage: String) {
+sealed class CreationPrescriptionScreenErrors(val errorsMessage: String) {
     // перечисляются все потомки класса
-    class NameMedicineError(errorsMassage: String) :
-        CreationPrescriptionScreenErrors(errorsMassage)
+    class NameMedicineError(errorsMessage: String) :
+        CreationPrescriptionScreenErrors(errorsMessage)
 
-    class PrescribedMedicineError(errorsMassage: String) :
-        CreationPrescriptionScreenErrors(errorsMassage)
+    class PrescribedMedicineError(errorsMessage: String) :
+        CreationPrescriptionScreenErrors(errorsMessage)
 
     class DosageError(errorsMassage: String) : CreationPrescriptionScreenErrors(errorsMassage)
 
-    class UnitMeasurementError(errorsMassage: String) :
-        CreationPrescriptionScreenErrors(errorsMassage)
+    class UnitMeasurementError(errorsMessage: String) :
+        CreationPrescriptionScreenErrors(errorsMessage)
 
-    class UnitMeasurementMatchingValuesError(errorsMassage: String) :
-        CreationPrescriptionScreenErrors(errorsMassage)
+    class UnitMeasurementMatchingValuesError(errorsMessage: String) :
+        CreationPrescriptionScreenErrors(errorsMessage)
 
-    class DateStartError(errorsMassage: String) :
-        CreationPrescriptionScreenErrors(errorsMassage)
+    class DateStartError(errorsMessage: String) :
+        CreationPrescriptionScreenErrors(errorsMessage)
 
-    class NumberDaysTakingMedicineError(errorsMassage: String) :
-        CreationPrescriptionScreenErrors(errorsMassage)
+    class NumberDaysTakingMedicineError(errorsMessage: String) :
+        CreationPrescriptionScreenErrors(errorsMessage)
 
-    class NumberAdmissionsPerDayError(errorsMassage: String) :
-        CreationPrescriptionScreenErrors(errorsMassage)
+    class NumberAdmissionsPerDayError(errorsMessage: String) :
+        CreationPrescriptionScreenErrors(errorsMessage)
 }

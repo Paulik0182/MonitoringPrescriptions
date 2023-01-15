@@ -15,9 +15,35 @@
     <!-- emoji product-->
     <string name="emoji_pill">&#128138;</string>
     <string name="emoji_syringe">&#128137;</string>
+    <string name="emoji_powder">&#128137;</string>
+
+    <!-- для Spinner-->
+    <!-- unit_measurement-->
+    <string name="units_meas">Еди. изм.</string>
+    <string name="pieces_unit_meas">шт.</string>
+    <string name="spoon_unit_meas">ложка</string>
+    <string name="milliliter_unit_meas">мл.</string>
+    <string name="gram_unit_meas">гр.</string>
+    <string name="package_unit_meas">пакет</string>
+    <string name="tube_unit_meas">тюбик</string>
+    <string name="drop_unit_meas">капя</string>
+    <!--TypeMedicine-->
+    <string name="type_med"></string>
+    <string name="pill_type_med">Таблетка</string>
+    <string name="syringe_type_med">Укол</string>
+    <string name="powder_type_med">Порошок</string>
+    <string name="suspension_type_med">Суспензия</string>
+    <string name="ointment_type_med">Мазь</string>
+    <string name="tincture_type_med">Настойка</string>
+    <string name="drops_type_med">Капли</string>
+    <string name="candles_type_med">Свечи</string>
+
+
+    <!--error-->
+    <string name="unit_error">Не верно указана единица измерения</string>
+
 
     <!-- Spinner-->
-
     <string-array name="unit_measurement">
         <item>Еди. изм.</item>
         <item>шт.</item>
@@ -38,14 +64,15 @@
         <item>Мазь</item>
         <item>Настойка</item>
         <item>Капли</item>
+        <item>Свечи</item>
     </string-array>
 
-    <string-array name="number_of_receptions_per_day">
+    <integer-array name="number_of_receptions_per_day">
         <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
         <item>5</item>
-    </string-array>
+    </integer-array>
 
 </resources>

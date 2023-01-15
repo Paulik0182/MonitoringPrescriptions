@@ -1,6 +1,7 @@
 package com.example.monitoringprescriptions.data
 
 import com.example.monitoringprescriptions.domain.TypeMedicine
+import com.example.monitoringprescriptions.domain.UnitsMeasurement
 import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
 import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import com.example.monitoringprescriptions.domain.interactors.PrescriptionCreatorInteractor
@@ -17,20 +18,18 @@ class PrescriptionCreatorInteractorImpl(
 ) : PrescriptionCreatorInteractor {
     override fun create(
         nameMedicine: String,
-        prescribedMedicine: String,
         typeMedicine: TypeMedicine,
         dosage: Float,
-        unitMeasurement: String,
+        unitMeasurement: UnitsMeasurement,
         comment: String,
         dateStart: Calendar,
         numberDaysTakingMedicine: Int,
-        numberAdmissionsPerDay: String,
+        numberAdmissionsPerDay: Int,
         medicationsCourse: Float
     ): PrescriptionEntity {
         val prescriptionEntity = PrescriptionEntity(
             id = UUID.randomUUID().toString(),
             nameMedicine = nameMedicine,
-            prescribedMedicine = prescribedMedicine,
             typeMedicine = typeMedicine,
             dosage = dosage,
             unitMeasurement = unitMeasurement,

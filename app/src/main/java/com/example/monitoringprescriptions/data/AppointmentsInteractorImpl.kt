@@ -62,7 +62,6 @@ class AppointmentsInteractorImpl(
                 status = appointment.status,
                 prescriptionId = prescription.id,
                 nameMedicine = prescription.nameMedicine,
-                prescribedMedicine = prescription.prescribedMedicine,
                 typeMedicine = prescription.typeMedicine,
                 dosage = prescription.dosage,
                 unitMeasurement = prescription.unitMeasurement

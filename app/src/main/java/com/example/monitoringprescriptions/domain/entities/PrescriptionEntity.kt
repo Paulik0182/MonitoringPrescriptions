@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.monitoringprescriptions.domain.TypeMedicine
+import com.example.monitoringprescriptions.domain.UnitsMeasurement
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import java.util.*
@@ -27,10 +28,6 @@ data class PrescriptionEntity(
     @SerializedName("name_medicine")
     val nameMedicine: String = "no name",
 
-    @ColumnInfo(name = "prescribed_medicine")
-    @SerializedName("prescribed_medicine")
-    val prescribedMedicine: String = "Таблетка",
-
     @ColumnInfo(name = "type_medicine")
     @SerializedName("type_medicine")
     val typeMedicine: TypeMedicine = TypeMedicine.PILL,
@@ -49,7 +46,7 @@ data class PrescriptionEntity(
 
     @ColumnInfo(name = "unit_measurement")
     @SerializedName("unit_measurement")
-    val unitMeasurement: String = "шт.",
+    val unitMeasurement: UnitsMeasurement = UnitsMeasurement.PIECES,
 
     @ColumnInfo(name = "photo")
     @SerializedName("photo")
@@ -65,7 +62,7 @@ data class PrescriptionEntity(
 
     @ColumnInfo(name = "number_admissions_per_day")
     @SerializedName("number_admissions_per_day")
-    val numberAdmissionsPerDay: String = "3",
+    val numberAdmissionsPerDay: Int = 3,
 
     @ColumnInfo(name = "medications_course")
     @SerializedName("medications_course")
