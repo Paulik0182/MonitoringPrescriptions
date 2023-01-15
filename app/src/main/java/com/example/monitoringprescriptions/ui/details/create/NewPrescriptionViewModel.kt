@@ -4,12 +4,16 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.monitoringprescriptions.R
+import com.example.monitoringprescriptions.domain.ErrorMessage
 import com.example.monitoringprescriptions.domain.TypeMedicine
 import com.example.monitoringprescriptions.domain.UnitsMeasurement
 import com.example.monitoringprescriptions.domain.interactors.PrescriptionCreatorInteractor
 import com.example.monitoringprescriptions.ui.CloseDialog
 import com.example.monitoringprescriptions.ui.details.CreationPrescriptionScreenErrors
+import com.example.monitoringprescriptions.utils.SingleLiveEvent
 import com.example.monitoringprescriptions.utils.mutable
+import com.example.monitoringprescriptions.utils.toString
 import com.example.monitoringprescriptions.utils.toastMake
 
 class NewPrescriptionViewModel(
@@ -21,7 +25,7 @@ class NewPrescriptionViewModel(
     val errorsLiveData: LiveData<CreationPrescriptionScreenErrors> = MutableLiveData()
 
     // для дополнительного уведомления
-    val dialogLiveData: LiveData<CloseDialog> = MutableLiveData()
+    val dialogLiveData: LiveData<CloseDialog> = SingleLiveEvent()
 
     fun onUnitMeasurementSelectSpinner(unitMeasurement: String) {
         // todo
@@ -49,62 +53,62 @@ class NewPrescriptionViewModel(
         when {
             numberDaysTakingMedicine == null || numberDaysTakingMedicine == 0 -> {
                 CreationPrescriptionScreenErrors.NumberDaysTakingMedicineError(
-                    "Укажите количество дней приема лекарства"
+                    ErrorMessage.RECEPTION_DAYS.toString(context)
                 )
             }
 
             nameMedicine.isEmpty() -> {
                 CreationPrescriptionScreenErrors.NameMedicineError(
-                    "Укажите название лекарства"
+                    ErrorMessage.NAME_MEDICINE.toString(context)
                 )
             }
 
             typeMedicine == TypeMedicine.TYPE_MED -> {
                 CreationPrescriptionScreenErrors.PrescribedMedicineError(
-                    "Укажите вид лекарства"
+                    ErrorMessage.TYPE_MEDICINE.toString(context)
                 )
             }
 
             dosage == null -> {
                 CreationPrescriptionScreenErrors.DosageError(
-                    "Укажите дозировку"
+                    ErrorMessage.DOSAGE.toString(context)
                 )
             }
 
             // todo доработать (единица измерения должна соответствовать виду лекарства)
             unitMeasurement == null || unitMeasurement == UnitsMeasurement.UNITS_MEAS -> {
                 CreationPrescriptionScreenErrors.UnitMeasurementError(
-                    "Укажите единицу измерения"
+                    ErrorMessage.UNIT_MEASUREMENT.toString(context)
                 )
             }
 
             // todo не выполняется проверка
             dateStart == null || dateStart == 0L -> {
                 CreationPrescriptionScreenErrors.DateStartError(
-                    "Укажите дату приема лекарства"
+                    ErrorMessage.DATE_ADMISSION.toString(context)
                 )
             }
 
             numberAdmissionsPerDay == null -> {
                 CreationPrescriptionScreenErrors.NumberAdmissionsPerDayError(
-                    "Укажите количество приемов день"
+                    ErrorMessage.NUMBER_RECEPTION.toString(context)
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
             typeMedicine == TypeMedicine.PILL && unitMeasurement != UnitsMeasurement.PIECES -> {
-                context.toastMake("Не верно указана единица измерения")
+                context.toastMake(R.string.unit_error)
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                    "Не верно указана единица измерения"
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
             typeMedicine == TypeMedicine.SYRINGE &&
                     unitMeasurement != UnitsMeasurement.MILLILITER -> {
-                context.toastMake("Не верно указана единица измерения")
+                context.toastMake(R.string.unit_error)
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                    "Не верно указана единица измерения"
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
@@ -112,9 +116,9 @@ class NewPrescriptionViewModel(
             typeMedicine == TypeMedicine.POWDER && (
                     unitMeasurement != UnitsMeasurement.SPOON &&
                             unitMeasurement != UnitsMeasurement.GRAM) -> {
-                context.toastMake("Не верно указана единица измерения")
+                context.toastMake(R.string.unit_error)
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                    "Не верно указана единица измерения"
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
@@ -124,9 +128,9 @@ class NewPrescriptionViewModel(
                             unitMeasurement != UnitsMeasurement.PIECES &&
                             unitMeasurement != UnitsMeasurement.MILLILITER
                     ) -> {
-                context.toastMake("Не верно указана единица измерения")
+                context.toastMake(R.string.unit_error)
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                    "Не верно указана единица измерения"
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
@@ -134,33 +138,33 @@ class NewPrescriptionViewModel(
             typeMedicine == TypeMedicine.OINTMENT && (
                     unitMeasurement != UnitsMeasurement.GRAM && unitMeasurement != UnitsMeasurement.TUBE
                     ) -> {
-                context.toastMake("Не верно указана единица измерения")
+                context.toastMake(R.string.unit_error)
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                    "Не верно указана единица измерения"
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
             typeMedicine == TypeMedicine.TINCTURE && unitMeasurement != UnitsMeasurement.MILLILITER -> {
-                context.toastMake("Не верно указана единица измерения")
+                context.toastMake(R.string.unit_error)
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                    "Не верно указана единица измерения"
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
             typeMedicine == TypeMedicine.DROPS && unitMeasurement != UnitsMeasurement.DROP -> {
-                context.toastMake("Не верно указана единица измерения")
+                context.toastMake(R.string.unit_error)
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                    "Не верно указана единица измерения"
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
             typeMedicine == TypeMedicine.CANDLES && unitMeasurement != UnitsMeasurement.PIECES -> {
-                context.toastMake("Не верно указана единица измерения")
+                context.toastMake(R.string.unit_error)
                 CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                    "Не верно указана единица измерения"
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
@@ -177,10 +181,9 @@ class NewPrescriptionViewModel(
                     numberAdmissionsPerDay = numberAdmissionsPerDay,
                     medicationsCourse = medicationsCourse
                 )
-                // todo сюда вставить диалог (данные сохранены) одноразовая LiveDate (singleLiveDate).
-                //  написать свою одноразовую LiveDate
+
                 dialogLiveData.mutable().postValue(
-                    CloseDialog.ShowCloseDialog("Запись создана")
+                    CloseDialog.ShowCloseDialog(context.getString(R.string.record_created))
                 )
                 null
             }

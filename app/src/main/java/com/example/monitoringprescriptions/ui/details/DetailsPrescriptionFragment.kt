@@ -106,7 +106,7 @@ class DetailsPrescriptionFragment :
         viewModel.dialogLiveData.observe(viewLifecycleOwner) {
             AlertDialog.Builder(requireContext())
                 .setTitle(it.massage)
-                .setPositiveButton("ОК") { dialogInterface: DialogInterface, _ ->
+                .setPositiveButton(requireContext().getString(R.string.yes)) { dialogInterface: DialogInterface, _ ->
                     dialogInterface.dismiss()
                 }.show()
         }
@@ -225,16 +225,21 @@ class DetailsPrescriptionFragment :
         }
     }
 
-    // всплывающее окно (уточнее действия)!!! // todo дублирующий код!!!!
     private fun showCloseDialog(message: String, runnable: Runnable? = null) {
         AlertDialog.Builder(requireContext())
             .setTitle(message)//сообщение на всплыв. окне
-            .setPositiveButton("ДА") { dialogInterface: DialogInterface, i: Int ->
+            .setPositiveButton(
+                requireContext()
+                    .getString(R.string.yes)
+            ) { dialogInterface: DialogInterface, i: Int ->
                 runnable?.run()
                 activity?.onBackPressed()//выход (кнопка назад)
                 dialogInterface.dismiss()//закрываем окно. Обязательно!!
             }
-            .setNegativeButton("НЕТ") { dialogInterface: DialogInterface, i: Int ->
+            .setNegativeButton(
+                requireContext()
+                    .getString(R.string.no)
+            ) { dialogInterface: DialogInterface, i: Int ->
                 dialogInterface.dismiss()//закрываем окно
             }
             .show()
@@ -253,7 +258,10 @@ class DetailsPrescriptionFragment :
 
         when (item.itemId) {
             R.id.delete_icon_menu_items -> {
-                showCloseDialog("Вы уверены что хотите удалить запись?", runnable)
+                showCloseDialog(
+                    requireContext().getString(R.string.confirmation_deletion),
+                    runnable
+                )
             }
         }
         return super.onOptionsItemSelected(item)

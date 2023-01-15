@@ -48,8 +48,22 @@
 
 
     <!--error-->
+    <string name="reception_days_error">"Укажите количество дней приема лекарства"</string>
+    <string name="name_medicine_error">"Укажите название лекарства"</string>
+    <string name="type_medicine_error">"Укажите вид лекарства"</string>
+    <string name="dosage_error">"Укажите дозировку"</string>
+    <string name="unit_measurement_error">"Укажите единицу измерения"</string>
+    <string name="date_admission_error">"Укажите дату приема лекарства"</string>
+    <string name="number_receptions_error">"Укажите количество приемов день"</string>
     <string name="unit_error">Не верно указана единица измерения</string>
 
+    <!--service messages служебные сообщения-->
+    <string name="record_created">Запись создана</string>
+    <string name="exit_recipe">Выйти из рецепта?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="confirmation_deletion">"Вы уверены что хотите удалить запись?"</string>
+    <string name="is_unknown">"Неизвестно"</string>
 
     <!-- Spinner-->
     <string-array name="unit_measurement">

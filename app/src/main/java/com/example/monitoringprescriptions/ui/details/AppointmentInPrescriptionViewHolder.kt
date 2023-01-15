@@ -42,15 +42,16 @@ class AppointmentInPrescriptionViewHolder(
 
         binding.nameMedicineTextView.text = appointmentEntity.status.toString()
         when (appointmentEntity.status) {
-            AppointmentStatus.UNKNOWN -> binding.nameMedicineTextView.text = "Неизвестно"
+            AppointmentStatus.UNKNOWN -> binding.nameMedicineTextView.text =
+                context.getString(R.string.is_unknown)
             AppointmentStatus.YES -> {
-                binding.nameMedicineTextView.text = "Принято"
+                binding.nameMedicineTextView.text = context.getString(R.string.accepted_menu)
                 binding.nameMedicineTextView.setTextColor(Color.BLUE)
                 binding.dateTextView.setTextColor(Color.BLUE)
                 binding.timeTextView.setTextColor(Color.BLUE)
             }
             AppointmentStatus.NO -> {
-                binding.nameMedicineTextView.text = "Не принято"
+                binding.nameMedicineTextView.text = context.getString(R.string.skipped_menu)
                 binding.nameMedicineTextView.setTextColor(Color.RED)
                 binding.dateTextView.setTextColor(Color.RED)
                 binding.timeTextView.setTextColor(Color.RED)

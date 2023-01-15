@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.monitoringprescriptions.App
 import com.example.monitoringprescriptions.R
+import com.example.monitoringprescriptions.domain.ErrorMessage
 import com.example.monitoringprescriptions.domain.TypeMedicine
 import com.example.monitoringprescriptions.domain.UnitsMeasurement
 import java.util.*
@@ -138,5 +139,18 @@ fun String.toTypeMedicine(context: Context): TypeMedicine {
         context.getString(R.string.drop_unit_meas) -> TypeMedicine.DROPS
         context.getString(R.string.candles_type_med) -> TypeMedicine.CANDLES
         else -> throw IllegalStateException("Не получается распарсить тип лекарства из строки")
+    }
+}
+
+fun ErrorMessage.toString(context: Context): String {
+    return when (this) {
+        ErrorMessage.RECEPTION_DAYS -> context.getString(R.string.reception_days_error)
+        ErrorMessage.NAME_MEDICINE -> context.getString(R.string.name_medicine_error)
+        ErrorMessage.TYPE_MEDICINE -> context.getString(R.string.type_medicine_error)
+        ErrorMessage.DOSAGE -> context.getString(R.string.dosage_error)
+        ErrorMessage.UNIT_MEASUREMENT -> context.getString(R.string.unit_measurement_error)
+        ErrorMessage.DATE_ADMISSION -> context.getString(R.string.date_admission_error)
+        ErrorMessage.NUMBER_RECEPTION -> context.getString(R.string.number_receptions_error)
+        ErrorMessage.UNIT_ERROR -> context.getString(R.string.unit_error)
     }
 }

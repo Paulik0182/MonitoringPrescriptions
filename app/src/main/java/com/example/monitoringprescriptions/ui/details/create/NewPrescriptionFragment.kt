@@ -117,7 +117,10 @@ class NewPrescriptionFragment :
         viewModel.dialogLiveData.observe(viewLifecycleOwner) {
             AlertDialog.Builder(requireContext())
                 .setTitle(it.massage)
-                .setPositiveButton("ОК") { dialogInterface: DialogInterface, _ ->
+                .setPositiveButton(
+                    requireContext()
+                        .getString(R.string.yes)
+                ) { dialogInterface: DialogInterface, _ ->
                     dialogInterface.dismiss()
                 }.show()
         }
@@ -141,10 +144,10 @@ class NewPrescriptionFragment :
             comment = binding.commentEditText.text.toString(),
             dateStart = calendarFromView.timeInMillis,
             numberDaysTakingMedicine = binding.numberDaysTakingMedicineEditText.text.toString()
-                .toIntOrNull(), //todo требуется проверка на валидность,
+                .toIntOrNull(),
             numberAdmissionsPerDay = numberAdmissionsPerDay,
             medicationsCourse = binding.medicationsCourseEditText.text.toString().toFloatOrNull()
-                ?: 0F //todo требуется проверка на валидность
+                ?: 0F
         )
     }
 
