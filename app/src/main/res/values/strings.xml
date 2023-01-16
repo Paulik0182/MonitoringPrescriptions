@@ -7,6 +7,7 @@
     <string name="reception">Расписание</string>
     <string name="settings">Настройки</string>
     <string name="delete_menu">Удалить</string>
+    <string name="today_menu">Сегодня</string>
     <string name="accepted_menu">Принято</string>
     <string name="skipped_menu">Пропущено</string>
 

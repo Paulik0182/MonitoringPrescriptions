@@ -15,7 +15,20 @@ class TabDateAdapter(
     init {
 // позиция по календарю (выбронная позиция)
         selectionPosition = getPosition(calendar)
+    }
 
+    fun changeDate(calendar: Calendar) {
+        // старая позиция
+        val oldPosition = selectionPosition
+
+        selectionPosition = getPosition(calendar)
+
+        // Обнавляем новую позицию
+        notifyItemChanged(oldPosition)
+        // Обновляем старую позицию
+        notifyItemChanged(selectionPosition)
+
+        onDayChanged(calendar)
     }
 
     // Для подчеркивания дня недели (получаем RecyclerView)
