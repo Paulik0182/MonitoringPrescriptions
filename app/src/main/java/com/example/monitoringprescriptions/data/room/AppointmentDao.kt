@@ -28,6 +28,12 @@ interface AppointmentDao {
     @Delete
     fun remove(appointmentEntity: AppointmentEntity)
 
+    @Query(
+        "DELETE FROM appointment WHERE id == (:appointmentId) AND " +
+                "prescription_id == (:prescriptionId)"
+    )
+    fun remove(prescriptionId: String, appointmentId: String)
+
     @Delete
     fun remove(appointmentEntity: List<AppointmentEntity>)
 

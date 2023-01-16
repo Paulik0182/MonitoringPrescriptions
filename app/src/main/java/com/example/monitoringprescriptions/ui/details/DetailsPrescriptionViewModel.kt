@@ -36,15 +36,13 @@ class DetailsPrescriptionViewModel(
 
     fun onDeleteAppointments() {
         prescriptionLiveData.value?.let {
-//            prescriptionRepo.delete(it)
             appointmentsInteractor.delete(it)
         }
     }
 
-    fun onDeletePrescription() {
-        prescriptionLiveData.value?.let {
-            prescriptionRepo.delete(it)
-        }
+    fun onDeleteAppointment(appointmentEntity: AppointmentEntity) {
+        appointmentsInteractor.delete(appointmentEntity)
+        updateAppointments()
     }
 
     fun onUnitMeasurementSelectSpinner(unitMeasurement: String) {
@@ -220,6 +218,12 @@ class DetailsPrescriptionViewModel(
 
     val prescriptionListLiveDate: LiveData<List<AppointmentEntity>> = MutableLiveData()
 
+    // подписка на обновление списка
+    private fun updateAppointments() {
+        val appointmentList = appointmentsRepo.getPrescriptionAppointments(prescriptionId)
+        prescriptionListLiveDate.mutable().postValue(appointmentList)
+    }
+
     // сообщаем ViewModel отрисовать данные
     val prescriptionLiveData: LiveData<PrescriptionEntity> = MutableLiveData()
 
@@ -227,8 +231,6 @@ class DetailsPrescriptionViewModel(
         // получаем данные
         val prescription = prescriptionRepo.getById(prescriptionId)
         prescriptionLiveData.mutable().postValue(prescription)
-
-        val appointmentList = appointmentsRepo.getPrescriptionAppointments(prescriptionId)
-        prescriptionListLiveDate.mutable().postValue(appointmentList)
+        updateAppointments()
     }
 }

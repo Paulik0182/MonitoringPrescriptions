@@ -12,6 +12,7 @@ class AppointmentsAdapter(
     private var showPopupMenu: () -> Unit,
     private var onPrescriptionClickListener: (AppointmentFullEntity) -> Unit = {},
     val context: Context,
+    private val viewModel: AppointmentsViewModel,
     private var listener: (
         appointmentId: String,
         appointmentStatus: AppointmentStatus
@@ -29,6 +30,7 @@ class AppointmentsAdapter(
             parent,
             showPopupMenu,
             context,
+            viewModel,
             listener,
             onPrescriptionClickListener
         )

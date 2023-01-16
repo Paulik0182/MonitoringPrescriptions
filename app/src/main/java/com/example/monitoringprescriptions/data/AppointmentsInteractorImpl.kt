@@ -1,6 +1,7 @@
 package com.example.monitoringprescriptions.data
 
 import com.example.monitoringprescriptions.domain.AppointmentStatus
+import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
 import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import com.example.monitoringprescriptions.domain.interactors.AppointmentsInteractor
@@ -75,6 +76,23 @@ class AppointmentsInteractorImpl(
         appointmentsRepo.deletePrescriptionAppointments(prescriptionEntity.id)
         // потом удаляем prescription
         prescriptionRepo.delete(prescriptionEntity)
+        notifyListener()
+    }
+
+    // удаление одной записи в рецепте
+    override fun delete(appointmentEntity: AppointmentEntity) {
+        // удаляем все appointment
+        appointmentsRepo.delete(appointmentEntity.prescriptionId, appointmentEntity.id)
+        notifyListener()
+    }
+
+    // удаление одной записи в рецепте
+    override fun delete(appointmentFullEntity: AppointmentFullEntity) {
+        // удаляем все appointment
+        appointmentsRepo.delete(
+            appointmentFullEntity.prescriptionId,
+            appointmentFullEntity.appointmentId
+        )
         notifyListener()
     }
 }

@@ -63,7 +63,8 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
             onPrescriptionClickListener = {
                 viewModel.onPrescriptionClick(it)
             },
-            context = requireContext()
+            context = requireContext(),
+            viewModel = viewModel
         ) { appointmentId, appointmentStatus ->
             viewModel.onAppointmentSelected(
                 appointmentId,

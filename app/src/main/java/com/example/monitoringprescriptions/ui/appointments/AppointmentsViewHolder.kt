@@ -20,6 +20,7 @@ class AppointmentsViewHolder(
     parent: ViewGroup,
     showPopupMenu: () -> Unit,
     val context: Context,
+    private val viewModel: AppointmentsViewModel,
     private val listener: (
         appointmentId: String,
         appointmentStatus: AppointmentStatus
@@ -129,8 +130,7 @@ class AppointmentsViewHolder(
             .setOnMenuItemClickListener { item: MenuItem? ->
                 when (item!!.itemId) {
                     R.id.delete_item -> {
-                        Toast.makeText(context, "Удаляем", Toast.LENGTH_SHORT).show()
-//                        viewModel.onDeletePrescription()
+                        onDeleteClick()
 
                         true
                     }
@@ -138,6 +138,11 @@ class AppointmentsViewHolder(
                 }
             }
         popupMenu.show()
+    }
+
+    private fun onDeleteClick() {
+        Toast.makeText(context, "Запись удалена", Toast.LENGTH_SHORT).show()
+        viewModel.onDeleteAppointment(appointmentFullEntity)
     }
 
 }

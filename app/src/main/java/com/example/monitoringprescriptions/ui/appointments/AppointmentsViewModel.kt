@@ -19,6 +19,10 @@ class AppointmentsViewModel(
         loadData()
     }
 
+    fun onDeleteAppointment(appointmentFullEntity: AppointmentFullEntity) {
+        appointmentsInteractor.delete(appointmentFullEntity)
+    }
+
     val selectedReceptionLiveData: LiveData<AppointmentFullEntity> = MutableLiveData()
     val loaderVisibilityLiveData: LiveData<Boolean> = MutableLiveData()
 

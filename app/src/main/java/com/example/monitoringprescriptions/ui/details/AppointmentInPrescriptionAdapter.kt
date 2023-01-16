@@ -9,7 +9,7 @@ import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
 class AppointmentInPrescriptionAdapter(
     private var data: List<AppointmentEntity> = mutableListOf(),
     val context: Context,
-//    private val prescriptionRepo: PrescriptionRepo,
+    private val viewModel: DetailsPrescriptionViewModel
 ) : RecyclerView.Adapter<AppointmentInPrescriptionViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
@@ -25,7 +25,7 @@ class AppointmentInPrescriptionAdapter(
         return AppointmentInPrescriptionViewHolder(
             parent,
             context,
-//            prescriptionRepo
+            viewModel
         )
     }
 

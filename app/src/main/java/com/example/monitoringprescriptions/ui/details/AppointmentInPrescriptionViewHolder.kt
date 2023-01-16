@@ -13,15 +13,13 @@ import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ItemAssignedBinding
 import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
-import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
-import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
 import com.example.monitoringprescriptions.utils.bpDataFormatter
 import com.example.monitoringprescriptions.utils.bpTimeFormatter
 
 class AppointmentInPrescriptionViewHolder(
     parent: ViewGroup,
     val context: Context,
-//    private val prescriptionRepo: PrescriptionRepo
+    private val viewModel: DetailsPrescriptionViewModel
 ) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context)
         .inflate(R.layout.item_assigned, parent, false)
@@ -29,10 +27,6 @@ class AppointmentInPrescriptionViewHolder(
 
     private val binding: ItemAssignedBinding = ItemAssignedBinding.bind(itemView)
     private lateinit var appointmentEntity: AppointmentEntity
-
-    private lateinit var viewModel: DetailsPrescriptionViewModel
-    private lateinit var prescriptionRepo: PrescriptionRepo
-    private lateinit var prescriptionEntity: PrescriptionEntity
 
     fun bind(appointmentEntity: AppointmentEntity) {
         this.appointmentEntity = appointmentEntity
@@ -56,7 +50,7 @@ class AppointmentInPrescriptionViewHolder(
                 binding.dateTextView.setTextColor(Color.RED)
                 binding.timeTextView.setTextColor(Color.RED)
             }
-            else -> {}
+            else -> Unit
         }
     }
 
@@ -75,8 +69,6 @@ class AppointmentInPrescriptionViewHolder(
                 when (item!!.itemId) {
                     R.id.delete_item -> {
                         onDeleteClick()
-//                        viewModel.onDeletePrescription()
-
                         true
                     }
                     else -> false
@@ -86,11 +78,7 @@ class AppointmentInPrescriptionViewHolder(
     }
 
     private fun onDeleteClick() {
-        Toast.makeText(context, "Удаляем", Toast.LENGTH_SHORT).show()
-
-//        prescriptionRepo.delete(prescriptionEntity)
-//        viewModel.prescriptionLiveData.value?.let {
-//            prescriptionRepo.delete(it)
-//        }
+        Toast.makeText(context, "Запись удалена", Toast.LENGTH_SHORT).show()
+        viewModel.onDeleteAppointment(appointmentEntity)
     }
 }

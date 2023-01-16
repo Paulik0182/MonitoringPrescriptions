@@ -300,7 +300,7 @@ class DetailsPrescriptionFragment :
         appointmentInPrescriptionAdapter = AppointmentInPrescriptionAdapter(
             data = emptyList(),
             context = requireContext(),
-//            prescriptionRepo =
+            viewModel = viewModel
         )
         binding.recordsRecyclerView.adapter = appointmentInPrescriptionAdapter
     }
