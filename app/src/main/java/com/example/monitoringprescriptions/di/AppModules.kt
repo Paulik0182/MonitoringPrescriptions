@@ -40,7 +40,7 @@ val appModules = module {
 
     single<AppointmentsInteractor> { AppointmentsInteractorImpl(get(), get()) }
 
-    single<PrescriptionCreatorInteractor> { PrescriptionCreatorInteractorImpl(get(), get()) }
+    single<PrescriptionCreatorInteractor> { PrescriptionCreatorInteractorImpl(get(), get(), get()) }
 
     viewModel { parameters -> AppointmentsViewModel(get(), parameters.get()) }
     viewModel { parameters ->
