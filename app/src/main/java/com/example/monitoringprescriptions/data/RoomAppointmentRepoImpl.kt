@@ -53,4 +53,8 @@ class RoomAppointmentRepoImpl(
     override fun deletePrescriptionAppointments(prescriptionId: String) {
         appointmentDao.remove(appointmentDao.getPrescriptionAppointments(prescriptionId))
     }
+
+    override fun delete(prescriptionId: String, appointmentId: String) {
+        appointmentDao.remove(prescriptionId, appointmentId)
+    }
 }

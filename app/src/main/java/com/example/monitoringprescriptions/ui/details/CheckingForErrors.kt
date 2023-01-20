@@ -1,63 +1,17 @@
 package com.example.monitoringprescriptions.ui.details
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.domain.ErrorMessage
 import com.example.monitoringprescriptions.domain.TypeMedicine
 import com.example.monitoringprescriptions.domain.UnitsMeasurement
-import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
-import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
-import com.example.monitoringprescriptions.domain.interactors.AppointmentsInteractor
-import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
-import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
-import com.example.monitoringprescriptions.ui.CloseDialog
-import com.example.monitoringprescriptions.utils.SingleLiveEvent
-import com.example.monitoringprescriptions.utils.mutable
 import com.example.monitoringprescriptions.utils.toString
 import com.example.monitoringprescriptions.utils.toastMake
 
-class DetailsPrescriptionViewModel(
-    private val prescriptionId: String,
-    private val prescriptionRepo: PrescriptionRepo,
-    private val appointmentsRepo: AppointmentsRepo,
-    private val appointmentsInteractor: AppointmentsInteractor,
+class CheckingForErrors(
     private val context: Context
-) : ViewModel() {
-
-    // для сообщения ошибки
-    val errorsLiveData: LiveData<CreationPrescriptionScreenErrors> = MutableLiveData()
-
-    // для дополнительного уведомления
-    val dialogLiveData: LiveData<CloseDialog> = SingleLiveEvent()
-    val closeDialogLiveData: LiveData<CloseDialog> = MutableLiveData()
-
-    fun onDeleteAppointments() {
-        prescriptionLiveData.value?.let {
-            appointmentsInteractor.delete(it)
-        }
-    }
-
-    fun onDeleteAppointment(appointmentEntity: AppointmentEntity) {
-        appointmentsInteractor.delete(appointmentEntity)
-        updateAppointments()
-    }
-
-    fun onUnitMeasurementSelectSpinner(unitMeasurement: String) {
-        // todo
-    }
-
-    fun onMedicineSelectSpinner(medicine: String) {
-        // todo
-    }
-
-    fun onNumberAdmissionsPerDaySelectSpinner(perDay: String) {
-        // todo
-    }
-
-    fun onSaveDetails(
+) {
+    fun checkingForErrors(
         nameMedicine: String,
         dosage: Float?,
         unitMeasurement: UnitsMeasurement?,
@@ -185,52 +139,8 @@ class DetailsPrescriptionViewModel(
                     ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
-
-            // todo после проверки
-            else -> {
-                prescriptionLiveData.value?.copy(
-                    nameMedicine = nameMedicine,
-                    dosage = dosage,
-                    unitMeasurement = unitMeasurement,
-                    typeMedicine = typeMedicine,
-                    comment = comment,
-                    dateStart = dateStart,
-                    numberDaysTakingMedicine = numberDaysTakingMedicine,
-                    numberAdmissionsPerDay = numberAdmissionsPerDay,
-                    medicationsCourse = medicationsCourse
-                )?.let {
-                    prescriptionRepo.updatePrescription(it)
-
-                    dialogLiveData.mutable().postValue(
-                        CloseDialog.ShowDialog(context.getString(R.string.record_created))
-                    )
-                    closeDialogLiveData.mutable().postValue(
-                        CloseDialog.ShowCloseDialog(context.getString(R.string.exit_recipe))
-                    )
-                    null
-                }
-            }
-        }?.let {
-            errorsLiveData.mutable().postValue(it)
-            return
+            else ->
+                Unit
         }
-    }
-
-    val prescriptionListLiveDate: LiveData<List<AppointmentEntity>> = MutableLiveData()
-
-    // подписка на обновление списка
-    private fun updateAppointments() {
-        val appointmentList = appointmentsRepo.getPrescriptionAppointments(prescriptionId)
-        prescriptionListLiveDate.mutable().postValue(appointmentList)
-    }
-
-    // сообщаем ViewModel отрисовать данные
-    val prescriptionLiveData: LiveData<PrescriptionEntity> = MutableLiveData()
-
-    init {
-        // получаем данные
-        val prescription = prescriptionRepo.getById(prescriptionId)
-        prescriptionLiveData.mutable().postValue(prescription)
-        updateAppointments()
     }
 }

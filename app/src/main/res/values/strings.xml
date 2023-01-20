@@ -3,9 +3,13 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="submit">Добавить измерение</string>
 
-    <!-- bottom nav menu -->
+    <!-- menu -->
     <string name="reception">Расписание</string>
     <string name="settings">Настройки</string>
+    <string name="delete_menu">Удалить</string>
+    <string name="today_menu">Сегодня</string>
+    <string name="accepted_menu">Принято</string>
+    <string name="skipped_menu">Пропущено</string>
 
     <!-- emoji -->
     <string name="emoji_yes">&#9989;</string>
@@ -15,9 +19,54 @@
     <!-- emoji product-->
     <string name="emoji_pill">&#128138;</string>
     <string name="emoji_syringe">&#128137;</string>
+    <string name="emoji_powder">&#127862;</string>
+    <string name="emoji_suspension">&#129371;</string>
+    <string name="emoji_ointment">&#129524;</string>
+    <string name="emoji_tincture">&#129371;</string>
+    <string name="emoji_drops">💧</string>
+    <string name="emoji_candles">&#9904;</string>
+
+    <!-- для Spinner-->
+    <!-- unit_measurement-->
+    <string name="units_meas">Еди. изм.</string>
+    <string name="pieces_unit_meas">шт.</string>
+    <string name="spoon_unit_meas">ложка</string>
+    <string name="milliliter_unit_meas">мл.</string>
+    <string name="gram_unit_meas">гр.</string>
+    <string name="package_unit_meas">пакет</string>
+    <string name="tube_unit_meas">тюбик</string>
+    <string name="drop_unit_meas">капя</string>
+    <!--TypeMedicine-->
+    <string name="type_med"></string>
+    <string name="pill_type_med">Таблетка</string>
+    <string name="syringe_type_med">Укол</string>
+    <string name="powder_type_med">Порошок</string>
+    <string name="suspension_type_med">Суспензия</string>
+    <string name="ointment_type_med">Мазь</string>
+    <string name="tincture_type_med">Настойка</string>
+    <string name="drops_type_med">Капли</string>
+    <string name="candles_type_med">Свечи</string>
+
+
+    <!--error-->
+    <string name="reception_days_error">"Укажите количество дней приема лекарства"</string>
+    <string name="name_medicine_error">"Укажите название лекарства"</string>
+    <string name="type_medicine_error">"Укажите вид лекарства"</string>
+    <string name="dosage_error">"Укажите дозировку"</string>
+    <string name="unit_measurement_error">"Укажите единицу измерения"</string>
+    <string name="date_admission_error">"Укажите дату приема лекарства"</string>
+    <string name="number_receptions_error">"Укажите количество приемов день"</string>
+    <string name="unit_error">Не верно указана единица измерения</string>
+
+    <!--service messages служебные сообщения-->
+    <string name="record_created">Запись создана</string>
+    <string name="exit_recipe">Выйти из рецепта?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="confirmation_deletion">"Вы уверены что хотите удалить запись?"</string>
+    <string name="is_unknown">"Неизвестно"</string>
 
     <!-- Spinner-->
-
     <string-array name="unit_measurement">
         <item>Еди. изм.</item>
         <item>шт.</item>
@@ -38,14 +87,15 @@
         <item>Мазь</item>
         <item>Настойка</item>
         <item>Капли</item>
+        <item>Свечи</item>
     </string-array>
 
-    <string-array name="number_of_receptions_per_day">
+    <integer-array name="number_of_receptions_per_day">
         <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
         <item>5</item>
-    </string-array>
+    </integer-array>
 
 </resources>

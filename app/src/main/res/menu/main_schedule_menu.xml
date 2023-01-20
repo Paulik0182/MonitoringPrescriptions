@@ -5,10 +5,10 @@
     tools:context=".ui.root.RootActivity">
 
     <item
-        android:id="@+id/delete_icon_menu_items"
-        android:icon="@drawable/ic_delete_forever_24"
-        android:title="@string/delete_menu"
+        android:id="@+id/today_menu_items"
+        android:icon="@drawable/ic_cancellation_24"
+        android:title="@string/today_menu"
         android:visible="true"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 </menu>

@@ -3,6 +3,7 @@ package com.example.monitoringprescriptions.domain.entities
 import android.os.Parcelable
 import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.TypeMedicine
+import com.example.monitoringprescriptions.domain.UnitsMeasurement
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
@@ -19,13 +20,11 @@ data class AppointmentFullEntity(
 
     val nameMedicine: String,
 
-    val prescribedMedicine: String,
-
     val typeMedicine: TypeMedicine,
 
     val dosage: Float,
 
-    val unitMeasurement: String,
+    val unitMeasurement: UnitsMeasurement,
 
     // немного рассшил сущьность
     val comment: String = "нет комментария",

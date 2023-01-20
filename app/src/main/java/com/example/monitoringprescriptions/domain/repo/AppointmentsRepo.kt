@@ -11,4 +11,5 @@ interface AppointmentsRepo {
     fun getById(appointmentId: String): AppointmentEntity?
     fun updateAppointments(copy: AppointmentEntity)
     fun deletePrescriptionAppointments(prescriptionId: String)
+    fun delete(prescriptionId: String, appointmentId: String)
 }

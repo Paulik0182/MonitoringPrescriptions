@@ -12,20 +12,45 @@ class TabDateAdapter(
     private val todayPosition = itemCount / 2 // тоесть сегодня должнобыть посередине
     private var selectionPosition = todayPosition // поумолчанию позиция на старте
 
+    // для скрола на ткещюю дату
+    private var recyclerView: RecyclerView? = null
+
     init {
 // позиция по календарю (выбронная позиция)
         selectionPosition = getPosition(calendar)
+    }
 
+    fun changeDate(calendar: Calendar) {
+        // старая позиция
+        val oldPosition = selectionPosition
+
+        selectionPosition = getPosition(calendar)
+
+        // Обнавляем новую позицию
+        notifyItemChanged(oldPosition)
+        // Обновляем старую позицию
+        notifyItemChanged(selectionPosition)
+
+        onDayChanged(calendar)
+
+        // делаем скрол если на экране нет текущей даты (скролим на ткещюю дату)
+        recyclerView?.smoothScrollToPosition(selectionPosition)
     }
 
     // Для подчеркивания дня недели (получаем RecyclerView)
     // метод вызывается при старте
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
+        this.recyclerView = recyclerView // для скрола на ткещюю дату (сохранили)
         recyclerView.scrollToPosition(selectionPosition)
 
         //когда view пересоздается, отправляется эти данные (календарь и позиция)
         onItemClick(calendar, selectionPosition)
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        this.recyclerView = null // для скрола на ткещюю дату (удалили)
+        super.onDetachedFromRecyclerView(recyclerView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TabViewHolder {

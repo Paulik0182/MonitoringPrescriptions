@@ -14,11 +14,13 @@ import com.example.monitoringprescriptions.domain.AppointmentStatus
 import com.example.monitoringprescriptions.domain.TypeMedicine
 import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 import com.example.monitoringprescriptions.utils.bpTimeFormatter
+import com.example.monitoringprescriptions.utils.toString
 
 class AppointmentsViewHolder(
     parent: ViewGroup,
     showPopupMenu: () -> Unit,
     val context: Context,
+    private val viewModel: AppointmentsViewModel,
     private val listener: (
         appointmentId: String,
         appointmentStatus: AppointmentStatus
@@ -37,7 +39,7 @@ class AppointmentsViewHolder(
         this.appointmentFullEntity = appointmentFullEntity
 
         binding.nameMedicineTextView.text = appointmentFullEntity.nameMedicine
-        binding.typeMedicineTextView.text = appointmentFullEntity.prescribedMedicine
+        binding.typeMedicineTextView.text = appointmentFullEntity.typeMedicine.toString(context)
 
         binding.timeTextView.text = bpTimeFormatter.format(appointmentFullEntity.time)
 
@@ -51,8 +53,15 @@ class AppointmentsViewHolder(
         }
         binding.iconMedicineTextView.text = appointmentFullEntity.typeMedicine.toString()
         when (appointmentFullEntity.typeMedicine) {
+            TypeMedicine.TYPE_MED -> null
             TypeMedicine.PILL -> binding.iconMedicineTextView.setText(R.string.emoji_pill)
             TypeMedicine.SYRINGE -> binding.iconMedicineTextView.setText(R.string.emoji_syringe)
+            TypeMedicine.POWDER -> binding.iconMedicineTextView.setText(R.string.emoji_powder)
+            TypeMedicine.SUSPENSION -> binding.iconMedicineTextView.setText(R.string.emoji_suspension)
+            TypeMedicine.OINTMENT -> binding.iconMedicineTextView.setText(R.string.emoji_ointment)
+            TypeMedicine.TINCTURE -> binding.iconMedicineTextView.setText(R.string.emoji_tincture)
+            TypeMedicine.DROPS -> binding.iconMedicineTextView.setText(R.string.emoji_drops)
+            TypeMedicine.CANDLES -> binding.iconMedicineTextView.setText(R.string.emoji_candles)
         }
     }
 
@@ -61,8 +70,12 @@ class AppointmentsViewHolder(
             onPrescriptionClickListener.invoke(appointmentFullEntity)
         }
 
+        itemView.setOnLongClickListener {
+            showLongPopupMenu(it)
+            true
+        }
+
         binding.resultReceptionTextView.setOnClickListener {
-//            showPopupMenu
             showPopupMenu(it)
         }
     }
@@ -79,7 +92,6 @@ class AppointmentsViewHolder(
                             appointmentFullEntity.appointmentId,
                             AppointmentStatus.YES
                         )
-//                        binding.resultReceptionTextView.setText(R.string.emoji_yes)
                         Toast.makeText(
                             context,
                             "Принято",
@@ -92,7 +104,6 @@ class AppointmentsViewHolder(
                             appointmentFullEntity.appointmentId,
                             AppointmentStatus.NO
                         )
-//                        binding.resultReceptionTextView.setText(R.string.emoji_no)
                         Toast.makeText(
                             context,
                             "Пропущено",
@@ -110,6 +121,28 @@ class AppointmentsViewHolder(
             ).show()
         }
         popupMenu.show()
+    }
+
+    private fun showLongPopupMenu(view: View) {
+        val popupMenu = PopupMenu(context, view)
+        popupMenu.inflate(R.menu.action_long_press_popup_menu)
+        popupMenu
+            .setOnMenuItemClickListener { item: MenuItem? ->
+                when (item!!.itemId) {
+                    R.id.delete_item -> {
+                        onDeleteClick()
+
+                        true
+                    }
+                    else -> false
+                }
+            }
+        popupMenu.show()
+    }
+
+    private fun onDeleteClick() {
+        Toast.makeText(context, "Запись удалена", Toast.LENGTH_SHORT).show()
+        viewModel.onDeleteAppointment(appointmentFullEntity)
     }
 
 }

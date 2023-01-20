@@ -4,13 +4,17 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.monitoringprescriptions.R
+import com.example.monitoringprescriptions.domain.ErrorMessage
 import com.example.monitoringprescriptions.domain.TypeMedicine
+import com.example.monitoringprescriptions.domain.UnitsMeasurement
 import com.example.monitoringprescriptions.domain.interactors.PrescriptionCreatorInteractor
 import com.example.monitoringprescriptions.ui.CloseDialog
 import com.example.monitoringprescriptions.ui.details.CreationPrescriptionScreenErrors
+import com.example.monitoringprescriptions.utils.SingleLiveEvent
 import com.example.monitoringprescriptions.utils.mutable
+import com.example.monitoringprescriptions.utils.toString
 import com.example.monitoringprescriptions.utils.toastMake
-import java.util.*
 
 class NewPrescriptionViewModel(
     private val prescriptionCreatorInteractor: PrescriptionCreatorInteractor,
@@ -21,7 +25,7 @@ class NewPrescriptionViewModel(
     val errorsLiveData: LiveData<CreationPrescriptionScreenErrors> = MutableLiveData()
 
     // для дополнительного уведомления
-    val dialogLiveData: LiveData<CloseDialog> = MutableLiveData()
+    val dialogLiveData: LiveData<CloseDialog> = SingleLiveEvent()
 
     fun onUnitMeasurementSelectSpinner(unitMeasurement: String) {
         // todo
@@ -37,160 +41,130 @@ class NewPrescriptionViewModel(
 
     fun onSaveNewPrescription(
         nameMedicine: String,
-        prescribedMedicine: String,
-
         dosage: Float?,
-        unitMeasurement: String?,
+        unitMeasurement: UnitsMeasurement?,
+        typeMedicine: TypeMedicine,
         comment: String,
         dateStart: Long?,
         numberDaysTakingMedicine: Int?,
-        numberAdmissionsPerDay: String?,
+        numberAdmissionsPerDay: Int?,
         medicationsCourse: Float
     ) {
         when {
-
             numberDaysTakingMedicine == null || numberDaysTakingMedicine == 0 -> {
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.NumberDaysTakingMedicineError(
-                        "Укажите количество дней приема лекарства"
-                    )
+                CreationPrescriptionScreenErrors.NumberDaysTakingMedicineError(
+                    ErrorMessage.RECEPTION_DAYS.toString(context)
                 )
             }
 
             nameMedicine.isEmpty() -> {
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.NameMedicineError(
-                        "Укажите название лекарства"
-                    )
+                CreationPrescriptionScreenErrors.NameMedicineError(
+                    ErrorMessage.NAME_MEDICINE.toString(context)
                 )
             }
 
-            prescribedMedicine.isEmpty() -> {
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.PrescribedMedicineError(
-                        "Укажите вид лекарства"
-                    )
+            typeMedicine == TypeMedicine.TYPE_MED -> {
+                CreationPrescriptionScreenErrors.PrescribedMedicineError(
+                    ErrorMessage.TYPE_MEDICINE.toString(context)
                 )
             }
 
             dosage == null -> {
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.DosageError(
-                        "Укажите дозировку"
-                    )
+                CreationPrescriptionScreenErrors.DosageError(
+                    ErrorMessage.DOSAGE.toString(context)
                 )
             }
 
             // todo доработать (единица измерения должна соответствовать виду лекарства)
-            unitMeasurement == null || unitMeasurement == listOf("Еди. изм.")[0] -> {
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementError(
-                        "Укажите единицу измерения"
-                    )
+            unitMeasurement == null || unitMeasurement == UnitsMeasurement.UNITS_MEAS -> {
+                CreationPrescriptionScreenErrors.UnitMeasurementError(
+                    ErrorMessage.UNIT_MEASUREMENT.toString(context)
                 )
             }
 
             // todo не выполняется проверка
             dateStart == null || dateStart == 0L -> {
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.DateStartError(
-                        "Укажите дату приема лекарства"
-                    )
+                CreationPrescriptionScreenErrors.DateStartError(
+                    ErrorMessage.DATE_ADMISSION.toString(context)
                 )
             }
 
             numberAdmissionsPerDay == null -> {
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.NumberAdmissionsPerDayError(
-                        "Укажите количество приемов день"
-                    )
+                CreationPrescriptionScreenErrors.NumberAdmissionsPerDayError(
+                    ErrorMessage.NUMBER_RECEPTION.toString(context)
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == listOf("Таблетка")[0] &&
-                    unitMeasurement != listOf("шт.")[0] -> {
-                context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
+            typeMedicine == TypeMedicine.PILL && unitMeasurement != UnitsMeasurement.PIECES -> {
+                context.toastMake(R.string.unit_error)
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == listOf("Укол")[0] &&
-                    unitMeasurement != listOf("мл.")[0] -> {
-                context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
+            typeMedicine == TypeMedicine.SYRINGE &&
+                    unitMeasurement != UnitsMeasurement.MILLILITER -> {
+                context.toastMake(R.string.unit_error)
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == listOf("Порошок")[0] && (
-                    unitMeasurement != listOf("ложка")[0] ||
-                            unitMeasurement != listOf("гр.")[0]
+            typeMedicine == TypeMedicine.POWDER && (
+                    unitMeasurement != UnitsMeasurement.SPOON &&
+                            unitMeasurement != UnitsMeasurement.GRAM) -> {
+                context.toastMake(R.string.unit_error)
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    ErrorMessage.UNIT_ERROR.toString(context)
+                )
+            }
+
+            // todo дополнительная проверка на соответствие значений
+            typeMedicine == TypeMedicine.SUSPENSION && (
+                    unitMeasurement != UnitsMeasurement.PACKAGE &&
+                            unitMeasurement != UnitsMeasurement.PIECES &&
+                            unitMeasurement != UnitsMeasurement.MILLILITER
                     ) -> {
-                context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
+                context.toastMake(R.string.unit_error)
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == listOf("Суспензия")[0] && (
-                    unitMeasurement != listOf("пакет")[0] ||
-                            unitMeasurement != listOf("шт.")[0] ||
-                            unitMeasurement != listOf("мл.")[0]
+            typeMedicine == TypeMedicine.OINTMENT && (
+                    unitMeasurement != UnitsMeasurement.GRAM && unitMeasurement != UnitsMeasurement.TUBE
                     ) -> {
-                context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
+                context.toastMake(R.string.unit_error)
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == listOf("Мазь")[0] && (
-                    unitMeasurement != listOf("гр.")[0] ||
-                            unitMeasurement != listOf("тюбик")[0]
-                    ) -> {
-                context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
+            typeMedicine == TypeMedicine.TINCTURE && unitMeasurement != UnitsMeasurement.MILLILITER -> {
+                context.toastMake(R.string.unit_error)
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == listOf("Настойка")[0] && (
-                    unitMeasurement != listOf("мл.")[0]
-                    ) -> {
-                context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
+            typeMedicine == TypeMedicine.DROPS && unitMeasurement != UnitsMeasurement.DROP -> {
+                context.toastMake(R.string.unit_error)
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
             // todo дополнительная проверка на соответствие значений
-            prescribedMedicine == listOf("Капли")[0] && (
-                    unitMeasurement != listOf("капя")[0]
-                    )
-            -> {
-                context.toastMake("Не верно указана единица измерения")
-                errorsLiveData.mutable().postValue(
-                    CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
-                        "Не верно указана единица измерения"
-                    )
+            typeMedicine == TypeMedicine.CANDLES && unitMeasurement != UnitsMeasurement.PIECES -> {
+                context.toastMake(R.string.unit_error)
+                CreationPrescriptionScreenErrors.UnitMeasurementMatchingValuesError(
+                    ErrorMessage.UNIT_ERROR.toString(context)
                 )
             }
 
@@ -198,21 +172,24 @@ class NewPrescriptionViewModel(
             else -> {
                 prescriptionCreatorInteractor.create(
                     nameMedicine = nameMedicine,
-                    prescribedMedicine = prescribedMedicine,
-                    typeMedicine = TypeMedicine.PILL, // todo подумать как убрать это поле (совместить с другим полем)
                     dosage = dosage,
                     unitMeasurement = unitMeasurement,
+                    typeMedicine = typeMedicine,
                     comment = comment,
-                    dateStart = Calendar.getInstance().apply { timeInMillis = dateStart },
+                    dateStart = java.util.Calendar.getInstance().apply { timeInMillis = dateStart },
                     numberDaysTakingMedicine = numberDaysTakingMedicine,
                     numberAdmissionsPerDay = numberAdmissionsPerDay,
                     medicationsCourse = medicationsCourse
                 )
-                // todo сюда вставить диалог (данные сохранены) одноразовая LiveDate (singleLiveDate)
+
                 dialogLiveData.mutable().postValue(
-                    CloseDialog.ShowCloseDialog("Запись создана")
+                    CloseDialog.ShowCloseDialog(context.getString(R.string.record_created))
                 )
+                null
             }
+        }?.let {
+            errorsLiveData.mutable().postValue(it)
+            return
         }
     }
 }
