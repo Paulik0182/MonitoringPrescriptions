@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".data.MyBroadcastReceiver" />
+        <receiver android:name=".ReminderReceiver" />
     </application>
 
 </manifest>
