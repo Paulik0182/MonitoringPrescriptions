@@ -11,6 +11,7 @@ import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.domain.ErrorMessage
 import com.example.monitoringprescriptions.domain.TypeMedicine
 import com.example.monitoringprescriptions.domain.UnitsMeasurement
+import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
 import java.util.*
 
 
@@ -84,6 +85,10 @@ fun Context.toastMake(text: String) {
 
 fun View.toastMake(text: String) {
     Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+}
+
+fun AppointmentEntity.getIdAsInt(): Int {
+    return UUID.fromString(id).leastSignificantBits.toInt()
 }
 
 fun String.toUnitMeasurement(context: Context): UnitsMeasurement {
