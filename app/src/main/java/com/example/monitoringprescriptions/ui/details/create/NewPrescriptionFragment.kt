@@ -29,6 +29,10 @@ class NewPrescriptionFragment :
     private val binding get() = _binding!!
 
     private val calendarFromView = Calendar.getInstance()
+    private lateinit var timeTwoSetListener: TimePickerDialog.OnTimeSetListener
+    private lateinit var timeThreeSetListener: TimePickerDialog.OnTimeSetListener
+    private lateinit var timeFourSetListener: TimePickerDialog.OnTimeSetListener
+    private lateinit var timeFiveSetListener: TimePickerDialog.OnTimeSetListener
 
     private val unitMeasurementSpinnerLabels: Array<String> by lazy {
         UnitsMeasurement.values().map { it.toString(requireContext()) }
@@ -124,6 +128,31 @@ class NewPrescriptionFragment :
                     dialogInterface.dismiss()
                 }.show()
         }
+        showTimeTakingMedications()
+    }
+
+    private fun showTimeTakingMedications() {
+
+        binding.numberAdmissionsPerDaySpinner.selectedItemPosition.forEach {
+            when (it) {
+                2 -> {
+                    binding.textTwoTextView.visibility = View.VISIBLE
+                    binding.timeReceptionTwoTextView.visibility = View.VISIBLE
+                }
+                3 -> {
+                    binding.textThreeTextView.visibility = View.VISIBLE
+                    binding.timeReceptionThreeTextView.visibility = View.VISIBLE
+                }
+                4 -> {
+                    binding.textFourTextView.visibility = View.VISIBLE
+                    binding.timeReceptionFourTextView.visibility = View.VISIBLE
+                }
+                5 -> {
+                    binding.textFiveTextView.visibility = View.VISIBLE
+                    binding.timeReceptionFiveTextView.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     private fun saveNewReception() {
@@ -216,27 +245,100 @@ class NewPrescriptionFragment :
         calendarFromView.set(Calendar.MINUTE, minute)
 
         binding.dateStartTextView.text =
-            "${
-                bpDataFormatter.format(
+            bpDataFormatter.format(
+                calendarFromView.time
+            )
+
+        binding.timeReceptionOneTextView.text =
+            bpTimeFormatter.format(
+                calendarFromView.time
+            )
+
+        timeTwoSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+            calendarFromView.set(Calendar.HOUR_OF_DAY, hour)
+            calendarFromView.set(Calendar.MINUTE, minute)
+            binding.timeReceptionTwoTextView.text =
+                bpTimeFormatter.format(
                     calendarFromView.time
                 )
-            }\n " +
-                    "Время: ${
-                        bpTimeFormatter.format(
-                            calendarFromView.time
-                        )
-                    }"
+        }
+
+        timeThreeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+            calendarFromView.set(Calendar.HOUR_OF_DAY, hour)
+            calendarFromView.set(Calendar.MINUTE, minute)
+            binding.timeReceptionThreeTextView.text =
+                bpTimeFormatter.format(
+                    calendarFromView.time
+                )
+        }
+
+        timeFourSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+            calendarFromView.set(Calendar.HOUR_OF_DAY, hour)
+            calendarFromView.set(Calendar.MINUTE, minute)
+            binding.timeReceptionFourTextView.text =
+                bpTimeFormatter.format(
+                    calendarFromView.time
+                )
+        }
+
+        timeFiveSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+            calendarFromView.set(Calendar.HOUR_OF_DAY, hour)
+            calendarFromView.set(Calendar.MINUTE, minute)
+            binding.timeReceptionFiveTextView.text =
+                bpTimeFormatter.format(
+                    calendarFromView.time
+                )
+        }
     }
 
     private fun initDateView() {
+        val calendar = Calendar.getInstance()
+
         binding.dateStartTextView.setOnClickListener {
-            val calendar = Calendar.getInstance()
             val currentDay = calendar.get(Calendar.DAY_OF_YEAR)
             val currentMonth = calendar.get(Calendar.MONTH)
             val currentYear = calendar.get(Calendar.YEAR)
 
-            DatePickerDialog(requireContext(), this, currentYear, currentMonth, currentDay).show()
+            DatePickerDialog(
+                requireContext(),
+                this,
+                currentYear,
+                currentMonth,
+                currentDay
+            ).show()
         }
+
+        binding.timeReceptionOneTextView.setOnClickListener {
+            onTimePickerDialog(calendar, this)
+        }
+        binding.timeReceptionTwoTextView.setOnClickListener {
+            onTimePickerDialog(calendar, timeTwoSetListener)
+        }
+        binding.timeReceptionThreeTextView.setOnClickListener {
+            onTimePickerDialog(calendar, timeThreeSetListener)
+        }
+        binding.timeReceptionFourTextView.setOnClickListener {
+            onTimePickerDialog(calendar, timeFourSetListener)
+        }
+        binding.timeReceptionFiveTextView.setOnClickListener {
+            onTimePickerDialog(calendar, timeFiveSetListener)
+        }
+    }
+
+    private fun onTimePickerDialog(
+        calendar: Calendar,
+        listener: TimePickerDialog.OnTimeSetListener
+    ) {
+        val currencyHour = calendar.get(Calendar.HOUR_OF_DAY)
+        val currencyMinute = calendar.get(Calendar.MINUTE)
+
+        TimePickerDialog(
+            requireContext(),
+            listener,
+            currencyHour,
+            currencyMinute,
+            true
+        ).show()
     }
 
     override fun onDestroyView() {
