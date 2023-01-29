@@ -129,6 +129,8 @@ class NewPrescriptionFragment :
                 }.show()
         }
         showTimeTakingMedications()
+
+        getMedicationIntakeTime()
     }
 
     private fun showTimeTakingMedications() {
@@ -176,7 +178,13 @@ class NewPrescriptionFragment :
                 .toIntOrNull(),
             numberAdmissionsPerDay = numberAdmissionsPerDay,
             medicationsCourse = binding.medicationsCourseEditText.text.toString().toFloatOrNull()
-                ?: 0F
+                ?: 0F,
+
+            // Время приема
+            timeReceptionTwo = calendarFromView.timeInMillis,
+            timeReceptionThree = calendarFromView.timeInMillis,
+            timeReceptionFour = calendarFromView.timeInMillis,
+            timeReceptionFive = calendarFromView.timeInMillis
         )
     }
 
@@ -253,6 +261,9 @@ class NewPrescriptionFragment :
             bpTimeFormatter.format(
                 calendarFromView.time
             )
+    }
+
+    private fun getMedicationIntakeTime() {
 
         timeTwoSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
             calendarFromView.set(Calendar.HOUR_OF_DAY, hour)

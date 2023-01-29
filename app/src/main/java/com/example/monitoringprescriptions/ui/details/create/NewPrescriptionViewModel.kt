@@ -48,7 +48,12 @@ class NewPrescriptionViewModel(
         dateStart: Long?,
         numberDaysTakingMedicine: Int?,
         numberAdmissionsPerDay: Int?,
-        medicationsCourse: Float
+        medicationsCourse: Float,
+        // Время приема
+        timeReceptionTwo: Long?,
+        timeReceptionThree: Long?,
+        timeReceptionFour: Long?,
+        timeReceptionFive: Long?
     ) {
         when {
             numberDaysTakingMedicine == null || numberDaysTakingMedicine == 0 -> {
@@ -179,7 +184,13 @@ class NewPrescriptionViewModel(
                     dateStart = java.util.Calendar.getInstance().apply { timeInMillis = dateStart },
                     numberDaysTakingMedicine = numberDaysTakingMedicine,
                     numberAdmissionsPerDay = numberAdmissionsPerDay,
-                    medicationsCourse = medicationsCourse
+                    medicationsCourse = medicationsCourse,
+
+                    // Время приема
+                    timeReceptionTwo = timeReceptionTwo,
+                    timeReceptionThree = timeReceptionThree,
+                    timeReceptionFour = timeReceptionFour,
+                    timeReceptionFive = timeReceptionFive
                 )
 
                 dialogLiveData.mutable().postValue(

@@ -29,8 +29,17 @@ data class AppointmentFullEntity(
     // немного рассшил сущьность
     val comment: String = "нет комментария",
 
-    val dateStart: Long = Calendar.getInstance().timeInMillis, // todo пока не используется
+    val dateStart: Long = Calendar.getInstance().timeInMillis,
 
     val dateEnd: Long = Calendar.getInstance().timeInMillis + 24 * 60 * 60 * 1_000, // todo пока не используется
+
+    // Время приема
+    val timeReceptionTwo: Long?,
+
+    val timeReceptionThree: Long?,
+
+    val timeReceptionFour: Long?,
+
+    val timeReceptionFive: Long?
 
 ) : Parcelable

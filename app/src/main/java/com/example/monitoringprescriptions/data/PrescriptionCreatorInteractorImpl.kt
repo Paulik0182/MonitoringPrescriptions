@@ -32,7 +32,13 @@ class PrescriptionCreatorInteractorImpl(
         dateStart: Calendar,
         numberDaysTakingMedicine: Int,
         numberAdmissionsPerDay: Int,
-        medicationsCourse: Float
+        medicationsCourse: Float,
+
+        // Время приема
+        timeReceptionTwo: Long?,
+        timeReceptionThree: Long?,
+        timeReceptionFour: Long?,
+        timeReceptionFive: Long?
     ): PrescriptionEntity {
         val prescriptionEntity = PrescriptionEntity(
             id = UUID.randomUUID().toString(),
@@ -44,7 +50,13 @@ class PrescriptionCreatorInteractorImpl(
             dateStart = dateStart.timeInMillis,
             numberDaysTakingMedicine = numberDaysTakingMedicine,
             numberAdmissionsPerDay = numberAdmissionsPerDay,
-            medicationsCourse = medicationsCourse
+            medicationsCourse = medicationsCourse,
+
+            // Время приема
+            timeReceptionTwo = timeReceptionTwo,
+            timeReceptionThree = timeReceptionThree,
+            timeReceptionFour = timeReceptionFour,
+            timeReceptionFive = timeReceptionFive
         )
 
         prescriptionRepo.addPrescription(prescriptionEntity)
@@ -53,10 +65,15 @@ class PrescriptionCreatorInteractorImpl(
         prescriptionEntity.numberDaysTakingMedicine.forEach {
             val appointmentEntity = AppointmentEntity(
                 time = prescriptionEntity.dateStart + it * DAY_IN_MS,
-                prescriptionId = prescriptionEntity.id
+                prescriptionId = prescriptionEntity.id,
+                // Время приема
+                timeReceptionTwo = prescriptionEntity.timeReceptionTwo?.plus(it),
+                timeReceptionThree = prescriptionEntity.timeReceptionThree?.plus(it),
+                timeReceptionFour = prescriptionEntity.timeReceptionFour?.plus(it),
+                timeReceptionFive = prescriptionEntity.timeReceptionFive?.plus(it)
             )
             appointmentsRepo.addAppointment(appointmentEntity)
-            receiverReminderInteraction.setReminder(appointmentEntity) //
+            receiverReminderInteraction.setReminder(appointmentEntity)
         }
         return prescriptionEntity
     }

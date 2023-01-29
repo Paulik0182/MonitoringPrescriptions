@@ -69,10 +69,8 @@ class DetailsPrescriptionFragment :
         _binding = FragmentDetailsPrescriptionBinding.bind(view)
 
         setHasOptionsMenu(true)
-
-        initPrescription()
-
         initDateView()
+        initPrescription()
 
         errorMassage()
 
@@ -121,6 +119,8 @@ class DetailsPrescriptionFragment :
         }
 
         showTimeTakingMedications()
+
+        getMedicationIntakeTime()
     }
 
     private fun showTimeTakingMedications() {
@@ -156,6 +156,11 @@ class DetailsPrescriptionFragment :
         val numberAdmissionsPerDay = prescription.numberAdmissionsPerDay
         val medicationsCourse = (numberAdmissionsPerDay * dosage) * numberDaysTakingMedicine
 
+        val timeReceptionTwo = prescription.timeReceptionTwo
+        val timeReceptionThree = prescription.timeReceptionThree
+        val timeReceptionFour = prescription.timeReceptionFour
+        val timeReceptionFive = prescription.timeReceptionFive
+
         binding.dateStartTextView.text = bpDataFormatter.format(dateStart)
         binding.dateEndTextView.text = bpDataFormatter.format(dateEnd)
         binding.nameMedicineEditText.setText(prescription.nameMedicine)
@@ -163,6 +168,12 @@ class DetailsPrescriptionFragment :
         binding.commentEditText.setText(prescription.comment)
         binding.numberDaysTakingMedicineEditText.setText(numberForm.format(numberDaysTakingMedicine))
         binding.medicationsCourseEditText.text = medicationsCourse.toString()
+
+        binding.timeReceptionOneTextView.text = bpTimeFormatter.format(dateStart)
+        binding.timeReceptionTwoTextView.text = bpTimeFormatter.format(timeReceptionTwo)
+        binding.timeReceptionTwoTextView.text = bpTimeFormatter.format(timeReceptionThree)
+        binding.timeReceptionTwoTextView.text = bpTimeFormatter.format(timeReceptionFour)
+        binding.timeReceptionTwoTextView.text = bpTimeFormatter.format(timeReceptionFive)
 
         // выясняем какому элементу массива соответствует выставленное значение
         prescribedMedicineSpinnerLabels.forEachIndexed { i, medicine ->
@@ -207,7 +218,13 @@ class DetailsPrescriptionFragment :
                 .toIntOrNull(),
             numberAdmissionsPerDay = numberAdmissionsPerDay,
             medicationsCourse = binding.medicationsCourseEditText.text.toString().toFloatOrNull()
-                ?: 0F
+                ?: 0F,
+
+            // Время приема
+            timeReceptionTwo = timeTwoSetListener.toString().toLong(),
+            timeReceptionThree = calendarFromView.timeInMillis,
+            timeReceptionFour = calendarFromView.timeInMillis,
+            timeReceptionFive = calendarFromView.timeInMillis
         )
     }
 
@@ -398,6 +415,9 @@ class DetailsPrescriptionFragment :
             bpTimeFormatter.format(
                 calendarFromView.time
             )
+    }
+
+    private fun getMedicationIntakeTime() {
 
         timeTwoSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
             calendarFromView.set(Calendar.HOUR_OF_DAY, hour)

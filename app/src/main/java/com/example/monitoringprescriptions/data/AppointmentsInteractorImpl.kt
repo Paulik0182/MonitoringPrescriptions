@@ -65,7 +65,13 @@ class AppointmentsInteractorImpl(
                 nameMedicine = prescription.nameMedicine,
                 typeMedicine = prescription.typeMedicine,
                 dosage = prescription.dosage,
-                unitMeasurement = prescription.unitMeasurement
+                unitMeasurement = prescription.unitMeasurement,
+
+                // Время приема
+                timeReceptionTwo = appointment.timeReceptionTwo,
+                timeReceptionThree = appointment.timeReceptionThree,
+                timeReceptionFour = appointment.timeReceptionFour,
+                timeReceptionFive = appointment.timeReceptionFive
             )
         }
         callback.invoke(fullAppointments)
