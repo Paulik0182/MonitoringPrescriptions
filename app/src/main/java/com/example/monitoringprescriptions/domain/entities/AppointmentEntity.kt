@@ -28,23 +28,6 @@ data class AppointmentEntity(
 
     @ColumnInfo(name = "prescription_id")
     @SerializedName("prescription_id")
-    val prescriptionId: String,
-
-    // Время приема
-    @ColumnInfo(name = "time_reception_two")
-    @SerializedName("time_reception_two")
-    val timeReceptionTwo: Long?,
-
-    @ColumnInfo(name = "time_reception_three")
-    @SerializedName("time_reception_three")
-    val timeReceptionThree: Long?,
-
-    @ColumnInfo(name = "time_reception_four")
-    @SerializedName("time_reception_four")
-    val timeReceptionFour: Long?,
-
-    @ColumnInfo(name = "time_reception_five")
-    @SerializedName("time_reception_five")
-    val timeReceptionFive: Long?
+    val prescriptionId: String
 
 ) : Parcelable

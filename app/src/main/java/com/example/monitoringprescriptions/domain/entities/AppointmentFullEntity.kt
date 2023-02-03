@@ -31,15 +31,6 @@ data class AppointmentFullEntity(
 
     val dateStart: Long = Calendar.getInstance().timeInMillis,
 
-    val dateEnd: Long = Calendar.getInstance().timeInMillis + 24 * 60 * 60 * 1_000, // todo пока не используется
-
-    // Время приема
-    val timeReceptionTwo: Long?,
-
-    val timeReceptionThree: Long?,
-
-    val timeReceptionFour: Long?,
-
-    val timeReceptionFive: Long?
+    val dateEnd: Long = Calendar.getInstance().timeInMillis + 24 * 60 * 60 * 1_000 // todo пока не используется
 
 ) : Parcelable

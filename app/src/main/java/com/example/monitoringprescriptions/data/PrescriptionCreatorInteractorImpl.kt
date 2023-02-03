@@ -62,18 +62,24 @@ class PrescriptionCreatorInteractorImpl(
         prescriptionRepo.addPrescription(prescriptionEntity)
 
         // от единицы до количества дней будем (добавляем каждую сущьность по расписанию)
-        prescriptionEntity.numberDaysTakingMedicine.forEach {
-            val appointmentEntity = AppointmentEntity(
-                time = prescriptionEntity.dateStart + it * DAY_IN_MS,
-                prescriptionId = prescriptionEntity.id,
-                // Время приема
-                timeReceptionTwo = prescriptionEntity.timeReceptionTwo?.plus(it),
-                timeReceptionThree = prescriptionEntity.timeReceptionThree?.plus(it),
-                timeReceptionFour = prescriptionEntity.timeReceptionFour?.plus(it),
-                timeReceptionFive = prescriptionEntity.timeReceptionFive?.plus(it)
-            )
-            appointmentsRepo.addAppointment(appointmentEntity)
-            receiverReminderInteraction.setReminder(appointmentEntity)
+        prescriptionEntity.numberDaysTakingMedicine.forEach { dayNumber ->
+            // дополнительный цык - количество приемов в день
+            prescriptionEntity.numberAdmissionsPerDay.forEach {
+                val dateStart = when (it) {
+                    0 -> prescriptionEntity.dateStart
+                    1 -> prescriptionEntity.timeReceptionTwo
+                    2 -> prescriptionEntity.timeReceptionThree
+                    3 -> prescriptionEntity.timeReceptionFour
+                    4 -> prescriptionEntity.timeReceptionFive
+                    else -> throw IllegalStateException("Не верное количество приемов в день (более 5)$it")
+                } ?: throw IllegalStateException("Ошибка в количестве приемов в день (более 5)$it")
+                val appointmentEntity = AppointmentEntity(
+                    time = dateStart + dayNumber * DAY_IN_MS,
+                    prescriptionId = prescriptionEntity.id
+                )
+                appointmentsRepo.addAppointment(appointmentEntity)
+                receiverReminderInteraction.setReminder(appointmentEntity)
+            }
         }
         return prescriptionEntity
     }

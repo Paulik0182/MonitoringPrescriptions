@@ -29,6 +29,10 @@ class NewPrescriptionFragment :
     private val binding get() = _binding!!
 
     private val calendarFromView = Calendar.getInstance()
+    private val calendarTimeTwo = Calendar.getInstance()
+    private val calendarTimeThree = Calendar.getInstance()
+    private val calendarTimeFour = Calendar.getInstance()
+    private val calendarTimeFive = Calendar.getInstance()
     private lateinit var timeTwoSetListener: TimePickerDialog.OnTimeSetListener
     private lateinit var timeThreeSetListener: TimePickerDialog.OnTimeSetListener
     private lateinit var timeFourSetListener: TimePickerDialog.OnTimeSetListener
@@ -181,10 +185,10 @@ class NewPrescriptionFragment :
                 ?: 0F,
 
             // Время приема
-            timeReceptionTwo = calendarFromView.timeInMillis,
-            timeReceptionThree = calendarFromView.timeInMillis,
-            timeReceptionFour = calendarFromView.timeInMillis,
-            timeReceptionFive = calendarFromView.timeInMillis
+            timeReceptionTwo = calendarTimeTwo.timeInMillis,
+            timeReceptionThree = calendarTimeThree.timeInMillis,
+            timeReceptionFour = calendarTimeFour.timeInMillis,
+            timeReceptionFive = calendarTimeFive.timeInMillis
         )
     }
 
@@ -266,38 +270,38 @@ class NewPrescriptionFragment :
     private fun getMedicationIntakeTime() {
 
         timeTwoSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-            calendarFromView.set(Calendar.HOUR_OF_DAY, hour)
-            calendarFromView.set(Calendar.MINUTE, minute)
+            calendarTimeTwo.set(Calendar.HOUR_OF_DAY, hour)
+            calendarTimeTwo.set(Calendar.MINUTE, minute)
             binding.timeReceptionTwoTextView.text =
                 bpTimeFormatter.format(
-                    calendarFromView.time
+                    calendarTimeTwo.time
                 )
         }
 
         timeThreeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-            calendarFromView.set(Calendar.HOUR_OF_DAY, hour)
-            calendarFromView.set(Calendar.MINUTE, minute)
+            calendarTimeThree.set(Calendar.HOUR_OF_DAY, hour)
+            calendarTimeThree.set(Calendar.MINUTE, minute)
             binding.timeReceptionThreeTextView.text =
                 bpTimeFormatter.format(
-                    calendarFromView.time
+                    calendarTimeThree.time
                 )
         }
 
         timeFourSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-            calendarFromView.set(Calendar.HOUR_OF_DAY, hour)
-            calendarFromView.set(Calendar.MINUTE, minute)
+            calendarTimeFour.set(Calendar.HOUR_OF_DAY, hour)
+            calendarTimeFour.set(Calendar.MINUTE, minute)
             binding.timeReceptionFourTextView.text =
                 bpTimeFormatter.format(
-                    calendarFromView.time
+                    calendarTimeFour.time
                 )
         }
 
         timeFiveSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-            calendarFromView.set(Calendar.HOUR_OF_DAY, hour)
-            calendarFromView.set(Calendar.MINUTE, minute)
+            calendarTimeFive.set(Calendar.HOUR_OF_DAY, hour)
+            calendarTimeFive.set(Calendar.MINUTE, minute)
             binding.timeReceptionFiveTextView.text =
                 bpTimeFormatter.format(
-                    calendarFromView.time
+                    calendarTimeFive.time
                 )
         }
     }
