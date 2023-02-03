@@ -38,12 +38,13 @@ class ReminderReceiver : BroadcastReceiver() {
                 "manager",
                 NotificationManager.IMPORTANCE_HIGH
             )
+        // можно стартануть активити
         )
 
         // todo достать appointmentRepo.get(id) и от туда достать имя и др. текст
         val notification =
             NotificationCompat.Builder(context, ALARM_NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.monitoring)
+                .setSmallIcon(R.drawable.ic_appointmen)
                 .setContentTitle("Пора принимать лекарства")
                 .build()
 

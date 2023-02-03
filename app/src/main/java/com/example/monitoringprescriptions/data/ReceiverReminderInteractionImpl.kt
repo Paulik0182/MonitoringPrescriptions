@@ -32,8 +32,8 @@ class ReceiverReminderInteractionImpl(
             // для назначения id
             appointmentEntity.getIdAsInt(), // id интента
             intent,
-            // флаг, поведение  pendingIntent когда их несколько
-            PendingIntent.FLAG_MUTABLE // изменяемый
+            // флаг, поведение  pendingIntent когда их несколько (xor это объединение; or - или)
+            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT// изменяемый
         )
         // требуестя алярм менеджер (получаем системный сервис)
         // эта сущьность через которую все делаем
