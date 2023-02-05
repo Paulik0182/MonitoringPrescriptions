@@ -9,6 +9,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentNewPrescriptionBinding
@@ -19,6 +20,8 @@ import com.example.monitoringprescriptions.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
+private const val TYPE_MED_KEY = "TYPE_MED_KEY"
+private const val UNIT_MEASUR_KEY = "UNIT_MEASUR_KEY"
 
 class NewPrescriptionFragment :
     Fragment(R.layout.fragment_new_prescription),
@@ -264,7 +267,11 @@ class NewPrescriptionFragment :
 
     companion object {
         @JvmStatic
-        fun newInstance() = NewPrescriptionFragment()
+        fun newInstance(typeMedicine: TypeMedicine, unitMeasurement: UnitsMeasurement) =
+            NewPrescriptionFragment().apply {
+                arguments = bundleOf(TYPE_MED_KEY to typeMedicine)
+                arguments = bundleOf(UNIT_MEASUR_KEY to unitMeasurement)
+            }
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {

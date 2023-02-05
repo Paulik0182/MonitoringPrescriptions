@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ActivityRootBinding
+import com.example.monitoringprescriptions.domain.TypeMedicine
+import com.example.monitoringprescriptions.domain.UnitsMeasurement
 import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 import com.example.monitoringprescriptions.ui.appointments.AppointmentsFragment
 import com.example.monitoringprescriptions.ui.details.DetailsPrescriptionFragment
@@ -82,8 +84,11 @@ class RootActivity : AppCompatActivity(),
         binding.bottomNavBar.visibility = View.GONE
     }
 
-    private fun newPrescription() {
-        val fragment: Fragment = NewPrescriptionFragment.newInstance()
+    private fun newPrescription(
+        typeMedicine: TypeMedicine,
+        unitMeasurement: UnitsMeasurement
+    ) {
+        val fragment: Fragment = NewPrescriptionFragment.newInstance(typeMedicine, unitMeasurement)
         supportFragmentManager
             .beginTransaction()
             .replace(
@@ -101,8 +106,11 @@ class RootActivity : AppCompatActivity(),
         detailsPrescription(appointmentFullEntity)
     }
 
-    override fun openNewPrescription() {
-        newPrescription()
+    override fun openNewPrescription(
+        typeMedicine: TypeMedicine,
+        unitMeasurement: UnitsMeasurement
+    ) {
+        newPrescription(typeMedicine, unitMeasurement)
     }
 
     override fun onBackPressed() {
