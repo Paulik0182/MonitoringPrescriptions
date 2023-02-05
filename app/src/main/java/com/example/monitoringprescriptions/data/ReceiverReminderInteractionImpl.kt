@@ -44,6 +44,15 @@ class ReceiverReminderInteractionImpl(
         // setAndAllowWhileIdle() - поставить с разрешением будить
         // setExactAndAllowWhileIdle() - поставить точное задонное время когда будить
         // RTC_WAKEUP - тип который может разбудить
+
+//        //эксперемент. Не удался
+//        alarmManager.setRepeating(
+//            AlarmManager.RTC_WAKEUP,
+//            appointmentEntity.time,
+//            24*60*60*1_000,
+//            pendingIntent
+//        )
+
         AlarmManagerCompat.setAndAllowWhileIdle(
             alarmManager,
             AlarmManager.RTC_WAKEUP,
