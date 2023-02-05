@@ -137,28 +137,60 @@ class NewPrescriptionFragment :
         getMedicationIntakeTime()
     }
 
-    private fun showTimeTakingMedications() {
+    private fun changeTimeInDayVisibility(count: Int) {
+        binding.textTwoTextView.visibility = View.GONE
+        binding.timeReceptionTwoTextView.visibility = View.GONE
+        binding.textThreeTextView.visibility = View.GONE
+        binding.timeReceptionThreeTextView.visibility = View.GONE
+        binding.textFourTextView.visibility = View.GONE
+        binding.timeReceptionFourTextView.visibility = View.GONE
+        binding.textFiveTextView.visibility = View.GONE
+        binding.timeReceptionFiveTextView.visibility = View.GONE
 
-        binding.numberAdmissionsPerDaySpinner.selectedItemPosition.forEach {
-            when (it) {
-                2 -> {
-                    binding.textTwoTextView.visibility = View.VISIBLE
-                    binding.timeReceptionTwoTextView.visibility = View.VISIBLE
+        if (count >= 1) {
+            binding.textTwoTextView.visibility = View.VISIBLE
+            binding.timeReceptionTwoTextView.visibility = View.VISIBLE
+        } else {
+            binding.timeReceptionTwoTextView.text = null
+        }
+        if (count >= 2) {
+            binding.textThreeTextView.visibility = View.VISIBLE
+            binding.timeReceptionThreeTextView.visibility = View.VISIBLE
+        } else {
+            binding.timeReceptionThreeTextView.text = null
+        }
+        if (count >= 3) {
+            binding.textFourTextView.visibility = View.VISIBLE
+            binding.timeReceptionFourTextView.visibility = View.VISIBLE
+        } else {
+            binding.timeReceptionFourTextView.text = null
+        }
+        if (count >= 4) {
+            binding.textFiveTextView.visibility = View.VISIBLE
+            binding.timeReceptionFiveTextView.visibility = View.VISIBLE
+        } else {
+            binding.timeReceptionFiveTextView.text = null
+        }
+    }
+
+    private fun showTimeTakingMedications() {
+        // видимость поля приема лекарств в зависимости от выбранного значения приема в день.
+        binding.numberAdmissionsPerDaySpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    changeTimeInDayVisibility(position)
                 }
-                3 -> {
-                    binding.textThreeTextView.visibility = View.VISIBLE
-                    binding.timeReceptionThreeTextView.visibility = View.VISIBLE
-                }
-                4 -> {
-                    binding.textFourTextView.visibility = View.VISIBLE
-                    binding.timeReceptionFourTextView.visibility = View.VISIBLE
-                }
-                5 -> {
-                    binding.textFiveTextView.visibility = View.VISIBLE
-                    binding.timeReceptionFiveTextView.visibility = View.VISIBLE
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    // todo
                 }
             }
-        }
+        changeTimeInDayVisibility(binding.numberAdmissionsPerDaySpinner.selectedItemPosition)
     }
 
     private fun saveNewReception() {
