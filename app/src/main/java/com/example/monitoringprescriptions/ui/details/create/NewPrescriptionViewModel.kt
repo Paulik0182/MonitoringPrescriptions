@@ -8,7 +8,11 @@ import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.domain.ErrorMessage
 import com.example.monitoringprescriptions.domain.TypeMedicine
 import com.example.monitoringprescriptions.domain.UnitsMeasurement
+import com.example.monitoringprescriptions.domain.entities.AppointmentEntity
+import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import com.example.monitoringprescriptions.domain.interactors.PrescriptionCreatorInteractor
+import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
+import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
 import com.example.monitoringprescriptions.ui.CloseDialog
 import com.example.monitoringprescriptions.ui.details.CreationPrescriptionScreenErrors
 import com.example.monitoringprescriptions.utils.SingleLiveEvent
@@ -18,7 +22,9 @@ import com.example.monitoringprescriptions.utils.toastMake
 
 class NewPrescriptionViewModel(
     private val prescriptionCreatorInteractor: PrescriptionCreatorInteractor,
-    private val context: Context
+    private val context: Context,
+    private val prescriptionRepo: PrescriptionRepo,
+    private val appointmentsRepo: AppointmentsRepo
 ) : ViewModel() {
 
     // для сообщения ошибки
@@ -202,5 +208,23 @@ class NewPrescriptionViewModel(
             errorsLiveData.mutable().postValue(it)
             return
         }
+    }
+
+    val prescriptionListLiveDate: LiveData<List<AppointmentEntity>> = MutableLiveData()
+
+    // сообщаем ViewModel отрисовать данные
+    val prescriptionLiveData: LiveData<PrescriptionEntity> = MutableLiveData()
+
+    // подписка на обновление списка
+//    private fun updateAppointments() {
+//        val appointmentList = appointmentsRepo.getPrescriptionAppointments(prescriptionId)
+//        prescriptionListLiveDate.mutable().postValue(appointmentList)
+//    }
+
+    init {
+        // получаем данные
+        val prescription = prescriptionRepo.getPrescription()
+        prescriptionLiveData.mutable().postValue(prescription)
+//        updateAppointments()
     }
 }

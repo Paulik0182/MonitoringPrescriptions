@@ -15,6 +15,7 @@ import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.FragmentNewPrescriptionBinding
 import com.example.monitoringprescriptions.domain.TypeMedicine
 import com.example.monitoringprescriptions.domain.UnitsMeasurement
+import com.example.monitoringprescriptions.domain.entities.PrescriptionEntity
 import com.example.monitoringprescriptions.ui.details.CreationPrescriptionScreenErrors
 import com.example.monitoringprescriptions.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,6 +23,7 @@ import java.util.*
 
 private const val TYPE_MED_KEY = "TYPE_MED_KEY"
 private const val UNIT_MEASUR_KEY = "UNIT_MEASUR_KEY"
+private const val DAY_IN_MS = 24 * 60 * 60 * 1000L
 
 class NewPrescriptionFragment :
     Fragment(R.layout.fragment_new_prescription),
@@ -138,6 +140,58 @@ class NewPrescriptionFragment :
         showTimeTakingMedications()
 
         getMedicationIntakeTime()
+
+        viewModel.prescriptionLiveData.observe(viewLifecycleOwner) {
+            fillPrescription(it)
+        }
+    }
+
+    private fun fillPrescription(prescription: PrescriptionEntity) {
+        val dateStart = prescription.dateStart
+        val numberDaysTakingMedicine = prescription.numberDaysTakingMedicine
+        val dateEnd = dateStart + (DAY_IN_MS * numberDaysTakingMedicine) - DAY_IN_MS
+
+        val dosage = prescription.dosage
+        val numberAdmissionsPerDay = prescription.numberAdmissionsPerDay
+        val medicationsCourse = (numberAdmissionsPerDay * dosage) * numberDaysTakingMedicine
+
+        val timeReceptionTwo = prescription.timeReceptionTwo
+        val timeReceptionThree = prescription.timeReceptionThree
+        val timeReceptionFour = prescription.timeReceptionFour
+        val timeReceptionFive = prescription.timeReceptionFive
+
+        binding.dateStartTextView.text = bpDataFormatter.format(dateStart)
+        binding.dateEndTextView.text = bpDataFormatter.format(dateEnd)
+        binding.nameMedicineEditText.setText(prescription.nameMedicine)
+        binding.dosageEditText.setText(decimalForm.format(dosage))
+        binding.commentEditText.setText(prescription.comment)
+        binding.numberDaysTakingMedicineEditText.setText(numberForm.format(numberDaysTakingMedicine))
+        binding.medicationsCourseEditText.text = medicationsCourse.toString()
+
+        binding.timeReceptionOneTextView.text = bpTimeFormatter.format(dateStart)
+        binding.timeReceptionTwoTextView.text = bpTimeFormatter.format(timeReceptionTwo)
+        binding.timeReceptionThreeTextView.text = bpTimeFormatter.format(timeReceptionThree)
+        binding.timeReceptionFourTextView.text = bpTimeFormatter.format(timeReceptionFour)
+        binding.timeReceptionFiveTextView.text = bpTimeFormatter.format(timeReceptionFive)
+
+        // выясняем какому элементу массива соответствует выставленное значение
+        prescribedMedicineSpinnerLabels.forEachIndexed { i, medicine ->
+            if (medicine == prescription.typeMedicine.toString(requireContext())) {
+                binding.prescribedMedicineSpinner.setSelection(i)
+            }
+        }
+
+        unitMeasurementSpinnerLabels.forEachIndexed { i, unit ->
+            if (unit == prescription.unitMeasurement.toString(requireContext())) {
+                binding.unitMeasurementSpinner.setSelection(i)
+            }
+        }
+
+        numberOfReceptionsPerDaySpinnerLabels.forEachIndexed { i, perDay ->
+            if (perDay == numberAdmissionsPerDay) {
+                binding.numberAdmissionsPerDaySpinner.setSelection(i)
+            }
+        }
     }
 
     private fun changeTimeInDayVisibility(count: Int) {

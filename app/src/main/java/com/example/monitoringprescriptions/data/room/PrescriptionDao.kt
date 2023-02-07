@@ -10,6 +10,9 @@ interface PrescriptionDao {
     @Query("SELECT * FROM prescriptions")
     fun getAll(): List<PrescriptionEntity>
 
+    @Query("SELECT * FROM prescriptions")
+    fun getPrescription(): PrescriptionEntity?
+
     @Insert
     fun addPrescription(prescriptionEntity: PrescriptionEntity)
 

@@ -14,6 +14,7 @@ import com.example.monitoringprescriptions.databinding.FragmentOneDeyAppointment
 import com.example.monitoringprescriptions.domain.TypeMedicine
 import com.example.monitoringprescriptions.domain.UnitsMeasurement
 import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
+import com.example.monitoringprescriptions.utils.toString
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.*
@@ -25,8 +26,17 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
     private var _binding: FragmentOneDeyAppointmentsBinding? = null
     private val binding get() = _binding!!
 
-    var isFlag = false
-    var duration = 1000L
+    private var isFabOpen = false
+    private var duration = 1000L
+
+    private val prescribedMedicineSpinnerLabels: Array<String> by lazy {
+        TypeMedicine.values().map { it.toString(requireContext()) }
+            .toTypedArray() // мапим значения из спинера чтобы получить норм. список
+    }
+    private val unitMeasurementSpinnerLabels: Array<String> by lazy {
+        UnitsMeasurement.values().map { it.toString(requireContext()) }
+            .toTypedArray() // мапим значения из спинера чтобы получить норм. список
+    }
 
     private val viewModel: AppointmentsViewModel by viewModel {
         parametersOf(extractTimeFromBundle(requireArguments()))
@@ -47,16 +57,16 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
             getController().openDetailsPrescription(it)
         }
 
-        processingClicksOnFab()
-
         viewModel.loaderVisibilityLiveData.observe(viewLifecycleOwner) {
             // todo показать - скрыть лоадер
         }
-
-        openNewNamedPrescription()
     }
 
-    private fun openNewNamedPrescription() {
+    private fun initFab() {
+
+        val unitMeasurement = unitMeasurementSpinnerLabels
+        val typeMedicine = prescribedMedicineSpinnerLabels
+
         binding.optionCandlesContainer.setOnClickListener {
             getController().openNewPrescription(TypeMedicine.CANDLES, UnitsMeasurement.PIECES)
         }
@@ -101,8 +111,8 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
 
     private fun processingClicksOnFab() {
         binding.fab.setOnClickListener {
-            isFlag = !isFlag
-            if (isFlag) {
+            isFabOpen = !isFabOpen
+            if (isFabOpen) {
                 ObjectAnimator.ofFloat(binding.plusImageView, View.ROTATION, 0f, 675f)
                     .setDuration(duration).start()
                 ObjectAnimator.ofFloat(binding.optionCandlesContainer, View.TRANSLATION_Y, -180f)
@@ -292,6 +302,9 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
     }
 
     private fun initViews() {
+        processingClicksOnFab()
+        initFab()
+
         binding.recordsRecyclerView.layoutManager = LinearLayoutManager(context)
         adapter = AppointmentsAdapter(
             data = emptyList(),

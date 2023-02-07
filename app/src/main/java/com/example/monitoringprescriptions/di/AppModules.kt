@@ -59,5 +59,12 @@ val appModules = module {
             get()
         )
     }
-    viewModel { NewPrescriptionViewModel(get(), get()) }
+    viewModel {
+        NewPrescriptionViewModel(
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
 }
