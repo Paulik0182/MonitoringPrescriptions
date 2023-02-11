@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,12 +15,24 @@ import com.example.monitoringprescriptions.databinding.FragmentOneDeyAppointment
 import com.example.monitoringprescriptions.domain.TypeMedicine
 import com.example.monitoringprescriptions.domain.UnitsMeasurement
 import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
-import com.example.monitoringprescriptions.utils.toString
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.*
 
 private const val DATE_KEY = "DAY_KEY"
+private const val ZERO_TRANSPARENCY_VALUE_FOR_ANIMATION = 0f
+private const val TRANSPARENCY_VALUE_FOR_ANIMATION = 1f
+private const val FAB_ROTATION_ANGLE_DEGREE = 180f
+private const val ROTATION_CANDLERS_ANGLE_DEGREE_MINUS = -230f
+private const val DROPS_CANDLERS_ANGLE_DEGREE_MINUS = -350f
+private const val PILL_CANDLERS_ANGLE_DEGREE_MINUS = -470f
+private const val OINTMENT_CANDLERS_ANGLE_DEGREE_MINUS = -590f
+private const val POWDER_CANDLERS_ANGLE_DEGREE_MINUS = -710f
+private const val SUSPENSION_CANDLERS_ANGLE_DEGREE_MINUS = -830f
+private const val SYRINGE_CANDLERS_ANGLE_DEGREE_MINUS = -950f
+private const val TINCTURE_CANDLERS_ANGLE_DEGREE_MINUS = -1070f
+private const val TRANSPARENCY_OF_THE_BACKGROUND = 0.8f
+private const val FAB_ANIMATION_DURATION = 800L
 
 class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
 
@@ -27,16 +40,6 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
     private val binding get() = _binding!!
 
     private var isFabOpen = false
-    private var duration = 1000L
-
-    private val prescribedMedicineSpinnerLabels: Array<String> by lazy {
-        TypeMedicine.values().map { it.toString(requireContext()) }
-            .toTypedArray() // мапим значения из спинера чтобы получить норм. список
-    }
-    private val unitMeasurementSpinnerLabels: Array<String> by lazy {
-        UnitsMeasurement.values().map { it.toString(requireContext()) }
-            .toTypedArray() // мапим значения из спинера чтобы получить норм. список
-    }
 
     private val viewModel: AppointmentsViewModel by viewModel {
         parametersOf(extractTimeFromBundle(requireArguments()))
@@ -64,9 +67,6 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
 
     private fun initFab() {
 
-        val unitMeasurement = unitMeasurementSpinnerLabels
-        val typeMedicine = prescribedMedicineSpinnerLabels
-
         binding.optionCandlesContainer.setOnClickListener {
             getController().openNewPrescription(TypeMedicine.CANDLES, UnitsMeasurement.PIECES)
         }
@@ -75,37 +75,21 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
         }
         binding.optionPillContainer.setOnClickListener {
             getController().openNewPrescription(TypeMedicine.PILL, UnitsMeasurement.PIECES)
-
         }
         binding.optionOintmentContainer.setOnClickListener {
             getController().openNewPrescription(TypeMedicine.OINTMENT, UnitsMeasurement.GRAM)
-//            viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
-//
-//            }
         }
         binding.optionPowderContainer.setOnClickListener {
             getController().openNewPrescription(TypeMedicine.POWDER, UnitsMeasurement.GRAM)
-//            viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
-//
-//            }
         }
         binding.optionSuspensionContainer.setOnClickListener {
             getController().openNewPrescription(TypeMedicine.SUSPENSION, UnitsMeasurement.PACKAGE)
-//            viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
-//
-//            }
         }
         binding.optionSyringeContainer.setOnClickListener {
             getController().openNewPrescription(TypeMedicine.SYRINGE, UnitsMeasurement.MILLILITER)
-//            viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
-//
-//            }
         }
         binding.optionTinctureContainer.setOnClickListener {
             getController().openNewPrescription(TypeMedicine.TINCTURE, UnitsMeasurement.MILLILITER)
-//            viewModel.selectedReceptionLiveData.observe(viewLifecycleOwner) {
-//
-//            }
         }
     }
 
@@ -113,186 +97,226 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
         binding.fab.setOnClickListener {
             isFabOpen = !isFabOpen
             if (isFabOpen) {
-                ObjectAnimator.ofFloat(binding.plusImageView, View.ROTATION, 0f, 675f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionCandlesContainer, View.TRANSLATION_Y, -180f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionDropsContainer, View.TRANSLATION_Y, -280f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionPillContainer, View.TRANSLATION_Y, -380f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionOintmentContainer, View.TRANSLATION_Y, -480f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionPowderContainer, View.TRANSLATION_Y, -580f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionSuspensionContainer, View.TRANSLATION_Y, -680f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionSyringeContainer, View.TRANSLATION_Y, -780f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionTinctureContainer, View.TRANSLATION_Y, -880f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.transparentBackground, View.ALPHA, 0.8f)
-                    .setDuration(duration).start()
 
-                binding.optionCandlesContainer.animate().alpha(1f).setDuration(duration)
-                    .setListener(
-                        object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                binding.optionCandlesContainer.isClickable = true
-                            }
-                        }
-                    )
-                binding.optionDropsContainer.animate().alpha(1f).setDuration(duration).setListener(
-                    object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator) {
-                            binding.optionDropsContainer.isClickable = true
-                        }
-                    }
+                animatedOpeningListOnClickingFab()
+
+                configuringContainerParameters(
+                    binding.optionCandlesContainer,
+                    TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    true
                 )
 
-                binding.optionPillContainer.animate().alpha(1f).setDuration(duration).setListener(
-                    object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator) {
-                            binding.optionPillContainer.isClickable = true
-                        }
-                    }
+                configuringContainerParameters(
+                    binding.optionDropsContainer,
+                    TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    true
                 )
 
-                binding.optionOintmentContainer.animate().alpha(1f).setDuration(duration)
-                    .setListener(
-                        object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                binding.optionOintmentContainer.isClickable = true
-                            }
-                        }
-                    )
-
-                binding.optionPowderContainer.animate().alpha(1f).setDuration(duration).setListener(
-                    object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator) {
-                            binding.optionPowderContainer.isClickable = true
-                        }
-                    }
+                configuringContainerParameters(
+                    binding.optionPillContainer,
+                    TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    true
                 )
 
-                binding.optionSuspensionContainer.animate().alpha(1f).setDuration(duration)
-                    .setListener(
-                        object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                binding.optionSuspensionContainer.isClickable = true
-                            }
-                        }
-                    )
+                configuringContainerParameters(
+                    binding.optionOintmentContainer,
+                    TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    true
+                )
 
-                binding.optionSyringeContainer.animate().alpha(1f).setDuration(duration)
-                    .setListener(
-                        object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                binding.optionSyringeContainer.isClickable = true
-                            }
-                        }
-                    )
+                configuringContainerParameters(
+                    binding.optionPowderContainer,
+                    TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    true
+                )
 
-                binding.optionTinctureContainer.animate().alpha(1f).setDuration(duration)
-                    .setListener(
-                        object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                binding.optionTinctureContainer.isClickable = true
-                            }
-                        }
-                    )
+                configuringContainerParameters(
+                    binding.optionSuspensionContainer,
+                    TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    true
+                )
+
+                configuringContainerParameters(
+                    binding.optionSyringeContainer,
+                    TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    true
+                )
+
+                configuringContainerParameters(
+                    binding.optionTinctureContainer,
+                    TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    true
+                )
+
             } else {
-                ObjectAnimator.ofFloat(binding.plusImageView, View.ROTATION, 675f, 0f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionCandlesContainer, View.TRANSLATION_Y, 0f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionDropsContainer, View.TRANSLATION_Y, 0f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionPillContainer, View.TRANSLATION_Y, 0f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionOintmentContainer, View.TRANSLATION_Y, 0f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionPowderContainer, View.TRANSLATION_Y, 0f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionSuspensionContainer, View.TRANSLATION_Y, 0f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionSyringeContainer, View.TRANSLATION_Y, 0f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.optionTinctureContainer, View.TRANSLATION_Y, 0f)
-                    .setDuration(duration).start()
-                ObjectAnimator.ofFloat(binding.transparentBackground, View.ALPHA, 0f)
-                    .setDuration(duration).start()
+                animatedСlosingListOnClickingFab()
 
-                binding.optionCandlesContainer.animate().alpha(0f).setDuration(duration)
-                    .setListener(
-                        object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                binding.optionCandlesContainer.isClickable = false
-                            }
-                        }
-                    )
-
-                binding.optionDropsContainer.animate().alpha(0f).setDuration(duration).setListener(
-                    object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator) {
-                            binding.optionDropsContainer.isClickable = false
-                        }
-                    }
+                configuringContainerParameters(
+                    binding.optionCandlesContainer,
+                    ZERO_TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    false
                 )
 
-                binding.optionPillContainer.animate().alpha(0f).setDuration(duration).setListener(
-                    object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator) {
-                            binding.optionPillContainer.isClickable = false
-                        }
-                    }
+                configuringContainerParameters(
+                    binding.optionDropsContainer,
+                    ZERO_TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    false
                 )
 
-                binding.optionOintmentContainer.animate().alpha(0f).setDuration(duration)
-                    .setListener(
-                        object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                binding.optionOintmentContainer.isClickable = false
-                            }
-                        }
-                    )
-
-                binding.optionPowderContainer.animate().alpha(0f).setDuration(duration).setListener(
-                    object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator) {
-                            binding.optionPowderContainer.isClickable = false
-                        }
-                    }
+                configuringContainerParameters(
+                    binding.optionPillContainer,
+                    ZERO_TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    false
                 )
 
-                binding.optionSuspensionContainer.animate().alpha(0f).setDuration(duration)
-                    .setListener(
-                        object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                binding.optionSuspensionContainer.isClickable = false
-                            }
-                        }
-                    )
+                configuringContainerParameters(
+                    binding.optionOintmentContainer,
+                    ZERO_TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    false
+                )
 
-                binding.optionSyringeContainer.animate().alpha(0f).setDuration(duration)
-                    .setListener(
-                        object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                binding.optionSyringeContainer.isClickable = false
-                            }
-                        }
-                    )
+                configuringContainerParameters(
+                    binding.optionPowderContainer,
+                    ZERO_TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    false
+                )
 
-                binding.optionTinctureContainer.animate().alpha(0f).setDuration(duration)
-                    .setListener(
-                        object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                binding.optionTinctureContainer.isClickable = false
-                            }
-                        }
-                    )
+                configuringContainerParameters(
+                    binding.optionSuspensionContainer,
+                    ZERO_TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    false
+                )
+
+                configuringContainerParameters(
+                    binding.optionSyringeContainer,
+                    ZERO_TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    false
+                )
+
+                configuringContainerParameters(
+                    binding.optionTinctureContainer,
+                    ZERO_TRANSPARENCY_VALUE_FOR_ANIMATION,
+                    false
+                )
             }
         }
+    }
+
+    private fun configuringContainerParameters(
+        tinctureContainer: LinearLayout,
+        alpha: Float,
+        actionClick: Boolean
+    ) {
+        tinctureContainer
+            .animate()
+            .alpha(alpha)
+            .setDuration(FAB_ANIMATION_DURATION)
+            .setListener(
+                object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        tinctureContainer.isClickable = actionClick
+                    }
+                }
+            )
+    }
+
+    private fun animatedOpeningListOnClickingFab() {
+
+        ObjectAnimator.ofFloat(
+            binding.fab,
+            View.ROTATION,
+            ZERO_TRANSPARENCY_VALUE_FOR_ANIMATION,
+            FAB_ROTATION_ANGLE_DEGREE
+        ).setDuration(FAB_ANIMATION_DURATION).start()
+
+        processingAnimatedObject(
+            binding.optionCandlesContainer,
+            ROTATION_CANDLERS_ANGLE_DEGREE_MINUS
+        )
+
+        processingAnimatedObject(
+            binding.optionDropsContainer,
+            DROPS_CANDLERS_ANGLE_DEGREE_MINUS
+        )
+
+        processingAnimatedObject(
+            binding.optionPillContainer,
+            PILL_CANDLERS_ANGLE_DEGREE_MINUS
+        )
+
+        processingAnimatedObject(
+            binding.optionOintmentContainer,
+            OINTMENT_CANDLERS_ANGLE_DEGREE_MINUS
+        )
+
+        processingAnimatedObject(
+            binding.optionPowderContainer,
+            POWDER_CANDLERS_ANGLE_DEGREE_MINUS
+        )
+
+        processingAnimatedObject(
+            binding.optionSuspensionContainer,
+            SUSPENSION_CANDLERS_ANGLE_DEGREE_MINUS
+        )
+
+        processingAnimatedObject(
+            binding.optionSyringeContainer,
+            SYRINGE_CANDLERS_ANGLE_DEGREE_MINUS
+        )
+
+        processingAnimatedObject(
+            binding.optionTinctureContainer,
+            TINCTURE_CANDLERS_ANGLE_DEGREE_MINUS
+        )
+
+        ObjectAnimator.ofFloat(
+            binding.transparentBackground,
+            View.ALPHA,
+            TRANSPARENCY_OF_THE_BACKGROUND
+        ).setDuration(FAB_ANIMATION_DURATION).start()
+    }
+
+    private fun processingAnimatedObject(
+        container: LinearLayout,
+        animationEffectValue: Float = ZERO_TRANSPARENCY_VALUE_FOR_ANIMATION
+    ) {
+
+        ObjectAnimator.ofFloat(
+            container,
+            View.TRANSLATION_Y,
+            animationEffectValue
+        ).setDuration(FAB_ANIMATION_DURATION).start()
+    }
+
+    private fun animatedСlosingListOnClickingFab() {
+        ObjectAnimator.ofFloat(
+            binding.fab,
+            View.ROTATION,
+            FAB_ROTATION_ANGLE_DEGREE,
+            ZERO_TRANSPARENCY_VALUE_FOR_ANIMATION
+        ).setDuration(FAB_ANIMATION_DURATION).start()
+
+        processingAnimatedObject(binding.optionCandlesContainer)
+
+        processingAnimatedObject(binding.optionDropsContainer)
+
+        processingAnimatedObject(binding.optionPillContainer)
+
+        processingAnimatedObject(binding.optionOintmentContainer)
+
+        processingAnimatedObject(binding.optionPowderContainer)
+
+        processingAnimatedObject(binding.optionSuspensionContainer)
+
+        processingAnimatedObject(binding.optionSyringeContainer)
+
+        processingAnimatedObject(binding.optionTinctureContainer)
+
+        ObjectAnimator.ofFloat(
+            binding.transparentBackground,
+            View.ALPHA,
+            ZERO_TRANSPARENCY_VALUE_FOR_ANIMATION
+        ).setDuration(FAB_ANIMATION_DURATION).start()
     }
 
     private fun updateData() {
@@ -308,8 +332,7 @@ class AppointmentsFragment : Fragment(R.layout.fragment_one_dey_appointments) {
         binding.recordsRecyclerView.layoutManager = LinearLayoutManager(context)
         adapter = AppointmentsAdapter(
             data = emptyList(),
-            showPopupMenu = {
-            },
+            showPopupMenu = {},
             onPrescriptionClickListener = {
                 viewModel.onPrescriptionClick(it)
             },

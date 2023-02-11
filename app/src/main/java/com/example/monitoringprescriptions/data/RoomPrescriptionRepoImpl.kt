@@ -18,10 +18,6 @@ class RoomPrescriptionRepoImpl(
         return prescriptionDao.getAll()
     }
 
-    override fun getPrescription(): PrescriptionEntity? {
-        return prescriptionDao.getPrescription()
-    }
-
     override fun getListPrescriptionId(id: String): List<PrescriptionEntity> {
         return prescriptionDao.getListById(id)
     }

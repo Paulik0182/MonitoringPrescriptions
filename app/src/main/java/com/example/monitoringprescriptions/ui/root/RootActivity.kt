@@ -19,6 +19,7 @@ private const val TAG_MAIN_CONTAINER_LAYOUT_KEY = "TAG_MAIN_CONTAINER_LAYOUT_KEY
 private const val TAG_DETAILS_PRESCRIPTION_KEY = "TAG_DETAILS_RECEPTION_KEY"
 private const val TAG_NEW_PRESCRIPTION_KEY = "TAG_NEW_PRESCRIPTION_KEY"
 
+@Suppress("DEPRECATION")
 class RootActivity : AppCompatActivity(),
     SettingsFragment.Controller,
     AppointmentsFragment.Controller,
@@ -84,7 +85,7 @@ class RootActivity : AppCompatActivity(),
         binding.bottomNavBar.visibility = View.GONE
     }
 
-    private fun newPrescription(
+    private fun showPrescriptionFragment(
         typeMedicine: TypeMedicine,
         unitMeasurement: UnitsMeasurement
     ) {
@@ -110,9 +111,10 @@ class RootActivity : AppCompatActivity(),
         typeMedicine: TypeMedicine,
         unitMeasurement: UnitsMeasurement
     ) {
-        newPrescription(typeMedicine, unitMeasurement)
+        showPrescriptionFragment(typeMedicine, unitMeasurement)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         binding.bottomNavBar.visibility = View.VISIBLE
         super.onBackPressed()

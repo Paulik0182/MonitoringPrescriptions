@@ -43,8 +43,7 @@
             android:layout_gravity="bottom|end"
             android:alpha="0"
             android:orientation="horizontal"
-            android:paddingEnd="32dp"
-            android:paddingBottom="32dp">
+            android:paddingEnd="32dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -60,8 +59,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="14sp"
-                app:srcCompat="@string/emoji_pill" />
+                android:text="@string/emoji_pill"
+                android:textSize="25sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -71,8 +70,7 @@
             android:layout_gravity="bottom|end"
             android:alpha="0"
             android:orientation="horizontal"
-            android:paddingEnd="32dp"
-            android:paddingBottom="32dp">
+            android:paddingEnd="32dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -88,8 +86,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="14sp"
-                app:srcCompat="@string/emoji_syringe" />
+                android:text="@string/emoji_syringe"
+                android:textSize="25sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -99,8 +97,7 @@
             android:layout_gravity="bottom|end"
             android:alpha="0"
             android:orientation="horizontal"
-            android:paddingEnd="32dp"
-            android:paddingBottom="32dp">
+            android:paddingEnd="32dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -116,8 +113,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="14sp"
-                app:srcCompat="@string/emoji_powder" />
+                android:text="@string/emoji_powder"
+                android:textSize="25sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -127,8 +124,7 @@
             android:layout_gravity="bottom|end"
             android:alpha="0"
             android:orientation="horizontal"
-            android:paddingEnd="32dp"
-            android:paddingBottom="32dp">
+            android:paddingEnd="32dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -144,8 +140,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="14sp"
-                app:srcCompat="@string/emoji_suspension" />
+                android:text="@string/emoji_suspension"
+                android:textSize="25sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -155,8 +151,7 @@
             android:layout_gravity="bottom|end"
             android:alpha="0"
             android:orientation="horizontal"
-            android:paddingEnd="32dp"
-            android:paddingBottom="32dp">
+            android:paddingEnd="32dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -172,8 +167,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="14sp"
-                app:srcCompat="@string/emoji_ointment" />
+                android:text="@string/emoji_ointment"
+                android:textSize="25sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -183,8 +178,7 @@
             android:layout_gravity="bottom|end"
             android:alpha="0"
             android:orientation="horizontal"
-            android:paddingEnd="32dp"
-            android:paddingBottom="32dp">
+            android:paddingEnd="32dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -200,8 +194,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="14sp"
-                app:srcCompat="@string/emoji_tincture" />
+                android:text="@string/emoji_tincture"
+                android:textSize="25sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -211,8 +205,7 @@
             android:layout_gravity="bottom|end"
             android:alpha="0"
             android:orientation="horizontal"
-            android:paddingEnd="32dp"
-            android:paddingBottom="32dp">
+            android:paddingEnd="32dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -228,8 +221,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="14sp"
-                app:srcCompat="@string/emoji_drops" />
+                android:text="@string/emoji_drops"
+                android:textSize="25sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -239,8 +232,7 @@
             android:layout_gravity="bottom|end"
             android:alpha="0"
             android:orientation="horizontal"
-            android:paddingEnd="32dp"
-            android:paddingBottom="32dp">
+            android:paddingEnd="32dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -256,8 +248,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="14sp"
-                app:srcCompat="@string/emoji_candles" />
+                android:text="@string/emoji_candles"
+                android:textSize="25sp" />
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
