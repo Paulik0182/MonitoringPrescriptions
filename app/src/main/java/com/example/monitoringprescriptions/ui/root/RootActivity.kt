@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.monitoringprescriptions.R
 import com.example.monitoringprescriptions.databinding.ActivityRootBinding
+import com.example.monitoringprescriptions.domain.TypeMedicine
+import com.example.monitoringprescriptions.domain.UnitsMeasurement
 import com.example.monitoringprescriptions.domain.entities.AppointmentFullEntity
 import com.example.monitoringprescriptions.ui.appointments.AppointmentsFragment
 import com.example.monitoringprescriptions.ui.details.DetailsPrescriptionFragment
@@ -17,6 +19,7 @@ private const val TAG_MAIN_CONTAINER_LAYOUT_KEY = "TAG_MAIN_CONTAINER_LAYOUT_KEY
 private const val TAG_DETAILS_PRESCRIPTION_KEY = "TAG_DETAILS_RECEPTION_KEY"
 private const val TAG_NEW_PRESCRIPTION_KEY = "TAG_NEW_PRESCRIPTION_KEY"
 
+@Suppress("DEPRECATION")
 class RootActivity : AppCompatActivity(),
     SettingsFragment.Controller,
     AppointmentsFragment.Controller,
@@ -82,8 +85,11 @@ class RootActivity : AppCompatActivity(),
         binding.bottomNavBar.visibility = View.GONE
     }
 
-    private fun newPrescription() {
-        val fragment: Fragment = NewPrescriptionFragment.newInstance()
+    private fun showPrescriptionFragment(
+        typeMedicine: TypeMedicine,
+        unitMeasurement: UnitsMeasurement
+    ) {
+        val fragment: Fragment = NewPrescriptionFragment.newInstance(typeMedicine, unitMeasurement)
         supportFragmentManager
             .beginTransaction()
             .replace(
@@ -101,10 +107,14 @@ class RootActivity : AppCompatActivity(),
         detailsPrescription(appointmentFullEntity)
     }
 
-    override fun openNewPrescription() {
-        newPrescription()
+    override fun openNewPrescription(
+        typeMedicine: TypeMedicine,
+        unitMeasurement: UnitsMeasurement
+    ) {
+        showPrescriptionFragment(typeMedicine, unitMeasurement)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         binding.bottomNavBar.visibility = View.VISIBLE
         super.onBackPressed()

@@ -1,15 +1,13 @@
 package com.example.monitoringprescriptions.di
 
 import androidx.room.Room
-import com.example.monitoringprescriptions.data.AppointmentsInteractorImpl
-import com.example.monitoringprescriptions.data.PrescriptionCreatorInteractorImpl
-import com.example.monitoringprescriptions.data.RoomAppointmentRepoImpl
-import com.example.monitoringprescriptions.data.RoomPrescriptionRepoImpl
+import com.example.monitoringprescriptions.data.*
 import com.example.monitoringprescriptions.data.room.AppDataBase
 import com.example.monitoringprescriptions.data.room.AppointmentDao
 import com.example.monitoringprescriptions.data.room.PrescriptionDao
 import com.example.monitoringprescriptions.domain.interactors.AppointmentsInteractor
 import com.example.monitoringprescriptions.domain.interactors.PrescriptionCreatorInteractor
+import com.example.monitoringprescriptions.domain.interactors.ReceiverReminderInteraction
 import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
 import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
 import com.example.monitoringprescriptions.ui.appointments.AppointmentsViewModel
@@ -40,7 +38,16 @@ val appModules = module {
 
     single<AppointmentsInteractor> { AppointmentsInteractorImpl(get(), get()) }
 
-    single<PrescriptionCreatorInteractor> { PrescriptionCreatorInteractorImpl(get(), get()) }
+    single<PrescriptionCreatorInteractor> {
+        PrescriptionCreatorInteractorImpl(
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
+
+    single<ReceiverReminderInteraction> { ReceiverReminderInteractionImpl(get()) }
 
     viewModel { parameters -> AppointmentsViewModel(get(), parameters.get()) }
     viewModel { parameters ->
@@ -52,5 +59,12 @@ val appModules = module {
             get()
         )
     }
-    viewModel { NewPrescriptionViewModel(get(), get()) }
+    viewModel {
+        NewPrescriptionViewModel(
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
 }

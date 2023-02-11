@@ -36,6 +36,14 @@ class DetailsPrescriptionFragment :
     private val binding get() = _binding!!
 
     private val calendarFromView = Calendar.getInstance()
+    private val calendarTimeTwo = Calendar.getInstance()
+    private val calendarTimeThree = Calendar.getInstance()
+    private val calendarTimeFour = Calendar.getInstance()
+    private val calendarTimeFive = Calendar.getInstance()
+    private lateinit var timeTwoSetListener: TimePickerDialog.OnTimeSetListener
+    private lateinit var timeThreeSetListener: TimePickerDialog.OnTimeSetListener
+    private lateinit var timeFourSetListener: TimePickerDialog.OnTimeSetListener
+    private lateinit var timeFiveSetListener: TimePickerDialog.OnTimeSetListener
 
     private lateinit var appointmentInPrescriptionAdapter: AppointmentInPrescriptionAdapter
 
@@ -65,10 +73,8 @@ class DetailsPrescriptionFragment :
         _binding = FragmentDetailsPrescriptionBinding.bind(view)
 
         setHasOptionsMenu(true)
-
-        initPrescription()
-
         initDateView()
+        initPrescription()
 
         errorMassage()
 
@@ -115,6 +121,66 @@ class DetailsPrescriptionFragment :
         viewModel.closeDialogLiveData.observe(viewLifecycleOwner) {
             showCloseDialog(it.massage)
         }
+
+        showTimeTakingMedications()
+
+        getMedicationIntakeTime()
+    }
+
+    private fun changeTimeInDayVisibility(count: Int) {
+        binding.textTwoTextView.visibility = View.GONE
+        binding.timeReceptionTwoTextView.visibility = View.GONE
+        binding.textThreeTextView.visibility = View.GONE
+        binding.timeReceptionThreeTextView.visibility = View.GONE
+        binding.textFourTextView.visibility = View.GONE
+        binding.timeReceptionFourTextView.visibility = View.GONE
+        binding.textFiveTextView.visibility = View.GONE
+        binding.timeReceptionFiveTextView.visibility = View.GONE
+
+        if (count >= 1) {
+            binding.textTwoTextView.visibility = View.VISIBLE
+            binding.timeReceptionTwoTextView.visibility = View.VISIBLE
+        } else {
+            binding.timeReceptionTwoTextView.text = null
+        }
+        if (count >= 2) {
+            binding.textThreeTextView.visibility = View.VISIBLE
+            binding.timeReceptionThreeTextView.visibility = View.VISIBLE
+        } else {
+            binding.timeReceptionThreeTextView.text = null
+        }
+        if (count >= 3) {
+            binding.textFourTextView.visibility = View.VISIBLE
+            binding.timeReceptionFourTextView.visibility = View.VISIBLE
+        } else {
+            binding.timeReceptionFourTextView.text = null
+        }
+        if (count >= 4) {
+            binding.textFiveTextView.visibility = View.VISIBLE
+            binding.timeReceptionFiveTextView.visibility = View.VISIBLE
+        } else {
+            binding.timeReceptionFiveTextView.text = null
+        }
+    }
+
+    private fun showTimeTakingMedications() {
+        // видимость поля приема лекарств в зависимости от выбранного значения приема в день.
+        binding.numberAdmissionsPerDaySpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    changeTimeInDayVisibility(position)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    // todo
+                }
+            }
+        changeTimeInDayVisibility(binding.numberAdmissionsPerDaySpinner.selectedItemPosition)
     }
 
     private fun fillPrescription(prescription: PrescriptionEntity) {
@@ -126,6 +192,11 @@ class DetailsPrescriptionFragment :
         val numberAdmissionsPerDay = prescription.numberAdmissionsPerDay
         val medicationsCourse = (numberAdmissionsPerDay * dosage) * numberDaysTakingMedicine
 
+        val timeReceptionTwo = prescription.timeReceptionTwo
+        val timeReceptionThree = prescription.timeReceptionThree
+        val timeReceptionFour = prescription.timeReceptionFour
+        val timeReceptionFive = prescription.timeReceptionFive
+
         binding.dateStartTextView.text = bpDataFormatter.format(dateStart)
         binding.dateEndTextView.text = bpDataFormatter.format(dateEnd)
         binding.nameMedicineEditText.setText(prescription.nameMedicine)
@@ -133,6 +204,12 @@ class DetailsPrescriptionFragment :
         binding.commentEditText.setText(prescription.comment)
         binding.numberDaysTakingMedicineEditText.setText(numberForm.format(numberDaysTakingMedicine))
         binding.medicationsCourseEditText.text = medicationsCourse.toString()
+
+        binding.timeReceptionOneTextView.text = bpTimeFormatter.format(dateStart)
+        binding.timeReceptionTwoTextView.text = bpTimeFormatter.format(timeReceptionTwo)
+        binding.timeReceptionThreeTextView.text = bpTimeFormatter.format(timeReceptionThree)
+        binding.timeReceptionFourTextView.text = bpTimeFormatter.format(timeReceptionFour)
+        binding.timeReceptionFiveTextView.text = bpTimeFormatter.format(timeReceptionFive)
 
         // выясняем какому элементу массива соответствует выставленное значение
         prescribedMedicineSpinnerLabels.forEachIndexed { i, medicine ->
@@ -177,7 +254,13 @@ class DetailsPrescriptionFragment :
                 .toIntOrNull(),
             numberAdmissionsPerDay = numberAdmissionsPerDay,
             medicationsCourse = binding.medicationsCourseEditText.text.toString().toFloatOrNull()
-                ?: 0F
+                ?: 0F,
+
+            // Время приема
+            timeReceptionTwo = calendarTimeTwo.timeInMillis,
+            timeReceptionThree = calendarTimeThree.timeInMillis,
+            timeReceptionFour = calendarTimeFour.timeInMillis,
+            timeReceptionFive = calendarTimeFive.timeInMillis
         )
     }
 
@@ -363,16 +446,98 @@ class DetailsPrescriptionFragment :
                             calendarFromView.time
                         )
                     }"
+
+        binding.timeReceptionOneTextView.text =
+            bpTimeFormatter.format(
+                calendarFromView.time
+            )
+    }
+
+    private fun getMedicationIntakeTime() {
+        timeTwoSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+            calendarTimeTwo.set(Calendar.HOUR_OF_DAY, hour)
+            calendarTimeTwo.set(Calendar.MINUTE, minute)
+            binding.timeReceptionTwoTextView.text =
+                bpTimeFormatter.format(
+                    calendarTimeTwo.time
+                )
+        }
+
+        timeThreeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+            calendarTimeThree.set(Calendar.HOUR_OF_DAY, hour)
+            calendarTimeThree.set(Calendar.MINUTE, minute)
+            binding.timeReceptionThreeTextView.text =
+                bpTimeFormatter.format(
+                    calendarTimeThree.time
+                )
+        }
+
+        timeFourSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+            calendarTimeFour.set(Calendar.HOUR_OF_DAY, hour)
+            calendarTimeFour.set(Calendar.MINUTE, minute)
+            binding.timeReceptionFourTextView.text =
+                bpTimeFormatter.format(
+                    calendarTimeFour.time
+                )
+        }
+
+        timeFiveSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+            calendarTimeFive.set(Calendar.HOUR_OF_DAY, hour)
+            calendarTimeFive.set(Calendar.MINUTE, minute)
+            binding.timeReceptionFiveTextView.text =
+                bpTimeFormatter.format(
+                    calendarTimeFive.time
+                )
+        }
     }
 
     private fun initDateView() {
+        val calendar = Calendar.getInstance()
+
         binding.dateStartTextView.setOnClickListener {
-            val calendar = Calendar.getInstance()
             val currentDay = calendar.get(Calendar.DAY_OF_YEAR)
             val currentMonth = calendar.get(Calendar.MONTH)
             val currentYear = calendar.get(Calendar.YEAR)
 
-            DatePickerDialog(requireContext(), this, currentYear, currentMonth, currentDay).show()
+            DatePickerDialog(
+                requireContext(),
+                this,
+                currentYear,
+                currentMonth,
+                currentDay
+            ).show()
         }
+
+        binding.timeReceptionOneTextView.setOnClickListener {
+            onTimePickerDialog(calendar, this)
+        }
+        binding.timeReceptionTwoTextView.setOnClickListener {
+            onTimePickerDialog(calendar, timeTwoSetListener)
+        }
+        binding.timeReceptionThreeTextView.setOnClickListener {
+            onTimePickerDialog(calendar, timeThreeSetListener)
+        }
+        binding.timeReceptionFourTextView.setOnClickListener {
+            onTimePickerDialog(calendar, timeFourSetListener)
+        }
+        binding.timeReceptionFiveTextView.setOnClickListener {
+            onTimePickerDialog(calendar, timeFiveSetListener)
+        }
+    }
+
+    private fun onTimePickerDialog(
+        calendar: Calendar,
+        listener: TimePickerDialog.OnTimeSetListener
+    ) {
+        val currencyHour = calendar.get(Calendar.HOUR_OF_DAY)
+        val currencyMinute = calendar.get(Calendar.MINUTE)
+
+        TimePickerDialog(
+            requireContext(),
+            listener,
+            currencyHour,
+            currencyMinute,
+            true
+        ).show()
     }
 }

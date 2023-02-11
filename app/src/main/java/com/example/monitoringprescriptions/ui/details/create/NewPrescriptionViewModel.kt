@@ -9,6 +9,8 @@ import com.example.monitoringprescriptions.domain.ErrorMessage
 import com.example.monitoringprescriptions.domain.TypeMedicine
 import com.example.monitoringprescriptions.domain.UnitsMeasurement
 import com.example.monitoringprescriptions.domain.interactors.PrescriptionCreatorInteractor
+import com.example.monitoringprescriptions.domain.repo.AppointmentsRepo
+import com.example.monitoringprescriptions.domain.repo.PrescriptionRepo
 import com.example.monitoringprescriptions.ui.CloseDialog
 import com.example.monitoringprescriptions.ui.details.CreationPrescriptionScreenErrors
 import com.example.monitoringprescriptions.utils.SingleLiveEvent
@@ -18,7 +20,9 @@ import com.example.monitoringprescriptions.utils.toastMake
 
 class NewPrescriptionViewModel(
     private val prescriptionCreatorInteractor: PrescriptionCreatorInteractor,
-    private val context: Context
+    private val context: Context,
+    private val prescriptionRepo: PrescriptionRepo,
+    private val appointmentsRepo: AppointmentsRepo
 ) : ViewModel() {
 
     // для сообщения ошибки
@@ -48,7 +52,12 @@ class NewPrescriptionViewModel(
         dateStart: Long?,
         numberDaysTakingMedicine: Int?,
         numberAdmissionsPerDay: Int?,
-        medicationsCourse: Float
+        medicationsCourse: Float,
+        // Время приема
+        timeReceptionTwo: Long?,
+        timeReceptionThree: Long?,
+        timeReceptionFour: Long?,
+        timeReceptionFive: Long?
     ) {
         when {
             numberDaysTakingMedicine == null || numberDaysTakingMedicine == 0 -> {
@@ -179,7 +188,13 @@ class NewPrescriptionViewModel(
                     dateStart = java.util.Calendar.getInstance().apply { timeInMillis = dateStart },
                     numberDaysTakingMedicine = numberDaysTakingMedicine,
                     numberAdmissionsPerDay = numberAdmissionsPerDay,
-                    medicationsCourse = medicationsCourse
+                    medicationsCourse = medicationsCourse,
+
+                    // Время приема
+                    timeReceptionTwo = timeReceptionTwo,
+                    timeReceptionThree = timeReceptionThree,
+                    timeReceptionFour = timeReceptionFour,
+                    timeReceptionFive = timeReceptionFive
                 )
 
                 dialogLiveData.mutable().postValue(

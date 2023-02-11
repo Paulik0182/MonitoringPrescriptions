@@ -19,8 +19,13 @@ interface PrescriptionCreatorInteractor {
 
         // добавлено
         numberAdmissionsPerDay: Int, // количество приемов в день
-        medicationsCourse: Float // количество лекарства на весь курс лечения
+        medicationsCourse: Float, // количество лекарства на весь курс лечения
 
+        // Время приема
+        timeReceptionTwo: Long?,
+        timeReceptionThree: Long?,
+        timeReceptionFour: Long?,
+        timeReceptionFive: Long?
     ): PrescriptionEntity
 }
 
